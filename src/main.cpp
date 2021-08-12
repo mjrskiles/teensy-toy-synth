@@ -1,36 +1,9 @@
-// Waveform Modulation Example - Create waveforms with 
-// modulated frequency
-//
-// This example is meant to be used with 3 buttons (pin 0,
-// 1, 2) and 2 knobs (pins 16/A2, 17/A3), which are present
-// on the audio tutorial kit.
-//   https://www.pjrc.com/store/audio_tutorial_kit.html
-//
-// Use an oscilloscope to view the 2 waveforms.
-//
-// Button0 changes the waveform shape
-//
-// Knob A2 changes the amount of frequency modulation
-//
-// Knob A3 varies the shape (only for Pulse & Variable Triangle)
-//
-// This example code is in the public domain.
-
 #include <Audio.h>
 #include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SerialFlash.h>
 #include <Bounce.h>
 
 #include "teensy41pinout.h"
 #include "frequencies.h"
-
-#include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       squarewaveBase;      //xy=90,59
@@ -150,6 +123,76 @@ void loop() {
         Serial.println("button1r");
         squarewaveBase.amplitude(0.0f);
 //        squarewavePhaseMod.amplitude(0.0f);
+    }
+
+    if (button2.fallingEdge()) {
+        Serial.println("button2f");
+        squarewaveBase.frequency(D4);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button2.risingEdge()) {
+        Serial.println("button2r");
+        squarewaveBase.amplitude(0.0f);
+    }
+
+    if (button3.fallingEdge()) {
+        Serial.println("button3f");
+        squarewaveBase.frequency(E4);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button3.risingEdge()) {
+        Serial.println("button3r");
+        squarewaveBase.amplitude(0.0f);
+    }
+
+    if (button2.fallingEdge()) {
+        Serial.println("button4f");
+        squarewaveBase.frequency(F4);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button2.risingEdge()) {
+        Serial.println("button4r");
+        squarewaveBase.amplitude(0.0f);
+    }
+
+    if (button2.fallingEdge()) {
+        Serial.println("button5f");
+        squarewaveBase.frequency(G4);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button2.risingEdge()) {
+        Serial.println("button5r");
+        squarewaveBase.amplitude(0.0f);
+    }
+
+    if (button2.fallingEdge()) {
+        Serial.println("button6f");
+        squarewaveBase.frequency(A4);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button2.risingEdge()) {
+        Serial.println("button6r");
+        squarewaveBase.amplitude(0.0f);
+    }
+
+    if (button2.fallingEdge()) {
+        Serial.println("button7f");
+        squarewaveBase.frequency(B4);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button2.risingEdge()) {
+        Serial.println("button7r");
+        squarewaveBase.amplitude(0.0f);
+    }
+
+    if (button2.fallingEdge()) {
+        Serial.println("button8f");
+        squarewaveBase.frequency(C5);
+        squarewaveBase.amplitude(1.0f);
+    }
+    if (button2.risingEdge()) {
+        Serial.println("button8r");
+        squarewaveBase.amplitude(0.0f);
     }
 
     // Button select changes the waveform type
