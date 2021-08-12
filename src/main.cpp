@@ -75,9 +75,9 @@ void setup() {
 
     // Configure for middle C note without modulation
     squarewaveBase.begin(WAVEFORM_SQUARE);
-//    squarewavePhaseMod.begin(WAVEFORM_SQUARE);
+    squarewavePhaseMod.begin(WAVEFORM_SQUARE);
     squarewavePhaseMod.phaseModulation(360.0f);
-    phaseCtrl1.frequency(20.3f); // Sine waves are low frequency oscillators (LFO)
+    phaseCtrl1.frequency(20.3f);
     lpfCtrl.frequency(5000.0f);
 }
 
@@ -101,8 +101,8 @@ void loop() {
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
 
     sgtl5000_1.volume(knob_A1);
-    phaseCtrl1.amplitude(knob_A2);
-    lpfCtrl.amplitude(knob_A3);
+    phaseCtrl1.frequency(knob_A2);
+    lpfCtrl.frequency(knob_A3);
 
     if (button1.fallingEdge()) {
         Serial.println("button1f");
@@ -115,14 +115,14 @@ void loop() {
         squarewaveBase.frequency(C4);
         squarewaveBase.amplitude(1.0f);
 
-//        squarewavePhaseMod.frequency(C4);
-//        squarewavePhaseMod.amplitude(1.0f);
+        squarewavePhaseMod.frequency(C4);
+        squarewavePhaseMod.amplitude(1.0f);
     }
 
     if (button1.risingEdge()) {
         Serial.println("button1r");
         squarewaveBase.amplitude(0.0f);
-//        squarewavePhaseMod.amplitude(0.0f);
+        squarewavePhaseMod.amplitude(0.0f);
     }
 
     if (button2.fallingEdge()) {
@@ -145,52 +145,52 @@ void loop() {
         squarewaveBase.amplitude(0.0f);
     }
 
-    if (button2.fallingEdge()) {
+    if (button4.fallingEdge()) {
         Serial.println("button4f");
         squarewaveBase.frequency(F4);
         squarewaveBase.amplitude(1.0f);
     }
-    if (button2.risingEdge()) {
+    if (button4.risingEdge()) {
         Serial.println("button4r");
         squarewaveBase.amplitude(0.0f);
     }
 
-    if (button2.fallingEdge()) {
+    if (button5.fallingEdge()) {
         Serial.println("button5f");
         squarewaveBase.frequency(G4);
         squarewaveBase.amplitude(1.0f);
     }
-    if (button2.risingEdge()) {
+    if (button5.risingEdge()) {
         Serial.println("button5r");
         squarewaveBase.amplitude(0.0f);
     }
 
-    if (button2.fallingEdge()) {
+    if (button6.fallingEdge()) {
         Serial.println("button6f");
         squarewaveBase.frequency(A4);
         squarewaveBase.amplitude(1.0f);
     }
-    if (button2.risingEdge()) {
+    if (button6.risingEdge()) {
         Serial.println("button6r");
         squarewaveBase.amplitude(0.0f);
     }
 
-    if (button2.fallingEdge()) {
+    if (button7.fallingEdge()) {
         Serial.println("button7f");
         squarewaveBase.frequency(B4);
         squarewaveBase.amplitude(1.0f);
     }
-    if (button2.risingEdge()) {
+    if (button7.risingEdge()) {
         Serial.println("button7r");
         squarewaveBase.amplitude(0.0f);
     }
 
-    if (button2.fallingEdge()) {
+    if (button8.fallingEdge()) {
         Serial.println("button8f");
         squarewaveBase.frequency(C5);
         squarewaveBase.amplitude(1.0f);
     }
-    if (button2.risingEdge()) {
+    if (button8.risingEdge()) {
         Serial.println("button8r");
         squarewaveBase.amplitude(0.0f);
     }
