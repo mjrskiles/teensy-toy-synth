@@ -19,3 +19,12 @@
 #define KNOB_2_PIN 17
 
 #endif //SYNTH_TEENSY41PINOUT_H
+
+/*
+Function	Teensy 4.x Pins
+Audio Data	7, 8, 20, 21, 23
+Audio Control	18, 19
+Volume Pot	15 (A1)
+SD Card	10, 11, 12, 13
+Memory Chip	6, 11, 12, 13
+ */

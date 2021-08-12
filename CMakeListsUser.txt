@@ -1,0 +1,5 @@
+FILE(GLOB ENDF6_SRC
+        ${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/teensy41/Adafruit\ BusIO/*.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/teensy41/Adafruit\ GFX\ Library/*.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/teensy41/Adafruit\ SSD1306/*.cpp
+    )
