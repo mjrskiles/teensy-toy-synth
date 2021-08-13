@@ -46,7 +46,6 @@ Bounce button6 = Bounce(BUTTON_6_PIN, 15);
 Bounce button7 = Bounce(BUTTON_7_PIN, 15);
 Bounce button8 = Bounce(BUTTON_8_PIN, 15);
 
-int current_waveform=0;
 int firstPass = 1;
 
 void setup() {
@@ -61,9 +60,7 @@ void setup() {
     pinMode(BUTTON_7_PIN, INPUT_PULLUP);
     pinMode(BUTTON_8_PIN, INPUT_PULLUP);
 
-
-    delay(300);
-    Serial.println("Waveform Modulation Test");
+    delay(300); // Pullup resistors need time to pull up
   
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
@@ -77,8 +74,8 @@ void setup() {
     squarewaveBase.begin(WAVEFORM_SQUARE);
     squarewavePhaseMod.begin(WAVEFORM_SQUARE);
     squarewavePhaseMod.phaseModulation(360.0f);
-    phaseCtrl1.frequency(20.3f);
-    lpfCtrl.frequency(5000.0f);
+    phaseCtrl1.frequency(500.0f);
+    lpfCtrl.frequency(20000.0f);
 }
 
 void loop() {
