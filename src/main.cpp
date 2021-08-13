@@ -3,7 +3,8 @@
 #include <Bounce.h>
 
 #include "teensy41pinout.h"
-#include "frequencies.h"
+//#include "frequencies.h"
+#include "luts.h"
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       squarewaveBase;      //xy=90,59
@@ -109,10 +110,10 @@ void loop() {
         Serial.println(knob_A2);
         Serial.println("Knob 3 value:");
         Serial.println(knob_A3);
-        squarewaveBase.frequency(C4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_C4]);
         squarewaveBase.amplitude(1.0f);
 
-        squarewavePhaseMod.frequency(C4);
+        squarewavePhaseMod.frequency(midi_frequencies[MidiNotes::NOTE_C4]);
         squarewavePhaseMod.amplitude(1.0f);
     }
 
@@ -121,10 +122,9 @@ void loop() {
         squarewaveBase.amplitude(0.0f);
         squarewavePhaseMod.amplitude(0.0f);
     }
-
     if (button2.fallingEdge()) {
         Serial.println("button2f");
-        squarewaveBase.frequency(D4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_D4]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button2.risingEdge()) {
@@ -134,7 +134,7 @@ void loop() {
 
     if (button3.fallingEdge()) {
         Serial.println("button3f");
-        squarewaveBase.frequency(E4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_E4]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button3.risingEdge()) {
@@ -144,7 +144,7 @@ void loop() {
 
     if (button4.fallingEdge()) {
         Serial.println("button4f");
-        squarewaveBase.frequency(F4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_F4]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button4.risingEdge()) {
@@ -154,7 +154,7 @@ void loop() {
 
     if (button5.fallingEdge()) {
         Serial.println("button5f");
-        squarewaveBase.frequency(G4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_G4]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button5.risingEdge()) {
@@ -164,7 +164,7 @@ void loop() {
 
     if (button6.fallingEdge()) {
         Serial.println("button6f");
-        squarewaveBase.frequency(A4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_A4]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button6.risingEdge()) {
@@ -174,7 +174,7 @@ void loop() {
 
     if (button7.fallingEdge()) {
         Serial.println("button7f");
-        squarewaveBase.frequency(B4);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_B4]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button7.risingEdge()) {
@@ -184,7 +184,7 @@ void loop() {
 
     if (button8.fallingEdge()) {
         Serial.println("button8f");
-        squarewaveBase.frequency(C5);
+        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_C5]);
         squarewaveBase.amplitude(1.0f);
     }
     if (button8.risingEdge()) {
