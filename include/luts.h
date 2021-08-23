@@ -267,4 +267,19 @@ enum MidiNotes : int {
     NOTE_G9 ,
 };
 
+/*
+ *  Physical button layout for main keypad
+ *  |  0 |  1 |  2 |  3 |
+ *  |  4 |  5 |  6 |  7 |
+ *  |  8 |  9 | 10 | 11 |
+ *  | 12 | 13 | 14 | 15 |
+ */
+Struct lut_Scale {
+    char Name[] = "Default Name\0";
+    MidiNotes ButtonMap[];
+};
+
+lut_Scale CMajor;
+
+
 #endif //SYNTH_LUTS_H
