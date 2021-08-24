@@ -38,7 +38,8 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=585,481
 
 
 Bounce buttonSelect = Bounce(BUTTON_SELECT_PIN, 15);
-Bounce noteButtons[16] = {
+const int NUM_BUTTONS = 16;
+Bounce noteButtons[NUM_BUTTONS] = {
     Bounce(BUTTON_0_PIN, 15),
     Bounce(BUTTON_1_PIN, 15),
     Bounce(BUTTON_2_PIN, 15),
@@ -67,10 +68,13 @@ Scale scale {
 
 int firstPass = 1;
 
+// Debugging / Logging
+elapsedMillis logPrintoutMillisSince;
+
 void setup() {
     Serial.begin(9600);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < NUM_BUTTONS; i++) {
         pinMode(button_pins[i], INPUT_PULLUP);
     }
 
@@ -101,14 +105,11 @@ void loop() {
     // TODO grab a button handle out of the array instead
     // Read the buttons and knobs, scale knobs to 0-1.0
     buttonSelect.update();
-//    button1.update();
-//    button2.update();
-//    button3.update();
-//    button4.update();
-//    button5.update();
-//    button6.update();
-//    button7.update();
-//    button8.update();
+    for (int i = 0; i < NUM_BUTTONS; i++) {
+        Bounce button = noteButtons[i];
+        button.update();
+    }
+
     float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
     float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
@@ -117,94 +118,35 @@ void loop() {
     phaseCtrl1.frequency(knob_A2);
     lpfCtrl.frequency(knob_A3);
 
-    if (button1.fallingEdge()) {
-        Serial.println("button1f");
+    if (logPrintoutMillisSince > 1500) {
         Serial.println("Knob 1 value:");
         Serial.println(knob_A1);
         Serial.println("Knob 2 value:");
         Serial.println(knob_A2);
         Serial.println("Knob 3 value:");
         Serial.println(knob_A3);
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_C4]);
-        squarewaveBase.amplitude(1.0f);
-
-        squarewavePhaseMod.frequency(midi_frequencies[MidiNotes::NOTE_C4]);
-        squarewavePhaseMod.amplitude(1.0f);
+        logPrintoutMillisSince = 0;
     }
 
-    if (button1.risingEdge()) {
-        Serial.println("button1r");
-        squarewaveBase.amplitude(0.0f);
-        squarewavePhaseMod.amplitude(0.0f);
-    }
-    if (button2.fallingEdge()) {
-        Serial.println("button2f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_D4]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button2.risingEdge()) {
-        Serial.println("button2r");
-        squarewaveBase.amplitude(0.0f);
-    }
+    for (int i = 0; i < NUM_BUTTONS; i++) {
+        Bounce button = noteButtons[i];
 
-    if (button3.fallingEdge()) {
-        Serial.println("button3f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_E4]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button3.risingEdge()) {
-        Serial.println("button3r");
-        squarewaveBase.amplitude(0.0f);
-    }
+        // Button is pressed
+        if (button.fallingEdge()) {
+            Serial.printf("button %n fall", i);
+            squarewaveBase.frequency(scale.ButtonMap[i]);
+            squarewaveBase.amplitude(1.0f);
 
-    if (button4.fallingEdge()) {
-        Serial.println("button4f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_F4]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button4.risingEdge()) {
-        Serial.println("button4r");
-        squarewaveBase.amplitude(0.0f);
-    }
+            squarewavePhaseMod.frequency(scale.ButtonMap[i]);
+            squarewavePhaseMod.amplitude(1.0f);
+        }
 
-    if (button5.fallingEdge()) {
-        Serial.println("button5f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_G4]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button5.risingEdge()) {
-        Serial.println("button5r");
-        squarewaveBase.amplitude(0.0f);
-    }
-
-    if (button6.fallingEdge()) {
-        Serial.println("button6f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_A4]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button6.risingEdge()) {
-        Serial.println("button6r");
-        squarewaveBase.amplitude(0.0f);
-    }
-
-    if (button7.fallingEdge()) {
-        Serial.println("button7f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_B4]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button7.risingEdge()) {
-        Serial.println("button7r");
-        squarewaveBase.amplitude(0.0f);
-    }
-
-    if (button8.fallingEdge()) {
-        Serial.println("button8f");
-        squarewaveBase.frequency(midi_frequencies[MidiNotes::NOTE_C5]);
-        squarewaveBase.amplitude(1.0f);
-    }
-    if (button8.risingEdge()) {
-        Serial.println("button8r");
-        squarewaveBase.amplitude(0.0f);
+        // Released
+        if (button.risingEdge()) {
+            Serial.printf("button %n rise", i);
+            squarewaveBase.amplitude(0.0f);
+            squarewavePhaseMod.amplitude(0.0f);
+        }
     }
 
     // Button select changes the waveform type
