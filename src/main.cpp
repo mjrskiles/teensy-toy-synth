@@ -38,28 +38,41 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=585,481
 
 
 Bounce buttonSelect = Bounce(BUTTON_SELECT_PIN, 15);
-Bounce button1 = Bounce(BUTTON_1_PIN, 15);
-Bounce button2 = Bounce(BUTTON_2_PIN, 15);
-Bounce button3 = Bounce(BUTTON_3_PIN, 15);
-Bounce button4 = Bounce(BUTTON_4_PIN, 15);
-Bounce button5 = Bounce(BUTTON_5_PIN, 15);
-Bounce button6 = Bounce(BUTTON_6_PIN, 15);
-Bounce button7 = Bounce(BUTTON_7_PIN, 15);
-Bounce button8 = Bounce(BUTTON_8_PIN, 15);
+Bounce noteButtons[16] = {
+    Bounce(BUTTON_0_PIN, 15),
+    Bounce(BUTTON_1_PIN, 15),
+    Bounce(BUTTON_2_PIN, 15),
+    Bounce(BUTTON_3_PIN, 15),
+    Bounce(BUTTON_4_PIN, 15),
+    Bounce(BUTTON_5_PIN, 15),
+    Bounce(BUTTON_6_PIN, 15),
+    Bounce(BUTTON_7_PIN, 15),
+    Bounce(BUTTON_8_PIN, 15),
+    Bounce(BUTTON_9_PIN, 15),
+    Bounce(BUTTON_10_PIN, 15),
+    Bounce(BUTTON_11_PIN, 15),
+    Bounce(BUTTON_12_PIN, 15),
+    Bounce(BUTTON_13_PIN, 15),
+    Bounce(BUTTON_14_PIN, 15),
+    Bounce(BUTTON_15_PIN, 15),
+};
+Scale scale {
+    "C Major\0", {
+        MidiNotes::NOTE_C4, MidiNotes::NOTE_D4, MidiNotes::NOTE_E4, MidiNotes::NOTE_F4,
+        MidiNotes::NOTE_G4, MidiNotes::NOTE_A4, MidiNotes::NOTE_B4, MidiNotes::NOTE_C5,
+        MidiNotes::NOTE_D5, MidiNotes::NOTE_E5, MidiNotes::NOTE_F5, MidiNotes::NOTE_G5,
+        MidiNotes::NOTE_A5, MidiNotes::NOTE_B5, MidiNotes::NOTE_C6, MidiNotes::NOTE_D6
+    }
+};
 
 int firstPass = 1;
 
 void setup() {
     Serial.begin(9600);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_1_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_2_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_3_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_4_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_5_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_6_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_7_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_8_PIN, INPUT_PULLUP);
+    for (int i = 0; i < 16; i++) {
+        pinMode(button_pins[i], INPUT_PULLUP);
+    }
 
     delay(300); // Pullup resistors need time to pull up
   
@@ -84,16 +97,18 @@ void loop() {
         firstPass = 0;
         Serial.println("First Pass");
     }
+
+    // TODO grab a button handle out of the array instead
     // Read the buttons and knobs, scale knobs to 0-1.0
     buttonSelect.update();
-    button1.update();
-    button2.update();
-    button3.update();
-    button4.update();
-    button5.update();
-    button6.update();
-    button7.update();
-    button8.update();
+//    button1.update();
+//    button2.update();
+//    button3.update();
+//    button4.update();
+//    button5.update();
+//    button6.update();
+//    button7.update();
+//    button8.update();
     float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
     float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;

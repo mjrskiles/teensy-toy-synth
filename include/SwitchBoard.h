@@ -6,13 +6,22 @@
 #ifndef SYNTH_SWITCHBOARD_H
 #define SYNTH_SWITCHBOARD_H
 
-class Switchboard {
-public:
-    float frequencyOfNote(char* note);
+#include <cstdint>
+
+typedef uint8_t ActionType_t;
+
+enum ActionTypes : ActionType_t {
+    ACTION_MIDI_NOTE_INPUT,
 };
 
-float Switchboard::frequencyOfNote(char *note) {
-    return 0;
-}
+struct Action {
+    ActionType_t actionType;
+
+};
+
+class Switchboard {
+public:
+
+};
 
 #endif //SYNTH_SWITCHBOARD_H

@@ -5,6 +5,13 @@
 #ifndef SYNTH_LUTS_H
 #define SYNTH_LUTS_H
 
+static const int button_pins[] = {
+        BUTTON_0_PIN, BUTTON_1_PIN, BUTTON_2_PIN, BUTTON_3_PIN,
+        BUTTON_4_PIN, BUTTON_5_PIN, BUTTON_6_PIN, BUTTON_7_PIN,
+        BUTTON_8_PIN, BUTTON_9_PIN, BUTTON_10_PIN, BUTTON_11_PIN,
+        BUTTON_12_PIN, BUTTON_13_PIN, BUTTON_14_PIN, BUTTON_15_PIN
+};
+
 float midi_frequencies[] = {
         8.176,
         8.662,
@@ -267,6 +274,15 @@ enum MidiNotes : int {
     NOTE_G9 ,
 };
 
+static const char scaleNameCMajor[32] = "C Major\0";
+
+static const MidiNotes bms_CMajor[] = {
+        MidiNotes::NOTE_C4, MidiNotes::NOTE_D4, MidiNotes::NOTE_E4, MidiNotes::NOTE_F4,
+        MidiNotes::NOTE_G4, MidiNotes::NOTE_A4, MidiNotes::NOTE_B4, MidiNotes::NOTE_C5,
+        MidiNotes::NOTE_D5, MidiNotes::NOTE_E5, MidiNotes::NOTE_F5, MidiNotes::NOTE_G5,
+        MidiNotes::NOTE_A5, MidiNotes::NOTE_B5, MidiNotes::NOTE_C6, MidiNotes::NOTE_D6
+};
+
 /*
  *  Physical button layout for main keypad
  *  |  0 |  1 |  2 |  3 |
@@ -274,12 +290,13 @@ enum MidiNotes : int {
  *  |  8 |  9 | 10 | 11 |
  *  | 12 | 13 | 14 | 15 |
  */
-Struct lut_Scale {
-    char Name[] = "Default Name\0";
-    MidiNotes ButtonMap[];
+struct Scale {
+    char *Name;
+    MidiNotes ButtonMap[16];
 };
 
-lut_Scale CMajor;
+
+
 
 
 #endif //SYNTH_LUTS_H
