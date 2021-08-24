@@ -73,9 +73,12 @@ elapsedMillis logPrintoutMillisSince;
 
 void setup() {
     Serial.begin(9600);
+    delay(200);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
+//    Serial.printf("Initialized pin %n to INPUT_PULLUP\n", BUTTON_SELECT_PIN);
     for (int i = 0; i < NUM_BUTTONS; i++) {
         pinMode(button_pins[i], INPUT_PULLUP);
+//        Serial.printf("Initialized pin %n to INPUT_PULLUP\n", button_pins[i]);
     }
 
     delay(300); // Pullup resistors need time to pull up
@@ -119,13 +122,7 @@ void loop() {
     lpfCtrl.frequency(knob_A3);
 
     if (logPrintoutMillisSince > 1500) {
-        Serial.println("Knob 1 value:");
-        Serial.println(knob_A1);
-        Serial.println("Knob 2 value:");
-        Serial.println(knob_A2);
-        Serial.println("Knob 3 value:");
-        Serial.println(knob_A3);
-        logPrintoutMillisSince = 0;
+
     }
 
     for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -151,7 +148,14 @@ void loop() {
 
     // Button select changes the waveform type
     if (buttonSelect.fallingEdge()) {
-        Serial.println("Button: Select");
+        int test = 75;
+        Serial.printf("printf test %n rise", test);
+        Serial.println("Log Button");
+        Serial.println("Control  | Value");
+        Serial.printf( "Knob 1     %.2f\n", knob_A1);
+        Serial.printf( "Knob 2     %.2f\n", knob_A2);
+        Serial.printf( "Knob 3     %.2f\n", knob_A3);
+        logPrintoutMillisSince = 0;
     }
   
 }

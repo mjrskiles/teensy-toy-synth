@@ -276,6 +276,7 @@ enum MidiNotes : int {
 
 static const char scaleNameCMajor[32] = "C Major\0";
 
+// TODO make scales generic
 static const MidiNotes bms_CMajor[] = {
         MidiNotes::NOTE_C4, MidiNotes::NOTE_D4, MidiNotes::NOTE_E4, MidiNotes::NOTE_F4,
         MidiNotes::NOTE_G4, MidiNotes::NOTE_A4, MidiNotes::NOTE_B4, MidiNotes::NOTE_C5,
