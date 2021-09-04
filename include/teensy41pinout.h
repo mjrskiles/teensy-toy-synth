@@ -23,8 +23,10 @@
 #define BUTTON_14_PIN 39
 #define BUTTON_15_PIN 12
 
-#define KNOB_1_PIN 40
-#define KNOB_2_PIN 41
+#define KNOB_1_PIN 39
+#define KNOB_2_PIN 38
+#define KNOB_3_PIN 40
+#define KNOB_4_PIN 41
 
 #endif //SYNTH_TEENSY41PINOUT_H
 
