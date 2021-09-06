@@ -5,6 +5,7 @@
 #include "teensy41pinout.h"
 //#include "frequencies.h"
 #include "luts.h"
+#include "MCP23008.h"
 
 #define DISPLAY_SERIAL Serial1
 
@@ -63,8 +64,10 @@ Bounce *noteButtons[NUM_BUTTONS] = {
         &button8, &button9, &button10, &button11,
         &button12, &button13, &button14, &button15,
 };
+
+char *scaleName = "C Major\0";
 Scale scale {
-    "C Major\0", {
+    scaleName, {
         MidiNotes::NOTE_C4, MidiNotes::NOTE_D4, MidiNotes::NOTE_E4, MidiNotes::NOTE_F4,
         MidiNotes::NOTE_G4, MidiNotes::NOTE_A4, MidiNotes::NOTE_B4, MidiNotes::NOTE_C5,
         MidiNotes::NOTE_D5, MidiNotes::NOTE_E5, MidiNotes::NOTE_F5, MidiNotes::NOTE_G5,
@@ -73,13 +76,15 @@ Scale scale {
 };
 
 int firstPass = 1;
+MCP23008 kbLower8;
 
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
 
 void setup() {
     Serial.begin(9600);
-    DISPLAY_SERIAL.begin(9600);
+    Wire.begin();
+//    DISPLAY_SERIAL.begin(9600);
     delay(200);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
     pinMode(BUTTON_0_PIN, INPUT_PULLUP);
@@ -109,7 +114,20 @@ void setup() {
     phaseCtrl1.frequency(500.0f);
     lpfCtrl.frequency(20000.0f);
 
-    DISPLAY_SERIAL.print("Hello World!");
+    Serial.println("Begin mcp init block");
+    kbLower8 = MCP23008(0x22);
+    Serial.println("constructor");
+    kbLower8.init();
+    Serial.println("init");
+    delay(100);
+    uint8_t iocon = kbLower8.readRegister(0x05); // check the iocon register
+    Serial.println("iocon read");
+    Serial.printf("MCP IOCON reg: %hhu\n", iocon);
+    uint8_t gppu = kbLower8.readRegister(0x06);
+    Serial.printf("MCP GPPU reg: %hhu\n", gppu);
+    Serial.println("End mcp init block");
+
+//    DISPLAY_SERIAL.print("Hello World!");
 }
 
 void loop() {
@@ -117,6 +135,7 @@ void loop() {
         firstPass = 0;
         Serial.println("First Pass");
     }
+    uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
 
     // TODO grab a button handle out of the array instead
     // Read the buttons and knobs, scale knobs to 0-1.0
@@ -152,8 +171,9 @@ void loop() {
     phaseCtrl1.frequency(knob_A2);
     lpfCtrl.frequency(knob_A3);
 
-    if (logPrintoutMillisSince > 1500) {
-
+    if (logPrintoutMillisSince > 1000) {
+            Serial.printf("MCP GPIO reg: 0x%02x\n", (unsigned int) ~(gpio & 0xFF));
+            logPrintoutMillisSince = 0;
     }
 
     if (button0.fallingEdge()) {
@@ -183,7 +203,6 @@ void loop() {
 
     // Button select changes the waveform type
     if (buttonSelect.fallingEdge()) {
-        int test = 75;
         Serial.println("Log Button");
         Serial.println("Control  | Value");
         Serial.printf( "Knob 1     %.2f\n", knob_A1);
