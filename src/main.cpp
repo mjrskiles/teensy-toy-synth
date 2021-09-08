@@ -6,8 +6,10 @@
 //#include "frequencies.h"
 #include "luts.h"
 #include "MCP23008.h"
+#include "I2C1602.h"
 
 #define DISPLAY_SERIAL Serial1
+#define DISPLAY_I2C Wire
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       squarewaveBase;      //xy=90,59
@@ -65,7 +67,7 @@ Bounce *noteButtons[NUM_BUTTONS] = {
         &button12, &button13, &button14, &button15,
 };
 
-char *scaleName = "C Major\0";
+const char *scaleName = "C Major\0";
 Scale scale {
     scaleName, {
         MidiNotes::NOTE_C4, MidiNotes::NOTE_D4, MidiNotes::NOTE_E4, MidiNotes::NOTE_F4,
@@ -77,14 +79,14 @@ Scale scale {
 
 int firstPass = 1;
 MCP23008 kbLower8;
-
+I2C1602Writer displayWriter(0x27);
+lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
 
 void setup() {
     Serial.begin(9600);
     Wire.begin();
-//    DISPLAY_SERIAL.begin(9600);
     delay(200);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
     pinMode(BUTTON_0_PIN, INPUT_PULLUP);
@@ -95,17 +97,22 @@ void setup() {
     pinMode(BUTTON_5_PIN, INPUT_PULLUP);
     pinMode(BUTTON_6_PIN, INPUT_PULLUP);
     pinMode(BUTTON_7_PIN, INPUT_PULLUP);
-//    Serial.printf("Initialized pin %n to INPUT_PULLUP\n", BUTTON_SELECT_PIN);
 
-    delay(300); // Pullup resistors need time to pull up
-  
+    delay(300); // Pull up resistors gotta pull up
+
+    // lcd16x2 should be  good to go after 500ms
+    lcd.displayOn();
+//    lcd.clearDisplay();
+//    lcd.displayOn();
+    const char *message = "Kim is so cute";
+    lcd.writeChars(message, strlen (message));
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
 
     // Comment these out if not using the audio adaptor board.
     sgtl5000_1.enable();
-    sgtl5000_1.volume(0.5); // caution: very loud - use oscilloscope only!
+    sgtl5000_1.volume(0.5);
 
     // Configure for middle C note without modulation
     squarewaveBase.begin(WAVEFORM_SQUARE);

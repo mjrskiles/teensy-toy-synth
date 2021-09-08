@@ -100,7 +100,7 @@ static const MidiNotes bms_CMajor[] = {
  *  | 12 | 13 | 14 | 15 |
  */
 struct Scale {
-    char *Name;
+    const char *Name;
     MidiNotes ButtonMap[16];
 };
 

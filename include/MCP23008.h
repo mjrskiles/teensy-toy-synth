@@ -13,11 +13,11 @@
 class MCP23008 {
 public:
     MCP23008();
-    MCP23008(uint8_t address);
-    void writeRegister(uint8_t reg, uint8_t data);
-    uint8_t readRegister(uint8_t reg);
-    uint8_t readByte();
-    void init();
+    explicit MCP23008(uint8_t address);
+    void writeRegister(uint8_t reg, uint8_t data) const;
+    uint8_t readRegister(uint8_t reg) const;
+    uint8_t readByte() const;
+    void init() const;
 
 private:
     uint8_t _address;
@@ -50,7 +50,8 @@ private:
 /*uint8_t MCP23008::_olat = 0x0A;*/
 
 MCP23008::MCP23008() {
-    MCP23008(0x20); // Use default address from MCP23008 datasheet
+    _address = 0x20;
+    init();
 }
 
 MCP23008::MCP23008(uint8_t address) {
@@ -58,20 +59,26 @@ MCP23008::MCP23008(uint8_t address) {
     init();
 }
 
-void MCP23008::writeRegister(uint8_t reg, uint8_t data) {
+void MCP23008::writeRegister(uint8_t reg, uint8_t data) const {
     Wire.beginTransmission(_address);
     Wire.write(reg);
     Wire.write(data);
     Wire.endTransmission(true);
 }
 
-uint8_t MCP23008::readRegister(uint8_t reg) {
+uint8_t MCP23008::readRegister(uint8_t reg) const {
     Wire.beginTransmission(_address);
     Wire.write(reg);
     Wire.endTransmission(true);
+    uint8_t data = 0;
+    data = readByte();
+
+    return data;
+}
+
+uint8_t MCP23008::readByte() const {
     uint8_t one = 1;
     Wire.requestFrom(_address, one);
-
     uint8_t data = 0;
     while (Wire.available()) {
         data = Wire.read();
@@ -80,11 +87,7 @@ uint8_t MCP23008::readRegister(uint8_t reg) {
     return data;
 }
 
-uint8_t MCP23008::readByte() {
-    return 0;
-}
-
-void MCP23008::init() {
+void MCP23008::init() const {
     uint8_t ioconWord = 1 << 4; // IO to byte mode
     uint8_t gppuWord = 0b11111111; // All pull up resistors to on
 
