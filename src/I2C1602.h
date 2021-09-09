@@ -11,8 +11,8 @@ public:
 
     void sendActionCommand(uint8_t command) const;
     void sendConfigCommand(uint8_t command) const;
-    void sendByte(uint8_t data) const;
-    void sendBytes(const uint8_t *buffer, size_t size) const;
+    size_t sendByte(uint8_t data) const;
+    size_t sendBytes(const uint8_t *buffer, size_t size) const;
 private:
     uint8_t _address;
     uint8_t sendCommand(uint8_t commandChar, uint8_t command) const;

@@ -85,6 +85,7 @@ I2C1602Writer displayWriter(0x27);
 lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
+uint8_t lastState = 0;
 
 void setup() {
     Serial.begin(9600);
@@ -103,11 +104,10 @@ void setup() {
     delay(300); // Pull up resistors gotta pull up
 
     // lcd16x2 should be  good to go after 500ms
-//    lcd.displayOn();
+    lcd.displayOn();
 
 //    delay(500);
-//    lcd.clearDisplay();
-    lcd.writeBytes(hello_buf, 11);
+    lcd.clearDisplay();
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
@@ -180,9 +180,17 @@ void loop() {
     phaseCtrl1.frequency(knob_A2);
     lpfCtrl.frequency(knob_A3);
 
+
     if (logPrintoutMillisSince > 1000) {
+        if (gpio != lastState) {
             Serial.printf("MCP GPIO reg: 0x%02x\n", (unsigned int) ~(gpio & 0xFF));
-            logPrintoutMillisSince = 0;
+            size_t written = 0;
+            written = lcd.writeBytes(hello_buf, 11);
+            Serial.println("lcd16x2::writeBytes wrote bytes!");
+            Serial.println((int)written);
+            lastState = gpio;
+        }
+        logPrintoutMillisSince = 0;
     }
 
     if (button0.fallingEdge()) {

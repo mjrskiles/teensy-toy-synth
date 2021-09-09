@@ -79,35 +79,42 @@ void I2C1602Writer::sendConfigCommand(uint8_t command) const {
     sendCommand(DISPLAY_CONFIG_CHAR, command);
 }
 
-void I2C1602Writer::sendByte(uint8_t data) const {
+size_t I2C1602Writer::sendByte(uint8_t data) const {
     DISPLAY_I2C.beginTransmission(_address);
-    DISPLAY_I2C.write(data);
+    size_t amountWritten = DISPLAY_I2C.write(data);
     DISPLAY_I2C.endTransmission();
+//    Serial.printf("I2CWriter::sendByte wrote %n bytes!\n", amountWritten);
+    return amountWritten;
 }
 
-void I2C1602Writer::sendBytes(const uint8_t *buffer, size_t size) const {
+size_t I2C1602Writer::sendBytes(const uint8_t *buffer, size_t size) const {
     DISPLAY_I2C.beginTransmission(_address);
     // send bytes one by one
+    size_t amountWritten = 0;
     for (size_t i = 0; i < size; i++) {
         uint8_t byte = buffer[i];
-        DISPLAY_I2C.write(byte);
+        amountWritten += DISPLAY_I2C.write(byte);
     }
     DISPLAY_I2C.endTransmission();
+//    Serial.printf("I2CWriter::sendBytes wrote %n bytes!\n", amountWritten);
+    return amountWritten;
 }
 uint8_t I2C1602Writer::sendCommand(uint8_t commandChar, uint8_t command) const {
+    size_t amountWritten = 0;
     DISPLAY_I2C.beginTransmission(_address);
-    DISPLAY_I2C.write(commandChar);
-    DISPLAY_I2C.write(command);
+    amountWritten += DISPLAY_I2C.write(commandChar);
+    amountWritten += DISPLAY_I2C.write(command);
     DISPLAY_I2C.endTransmission();
+//    Serial.printf("I2CWriter::sendCommand wrote %n bytes!\n", amountWritten);
     return 0; // TODO never update this to do anything
 }
 
-void lcd16x2::writeByte(const uint8_t data) {
-    _writer.sendByte(data);
+size_t lcd16x2::writeByte(const uint8_t data) {
+    return _writer.sendByte(data);
 }
 
-void lcd16x2::writeBytes(const uint8_t *buffer, size_t size) {
-    _writer.sendBytes(buffer, size);
+size_t lcd16x2::writeBytes(const uint8_t *buffer, size_t size) {
+    return _writer.sendBytes(buffer, size);
 }
 
 void lcd16x2::clearDisplay() const {
