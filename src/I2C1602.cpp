@@ -78,9 +78,20 @@ void I2C1602Writer::sendActionCommand(uint8_t command) const {
 void I2C1602Writer::sendConfigCommand(uint8_t command) const {
     sendCommand(DISPLAY_CONFIG_CHAR, command);
 }
-void I2C1602Writer::sendBytes(const char *buffer, size_t size) const {
+
+void I2C1602Writer::sendByte(uint8_t data) const {
     DISPLAY_I2C.beginTransmission(_address);
-    DISPLAY_I2C.write(buffer, size);
+    DISPLAY_I2C.write(data);
+    DISPLAY_I2C.endTransmission();
+}
+
+void I2C1602Writer::sendBytes(const uint8_t *buffer, size_t size) const {
+    DISPLAY_I2C.beginTransmission(_address);
+    // send bytes one by one
+    for (size_t i = 0; i < size; i++) {
+        uint8_t byte = buffer[i];
+        DISPLAY_I2C.write(byte);
+    }
     DISPLAY_I2C.endTransmission();
 }
 uint8_t I2C1602Writer::sendCommand(uint8_t commandChar, uint8_t command) const {
@@ -91,7 +102,11 @@ uint8_t I2C1602Writer::sendCommand(uint8_t commandChar, uint8_t command) const {
     return 0; // TODO never update this to do anything
 }
 
-void lcd16x2::writeChars(const char *buffer, size_t size) {
+void lcd16x2::writeByte(const uint8_t data) {
+    _writer.sendByte(data);
+}
+
+void lcd16x2::writeBytes(const uint8_t *buffer, size_t size) {
     _writer.sendBytes(buffer, size);
 }
 

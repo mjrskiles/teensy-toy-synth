@@ -77,6 +77,8 @@ Scale scale {
     }
 };
 
+const uint8_t hello_buf[] = {'K','i','m',' ','i','s',' ','c','u','t','e'};
+
 int firstPass = 1;
 MCP23008 kbLower8;
 I2C1602Writer displayWriter(0x27);
@@ -101,11 +103,11 @@ void setup() {
     delay(300); // Pull up resistors gotta pull up
 
     // lcd16x2 should be  good to go after 500ms
-    lcd.displayOn();
-//    lcd.clearDisplay();
 //    lcd.displayOn();
-    const char *message = "Kim is so cute";
-    lcd.writeChars(message, strlen (message));
+
+//    delay(500);
+//    lcd.clearDisplay();
+    lcd.writeBytes(hello_buf, 11);
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);

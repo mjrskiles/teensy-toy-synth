@@ -11,16 +11,19 @@ public:
 
     void sendActionCommand(uint8_t command) const;
     void sendConfigCommand(uint8_t command) const;
-    void sendBytes(const char *buffer, size_t size) const;
+    void sendByte(uint8_t data) const;
+    void sendBytes(const uint8_t *buffer, size_t size) const;
 private:
     uint8_t _address;
     uint8_t sendCommand(uint8_t commandChar, uint8_t command) const;
 };
 
+//TODO fix the method for sending multiple bytes
 class lcd16x2 {
 public:
     lcd16x2(I2C1602Writer writer) : _writer(writer) {}
-    void writeChars(const char *buffer, size_t size);
+    size_t writeByte(const uint8_t data);
+    size_t writeBytes(const uint8_t *buffer, size_t size);
     void clearDisplay() const;
     void cursorRight() const;
     void cursorLeft() const;
