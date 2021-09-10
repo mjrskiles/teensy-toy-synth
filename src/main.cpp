@@ -7,6 +7,7 @@
 #include "luts.h"
 #include "MCP23008.h"
 #include "I2C1602.h"
+#include "lcd16x2.h"
 
 #define DISPLAY_SERIAL Serial1
 #define DISPLAY_I2C Wire
@@ -81,7 +82,7 @@ const uint8_t hello_buf[] = {'K','i','m',' ','i','s',' ','c','u','t','e'};
 
 int firstPass = 1;
 MCP23008 kbLower8;
-I2C1602Writer displayWriter(0x27);
+SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
@@ -90,7 +91,6 @@ uint8_t lastState = 0;
 void setup() {
     Serial.begin(9600);
     Wire.begin();
-    Wire1.begin();
     delay(200);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
     pinMode(BUTTON_0_PIN, INPUT_PULLUP);
@@ -105,11 +105,10 @@ void setup() {
     delay(300); // Pull up resistors gotta pull up
 
     // lcd16x2 should be  good to go after 500ms
-//    lcd.displayOn();
-//
-////    delay(500);
-//    lcd.clearDisplay();
-//    lcd.blinkCursor();
+    lcd.displayOff();
+    lcd.clearDisplay();
+    lcd.displayOn();
+    lcd.print("Kim is so cute!");
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
@@ -189,14 +188,7 @@ void loop() {
             size_t written = 0;
 //            written = lcd.writeByte(0x47);
 //            Serial.println("lcd16x2::writeBytes wrote bytes!");
-
-            Wire1.beginTransmission(0x27);
-            written += Wire1.write(0xfe);
-            written += Wire1.write(0x01);
-            written += Wire1.write(0x7c);
-            written += Wire1.write(0x9d);
-            written += Wire1.write(0x47);
-            Wire1.endTransmission();
+            lcd.print("So cute!");
             Serial.println((int)written);
             lastState = gpio;
         }

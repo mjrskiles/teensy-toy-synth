@@ -5,6 +5,7 @@
 #include <Wire.h>
 #include <inttypes.h>
 #include "I2C1602.h"
+#include "lcd16x2.h"
 
 
 /*
@@ -36,17 +37,6 @@ char   |         |
         0x9D      Backlight Fully On**/
 
 #define DISPLAY_I2C Wire
-
-const uint8_t DISPLAY_COMMAND_CHAR = 0xFE;
-const uint8_t DISPLAY_CONFIG_CHAR = 0x7C;
-const uint8_t FE_CLEAR_DISPLAY = 0x01;
-const uint8_t FE_CURSOR_RIGHT = 0x14;
-const uint8_t FE_CURSOR_LEFT = 0x10;
-const uint8_t FE_SCROLL_RIGHT = 0x1C;
-const uint8_t FE_SCROLL_LEFT = 0x18;
-const uint8_t FE_DISPLAY_ON_HIDE_CURSOR = 0x0C;
-const uint8_t FE_DISPLAY_OFF = 0x08;
-const uint8_t FE_SET_CURSOR_POS = 0x80;
 
 
 
@@ -107,54 +97,6 @@ uint8_t I2C1602Writer::sendCommand(uint8_t commandChar, uint8_t command) const {
     DISPLAY_I2C.endTransmission();
 //    Serial.printf("I2CWriter::sendCommand wrote %n bytes!\n", amountWritten);
     return 0; // TODO never update this to do anything
-}
-
-size_t lcd16x2::writeByte(const uint8_t data) {
-    return _writer.sendByte(data);
-}
-
-size_t lcd16x2::writeBytes(const uint8_t *buffer, size_t size) {
-    return _writer.sendBytes(buffer, size);
-}
-
-void lcd16x2::clearDisplay() const {
-    _writer.sendActionCommand(FE_CLEAR_DISPLAY);
-}
-
-void lcd16x2::cursorRight() const {
-    _writer.sendActionCommand(FE_CURSOR_RIGHT);
-}
-
-void lcd16x2::cursorLeft() const {
-    _writer.sendActionCommand(FE_CURSOR_LEFT);
-}
-
-void lcd16x2::scrollRight() const {
-    _writer.sendActionCommand(FE_SCROLL_RIGHT);
-}
-
-void lcd16x2::scrollLeft() const {
-    _writer.sendActionCommand(FE_SCROLL_LEFT);
-}
-
-void lcd16x2::displayOn() const {
-    _writer.sendActionCommand(FE_DISPLAY_ON_HIDE_CURSOR);
-}
-
-void lcd16x2::hideCursor() const {
-    _writer.sendActionCommand(FE_DISPLAY_ON_HIDE_CURSOR);
-}
-
-void lcd16x2::displayOff() const {
-    _writer.sendActionCommand(FE_DISPLAY_OFF);
-}
-
-void lcd16x2::setCursorPosition(uint8_t pos) const {
-
-}
-
-void lcd16x2::blinkCursor() const {
-    _writer.sendActionCommand(0x0d);
 }
 
 
