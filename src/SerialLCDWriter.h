@@ -7,6 +7,7 @@
 
 #include <inttypes.h>
 #include <stddef.h>
+#include <Wire.h>
 
 class SerialLCDWriter {
 public:

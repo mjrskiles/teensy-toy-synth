@@ -90,6 +90,7 @@ uint8_t lastState = 0;
 
 void setup() {
     Serial.begin(9600);
+    Serial7.begin(9600);
     Wire.begin();
     delay(200);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
@@ -108,7 +109,13 @@ void setup() {
     lcd.displayOff();
     lcd.clearDisplay();
     lcd.displayOn();
-    lcd.print("Kim is so cute!");
+    lcd.writeByte(0xfe);
+    lcd.writeByte(0x80);
+    lcd.writeByte((uint8_t)'i');
+    lcd.writeByte((uint8_t)'n');
+    lcd.writeByte((uint8_t)'i');
+    lcd.writeByte((uint8_t)'t');
+
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
@@ -188,7 +195,13 @@ void loop() {
             size_t written = 0;
 //            written = lcd.writeByte(0x47);
 //            Serial.println("lcd16x2::writeBytes wrote bytes!");
-            lcd.print("So cute!");
+            lcd.writeByte(0xfe);
+            lcd.writeByte(0x80);
+            lcd.writeByte((uint8_t)'h');
+            lcd.writeByte((uint8_t)'e');
+            lcd.writeByte((uint8_t)'l');
+            lcd.writeByte((uint8_t)'l');
+            lcd.writeByte((uint8_t)'0');
             Serial.println((int)written);
             lastState = gpio;
         }

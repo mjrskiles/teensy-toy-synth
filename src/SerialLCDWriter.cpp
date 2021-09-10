@@ -5,6 +5,7 @@
 #include "SerialLCDWriter.h"
 #define LCD_SERIAL Serial7
 
+#include <Wire.h>
 #include <inttypes.h>
 #include <stddef.h>
 
@@ -29,6 +30,7 @@ size_t SerialLCDWriter::sendBytes(const uint8_t *buffer, size_t size) const {
 uint8_t SerialLCDWriter::sendCommand(uint8_t commandChar, uint8_t command) const {
     LCD_SERIAL.write(commandChar);
     LCD_SERIAL.write(command);
+    return 2;
 }
 
 size_t SerialLCDWriter::print(const char *buffer) const {

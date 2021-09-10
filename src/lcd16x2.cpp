@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <cstddef>
 #include "lcd16x2.h"
+#include "SerialLCDWriter.h"
 
 size_t lcd16x2::print(const char *buffer) const {
     return _writer.print(buffer);
