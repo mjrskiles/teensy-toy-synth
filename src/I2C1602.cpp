@@ -153,6 +153,9 @@ void lcd16x2::setCursorPosition(uint8_t pos) const {
 
 }
 
+void lcd16x2::blinkCursor() const {
+    _writer.sendActionCommand(0x0d);
+}
 
 
 

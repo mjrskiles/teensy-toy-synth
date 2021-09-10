@@ -90,6 +90,7 @@ uint8_t lastState = 0;
 void setup() {
     Serial.begin(9600);
     Wire.begin();
+    Wire1.begin();
     delay(200);
     pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
     pinMode(BUTTON_0_PIN, INPUT_PULLUP);
@@ -104,10 +105,11 @@ void setup() {
     delay(300); // Pull up resistors gotta pull up
 
     // lcd16x2 should be  good to go after 500ms
-    lcd.displayOn();
-
-//    delay(500);
-    lcd.clearDisplay();
+//    lcd.displayOn();
+//
+////    delay(500);
+//    lcd.clearDisplay();
+//    lcd.blinkCursor();
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
@@ -183,10 +185,18 @@ void loop() {
 
     if (logPrintoutMillisSince > 1000) {
         if (gpio != lastState) {
-            Serial.printf("MCP GPIO reg: 0x%02x\n", (unsigned int) ~(gpio & 0xFF));
+            Serial.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) ~(gpio & 0xFF));
             size_t written = 0;
-            written = lcd.writeBytes(hello_buf, 11);
-            Serial.println("lcd16x2::writeBytes wrote bytes!");
+//            written = lcd.writeByte(0x47);
+//            Serial.println("lcd16x2::writeBytes wrote bytes!");
+
+            Wire1.beginTransmission(0x27);
+            written += Wire1.write(0xfe);
+            written += Wire1.write(0x01);
+            written += Wire1.write(0x7c);
+            written += Wire1.write(0x9d);
+            written += Wire1.write(0x47);
+            Wire1.endTransmission();
             Serial.println((int)written);
             lastState = gpio;
         }

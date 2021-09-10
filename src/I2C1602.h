@@ -31,6 +31,7 @@ public:
     void scrollLeft() const;
     void displayOn() const;
     void hideCursor() const;
+    void blinkCursor() const;
     void displayOff() const;
     void setCursorPosition(uint8_t pos) const;
 private:
