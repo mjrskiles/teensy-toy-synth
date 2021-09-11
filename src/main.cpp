@@ -3,13 +3,10 @@
 #include <Bounce.h>
 
 #include "teensy41pinout.h"
-//#include "frequencies.h"
 #include "luts.h"
 #include "MCP23008.h"
-#include "I2C1602.h"
 #include "lcd16x2.h"
 
-#define DISPLAY_SERIAL Serial1
 #define DISPLAY_I2C Wire
 
 // GUItool: begin automatically generated code
@@ -42,32 +39,6 @@ AudioConnection          patchCord14(mixer1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=585,481
 // GUItool: end automatically generated code
 
-
-Bounce buttonSelect = Bounce(BUTTON_SELECT_PIN, 15);
-const int NUM_BUTTONS = 16;
-Bounce button0 =   Bounce(BUTTON_0_PIN, 15);
-Bounce button1 =   Bounce(BUTTON_1_PIN, 15);
-Bounce button2 =   Bounce(BUTTON_2_PIN, 15);
-Bounce button3 =   Bounce(BUTTON_3_PIN, 15);
-Bounce button4 =   Bounce(BUTTON_4_PIN, 15);
-Bounce button5 =   Bounce(BUTTON_5_PIN, 15);
-Bounce button6 =   Bounce(BUTTON_6_PIN, 15);
-Bounce button7 =   Bounce(BUTTON_7_PIN, 15);
-Bounce button8 =   Bounce(BUTTON_8_PIN, 15);
-Bounce button9 =   Bounce(BUTTON_9_PIN, 15);
-Bounce button10 =   Bounce(BUTTON_10_PIN, 15);
-Bounce button11 =   Bounce(BUTTON_11_PIN, 15);
-Bounce button12 =   Bounce(BUTTON_12_PIN, 15);
-Bounce button13 =   Bounce(BUTTON_13_PIN, 15);
-Bounce button14 =   Bounce(BUTTON_14_PIN, 15);
-Bounce button15 =   Bounce(BUTTON_15_PIN, 15);
-Bounce *noteButtons[NUM_BUTTONS] = {
-        &button0, &button1, &button2, &button3,
-        &button4, &button5, &button6, &button7,
-        &button8, &button9, &button10, &button11,
-        &button12, &button13, &button14, &button15,
-};
-
 const char *scaleName = "C Major\0";
 Scale scale {
     scaleName, {
@@ -78,7 +49,7 @@ Scale scale {
     }
 };
 
-const uint8_t hello_buf[] = {'K','i','m',' ','i','s',' ','c','u','t','e'};
+const char *hello_buf = "Kim is so cute";
 
 int firstPass = 1;
 MCP23008 kbLower8;
@@ -92,16 +63,6 @@ void setup() {
     Serial.begin(9600);
     Serial7.begin(9600);
     Wire.begin();
-    delay(200);
-    pinMode(BUTTON_SELECT_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_0_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_1_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_2_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_3_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_4_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_5_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_6_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_7_PIN, INPUT_PULLUP);
 
     delay(300); // Pull up resistors gotta pull up
 
@@ -144,7 +105,6 @@ void setup() {
     Serial.printf("MCP GPPU reg: %hhu\n", gppu);
     Serial.println("End mcp init block");
 
-//    DISPLAY_SERIAL.print("Hello World!");
 }
 
 void loop() {
@@ -152,42 +112,15 @@ void loop() {
         firstPass = 0;
         Serial.println("First Pass");
     }
-    uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
-
-    // TODO grab a button handle out of the array instead
-    // Read the buttons and knobs, scale knobs to 0-1.0
-    buttonSelect.update();
-    button0.update();
-    button1.update();
-    button2.update();
-    button3.update();
-    button4.update();
-    button5.update();
-    button6.update();
-    button7.update();
-    button8.update();
-    button9.update();
-    button10.update();
-    button11.update();
-    button12.update();
-    button13.update();
-    button14.update();
-    button15.update();
-
-
-//    for (int i = 0; i < NUM_BUTTONS; i++) {
-//        Bounce button = *(noteButtons[i]);
-//        button.update();
-//    }
 
     float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
     float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
-
     sgtl5000_1.volume(knob_A1);
     phaseCtrl1.frequency(knob_A2);
     lpfCtrl.frequency(knob_A3);
 
+    uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
 
     if (logPrintoutMillisSince > 1000) {
         if (gpio != lastState) {
@@ -208,33 +141,8 @@ void loop() {
         logPrintoutMillisSince = 0;
     }
 
-    if (button0.fallingEdge()) {
-        Serial.println("Button 0 direct ref test");
-    }
-
-    for (int i = 0; i < NUM_BUTTONS; i++) {
-        Bounce button = *(noteButtons[i]);
-
-        // Button is pressed
-        if (button.fallingEdge()) {
-            Serial.printf("button %n fall\n", i);
-            squarewaveBase.frequency(scale.ButtonMap[i]);
-            squarewaveBase.amplitude(1.0f);
-
-            squarewavePhaseMod.frequency(scale.ButtonMap[i]);
-            squarewavePhaseMod.amplitude(1.0f);
-        }
-
-        // Released
-        if (button.risingEdge()) {
-            Serial.printf("button %n rise\n", i);
-            squarewaveBase.amplitude(0.0f);
-            squarewavePhaseMod.amplitude(0.0f);
-        }
-    }
-
     // Button select changes the waveform type
-    if (buttonSelect.fallingEdge()) {
+    if (false) {
         Serial.println("Log Button");
         Serial.println("Control  | Value");
         Serial.printf( "Knob 1     %.2f\n", knob_A1);
