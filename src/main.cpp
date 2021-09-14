@@ -52,8 +52,6 @@ Scale scale {
 
 const char *hello_buf = "Kim is so cute";
 
-InputTester inputTester = InputTester();
-
 int firstPass = 1;
 MCP23008 kbLower8;
 SerialLCDWriter displayWriter = SerialLCDWriter();
@@ -61,6 +59,14 @@ lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
 uint8_t lastState = 0;
+
+const char *name = "note0!";
+VirtualInput<VirtualButtonState> note0 = VirtualInput<VirtualButtonState>();
+InputListener<VirtualButtonState> noteButtonListener = InputListener<VirtualButtonState>(&noteButtonListenerCallback,
+                                                                                         nametest);
+InputPollster<VirtualButtonState> pollsterUpper8 = InputPollster<VirtualButtonState>(&note0PollsterCallback,
+                                                                                     &pollsterInit);
+InputTester inputTester;
 
 void setup() {
     Serial.begin(9600);
@@ -80,7 +86,7 @@ void setup() {
     lcd.writeByte((uint8_t)'i');
     lcd.writeByte((uint8_t)'t');
 
-    inputTester.init();
+    inputTester = InputTester(name, note0, noteButtonListener, pollsterUpper8);
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
