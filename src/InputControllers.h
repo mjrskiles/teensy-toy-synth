@@ -9,36 +9,26 @@
 #include <HardwareSerial.h>
 #include "../include/MCP23008.h"
 
-
-class VirtualButtonState {
-public:
-    VirtualButtonState(bool state) : _state(state) {}
-
-    bool state() { return _state; }
-private:
-    bool _state;
-};
-
 MCP23008 kbUpper8 = MCP23008(0x21);
 
 /*
  * Callback for the listener to use
  */
-void noteButtonListenerCallback(InputSnapshot<VirtualButtonState> snapshot) {
+extern void noteButtonListenerCallback(InputSnapshot<VirtualButtonState> snapshot) {
     Serial.printf("Calling back from button %s", snapshot.name);
 }
 
 /*
  * Callback for the pollster, uses the MCP23008 to get the button state
  */
-VirtualButtonState note0PollsterCallback() {
+extern VirtualButtonState note0PollsterCallback() {
     uint8_t gpio = ~(kbUpper8.readRegister(0x09)); // check the io register
     // check  if note 0 is active
     VirtualButtonState state = VirtualButtonState((gpio & 1));
     return state;
 }
 
-void pollsterInit() {
+extern void pollsterInit() {
     kbUpper8.init();
     delay(100);
 }

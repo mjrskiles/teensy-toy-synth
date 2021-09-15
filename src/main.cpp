@@ -6,6 +6,7 @@
 #include "luts.h"
 #include "MCP23008.h"
 #include "lcd16x2.h"
+#include "Controller.h"
 #include "InputControllers.h"
 
 #define DISPLAY_I2C Wire
@@ -60,13 +61,20 @@ lcd16x2 lcd(displayWriter);
 elapsedMillis logPrintoutMillisSince;
 uint8_t lastState = 0;
 
-const char *name = "note0!";
+const char *nametest = "note0!";
+
+// the callbacks are defined in inputcontrollers.h
+extern void (*listener_callback)(InputSnapshot<VirtualButtonState>) = &noteButtonListenerCallback;
+extern VirtualButtonState (*pollCallback)() = &note0PollsterCallback;
+extern void (*initCallback)() = &pollsterInit;
+
+
 VirtualInput<VirtualButtonState> note0 = VirtualInput<VirtualButtonState>();
-InputListener<VirtualButtonState> noteButtonListener = InputListener<VirtualButtonState>(&noteButtonListenerCallback,
+InputListener<VirtualButtonState> noteButtonListener = InputListener<VirtualButtonState>(listener_callback,
                                                                                          nametest);
-InputPollster<VirtualButtonState> pollsterUpper8 = InputPollster<VirtualButtonState>(&note0PollsterCallback,
-                                                                                     &pollsterInit);
-InputTester inputTester;
+InputPollster<VirtualButtonState> pollsterUpper8 = InputPollster<VirtualButtonState>(pollCallback,
+                                                                                  initCallback);
+InputTester inputTester = InputTester(nametest, note0, noteButtonListener, pollsterUpper8);
 
 void setup() {
     Serial.begin(9600);
@@ -86,7 +94,6 @@ void setup() {
     lcd.writeByte((uint8_t)'i');
     lcd.writeByte((uint8_t)'t');
 
-    inputTester = InputTester(name, note0, noteButtonListener, pollsterUpper8);
     // Audio connections require memory to work.  For more
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
@@ -115,6 +122,10 @@ void setup() {
     Serial.printf("MCP GPPU reg: %hhu\n", gppu);
     Serial.println("End mcp init block");
 
+    note0.addListener(noteButtonListener);
+    pollsterUpper8.addInput(note0);
+    pollsterUpper8.init();
+
 }
 
 void loop() {
@@ -131,6 +142,7 @@ void loop() {
     lpfCtrl.frequency(knob_A3);
 
     uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
+    pollsterUpper8.poll();
 
     if (logPrintoutMillisSince > 1000) {
         if (gpio != lastState) {
