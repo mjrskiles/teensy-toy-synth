@@ -64,16 +64,16 @@ uint8_t lastState = 0;
 const char *nametest = "note0!";
 
 // the callbacks are defined in inputcontrollers.h
-extern void (*listener_callback)(InputSnapshot<VirtualButtonState>) = &noteButtonListenerCallback;
-extern VirtualButtonState (*pollCallback)() = &note0PollsterCallback;
+extern void (*listener_callback)(InputSnapshot) = &noteButtonListenerCallback;
+extern void* (*pollCallback)() = &note0PollsterCallback;
 extern void (*initCallback)() = &pollsterInit;
 
 
-VirtualInput<VirtualButtonState> note0 = VirtualInput<VirtualButtonState>();
-InputListener<VirtualButtonState> noteButtonListener = InputListener<VirtualButtonState>(listener_callback,
-                                                                                         nametest);
-InputPollster<VirtualButtonState> pollsterUpper8 = InputPollster<VirtualButtonState>(pollCallback,
-                                                                                  initCallback);
+VirtualInput note0 = VirtualInput();
+InputListener noteButtonListener = InputListener(listener_callback,
+                                                 nametest);
+InputPollster pollsterUpper8 = InputPollster(pollCallback,
+                                             initCallback);
 InputTester inputTester = InputTester(nametest, note0, noteButtonListener, pollsterUpper8);
 
 void setup() {

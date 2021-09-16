@@ -6,67 +6,65 @@
 #define SYNTH_CONTROLLER_H
 
 #include "../include/LinkedList.h"
-
+#include "Arduino.h"
 
 //extern int bitMasks0thru15[16];
 typedef unsigned long pgmtime_t;
-template <class T>
 struct InputSnapshot {
-    const char* name;
-    pgmtime_t time;
-    T data;
+    InputSnapshot(const char *name, pgmtime_t time, void *data);
+
+    const char* _name;
+    pgmtime_t _time;
+    void *_data;
 };
 
 /*
  * A class for creating lightweight callbacks that can be attached to I/O state changes
+ * This is the observer
  */
-template <class T>
 class InputListener {
 public:
-    InputListener(void (*callback)(InputSnapshot<T>), const char *name);
+    InputListener(void (*callback)(InputSnapshot), const char *name);
 
-    void update(T data);
+    void update(void *data);
 private:
-    void (*callback)(InputSnapshot<T>){};
+    void (*callback)(InputSnapshot){};
     const char* _name{};
 };
 
-template <class T>
 class VirtualInput {
 public:
     VirtualInput();
 
-    void set(T data);
-    T get();
-    void addListener(InputListener<T> listener);
+    void set(void *data);
+    void* get();
+    void addListener(InputListener listener);
 protected:
     void notifyChangeListeners();
 private:
-    LinkedList<InputListener<T>> listeners;
-    T state;
+    LinkedList<InputListener> listeners;
+    void *state;
 };
 
-template <class T>
 class InputPollster {
 public:
-    InputPollster(T (*pollCallback)(), void (*initCallback)());
+    InputPollster(void* (*pollCallback)(), void (*initCallback)());
 
-    T poll();
+    void* poll();
     void init();
-    void addInput(VirtualInput<T>);
+    void addInput(VirtualInput);
 private:
-    LinkedList<VirtualInput<T>> virtualInputs;
-    T _stateBuffer;
-    T (*_pollCallback)();
+    LinkedList<VirtualInput> virtualInputs;
+    void *_stateBuffer;
+    void *(*_pollCallback)();
     void (*_initCallback)();
 };
 
-template <class T>
 class InputComponent {
 public:
 private:
     LinkedList<InputComponent> componentList;
-    InputPollster<T> pollster;
+    InputPollster pollster;
 };
 
 // The controller gets raw input from the various peripherals
@@ -75,7 +73,6 @@ class InputController {
 public:
 
 };
-
 
 class VirtualButtonState {
 public:
@@ -86,67 +83,6 @@ private:
     bool _state;
 };
 
-template<class T>
-void InputListener<T>::update(T data) {
-    callback(InputSnapshot<T>(
-            _name,
-            millis(),
-            data
-    ));
-}
-
-template<class T>
-InputListener<T>::InputListener(void (*callback)(InputSnapshot<T>), const char *name):callback(callback), _name(name) {}
-
-template<class T>
-VirtualInput<T>::VirtualInput() {
-    listeners = LinkedList<T>();
-
-}
-
-template<class T>
-void VirtualInput<T>::set(T data) {
-    state = data;
-    notifyChangeListeners();
-}
-
-template<class T>
-T VirtualInput<T>::get() {
-    return state;
-}
-
-template<class T>
-void VirtualInput<T>::addListener(InputListener<T> listener) {
-    listeners.Append(listener);
-}
-
-template<class T>
-void VirtualInput<T>::notifyChangeListeners() {
-    InputListener<T> listener = listeners.First();
-    do {
-        listener.update(state);
-    } while ((listener = listeners.next()));
-}
-
-template<class T>
-InputPollster<T>::InputPollster(T (*pollCallback)(), void (*initCallback)()):_pollCallback(pollCallback),
-                                                                             _initCallback(initCallback) {}
-
-
-template<class T>
-void InputPollster<T>::init() {
-    _initCallback();
-}
-
-template<class T>
-T InputPollster<T>::poll() {
-    return _pollCallback();
-}
-
-template<class T>
-void InputPollster<T>::addInput(VirtualInput<T> virtualInput) {
-    virtualInputs.Append(virtualInput);
-}
 
 #endif //SYNTH_CONTROLLER_H
 

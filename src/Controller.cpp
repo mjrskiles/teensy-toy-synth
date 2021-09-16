@@ -4,91 +4,60 @@
 
 // #include "Controller.h"
 // #include "LinkedList.h"
-// #include "Arduino.h"
 
-// template<class T>
-// void InputListener<T>::update(T data) {
-//     callback(InputSnapshot<T>(
-//             _name,
-//             millis(),
-//             data
-//     ));
-// }
+#include "Controller.h"
 
-// template<class T>
-// InputListener<T>::InputListener(void (*callback)(InputSnapshot<T>), const char *name):callback(callback), _name(name) {}
+InputSnapshot::InputSnapshot(const char *name, unsigned long time, void *data) : _name(name), _time(time),
+                                                                                 _data(data) {}
 
-// template<class T>
-// VirtualInput<T>::VirtualInput() {
-//     listeners = LinkedList<T>();
-
-// }
-
-// template<class T>
-// void VirtualInput<T>::set(T data) {
-//     state = data;
-//     notifyChangeListeners();
-// }
-
-// template<class T>
-// T VirtualInput<T>::get() {
-//     return state;
-// }
-
-// template<class T>
-// void VirtualInput<T>::addListener(InputListener<T> listener) {
-//     listeners.Append(listener);
-// }
-
-// template<class T>
-// void VirtualInput<T>::notifyChangeListeners() {
-//     InputListener<T> listener = listeners.First();
-//     do {
-//         listener.update(state);
-//     } while ((listener = listeners.next()));
-// }
-
-// template<class T>
-// InputPollster<T>::InputPollster(T (*pollCallback)(), void (*initCallback)()):_pollCallback(pollCallback),
-//                                                                              _initCallback(initCallback) {}
+                                                                                 void InputListener::update(void *data) {
+    InputSnapshot snapshot = InputSnapshot(
+            _name,
+            millis(),
+            data
+            );
+    callback(snapshot);
+}
 
 
-// template<class T>
-// void InputPollster<T>::init() {
-//     _initCallback();
-// }
+InputListener::InputListener(void (*callback)(InputSnapshot), const char *name):callback(callback), _name(name) {}
 
-// template<class T>
-// T InputPollster<T>::poll() {
-//     return _pollCallback();
-// }
+VirtualInput::VirtualInput() {
+    listeners = LinkedList<InputListener>();
+}
 
-// template<class T>
-// void InputPollster<T>::addInput(VirtualInput<T> virtualInput) {
-//     virtualInputs.Append(virtualInput);
-// }
+void VirtualInput::set(void *data) {
+    state = data;
+    notifyChangeListeners();
+}
+
+void* VirtualInput::get() {
+    return state;
+}
+
+void VirtualInput::addListener(InputListener listener) {
+    listeners.Append(listener);
+}
+
+void VirtualInput::notifyChangeListeners() {
+    InputListener listener = listeners.First();
+    do {
+        listener.update(state);
+    } while ((listeners.next()));
+}
+
+InputPollster::InputPollster(void* (*pollCallback)(), void (*initCallback)()):_pollCallback(pollCallback),
+_initCallback(initCallback) {}
 
 
-// // specialization impl
-// template<>
-// void VirtualInput<VirtualButtonState>::addListener(InputListener<VirtualButtonState> listener) {
-//     listeners.Append(listener);
-// }
+void InputPollster::init() {
+    _initCallback();
+}
 
-// template<>
-// VirtualInput<VirtualButtonState>::VirtualInput() : state(false) {}
+void* InputPollster::poll() {
+    return _pollCallback();
+}
 
-// template<>
-// InputListener<VirtualButtonState>::InputListener(void (*cb)(InputSnapshot<VirtualButtonState>), char const *name)
-//         : callback(cb), _name(name) {}
-
-// VirtualButtonState pollcb() {
-//     VirtualButtonState state = VirtualButtonState((bool)false);
-//     return state;
-// }
-// VirtualButtonState (*testpollcb)() = &pollcb;
-
-// template<>
-// InputPollster<VirtualButtonState>::InputPollster(VirtualButtonState (*pollCallback)(), void (*initCallback)()) : _pollCallback(pollCallback), _initCallback(initCallback) {
-//     _stateBuffer = VirtualButtonState(false);
-// }
+void InputPollster::addInput(VirtualInput virtualInput) {
+    virtualInputs.Append(virtualInput);
+}

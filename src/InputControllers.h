@@ -14,18 +14,18 @@ MCP23008 kbUpper8 = MCP23008(0x21);
 /*
  * Callback for the listener to use
  */
-extern void noteButtonListenerCallback(InputSnapshot<VirtualButtonState> snapshot) {
-    Serial.printf("Calling back from button %s", snapshot.name);
+extern void noteButtonListenerCallback(InputSnapshot snapshot) {
+    Serial.printf("Calling back from button %s", snapshot._name);
 }
 
 /*
  * Callback for the pollster, uses the MCP23008 to get the button state
  */
-extern VirtualButtonState note0PollsterCallback() {
+extern void* note0PollsterCallback() {
     uint8_t gpio = ~(kbUpper8.readRegister(0x09)); // check the io register
     // check  if note 0 is active
     VirtualButtonState state = VirtualButtonState((gpio & 1));
-    return state;
+    return (void*)&state;
 }
 
 extern void pollsterInit() {
@@ -37,9 +37,9 @@ extern void pollsterInit() {
 
 class InputTester {
 public:
-    InputTester(const char *nametest, const VirtualInput<VirtualButtonState> &note0,
-                const InputListener<VirtualButtonState> &noteButtonListener,
-                const InputPollster<VirtualButtonState> &pollsterUpper8);
+    InputTester(const char *nametest, const VirtualInput &note0,
+                const InputListener &noteButtonListener,
+                const InputPollster &pollsterUpper8);
 
     void init();
 
@@ -47,14 +47,14 @@ public:
 
 private:
     const char* nametest;
-    VirtualInput<VirtualButtonState> _note0;
-    InputListener<VirtualButtonState> _noteButtonListener;
-    InputPollster<VirtualButtonState> _pollsterUpper8;
+    VirtualInput _note0;
+    InputListener _noteButtonListener;
+    InputPollster _pollsterUpper8;
 };
 
-InputTester::InputTester(const char *nametest, const VirtualInput<VirtualButtonState> &note0,
-                         const InputListener<VirtualButtonState> &noteButtonListener,
-                         const InputPollster<VirtualButtonState> &pollsterUpper8) : nametest(nametest), _note0(note0),
+InputTester::InputTester(const char *nametest, const VirtualInput &note0,
+                         const InputListener &noteButtonListener,
+                         const InputPollster &pollsterUpper8) : nametest(nametest), _note0(note0),
                                                                                     _noteButtonListener(
                                                                                             noteButtonListener),
                                                                                     _pollsterUpper8(pollsterUpper8) {}
