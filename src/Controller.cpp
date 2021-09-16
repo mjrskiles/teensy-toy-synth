@@ -22,10 +22,6 @@ InputSnapshot::InputSnapshot(const char *name, unsigned long time, void *data) :
 
 InputListener::InputListener(void (*callback)(InputSnapshot), const char *name):callback(callback), _name(name) {}
 
-VirtualInput::VirtualInput() {
-    listeners = LinkedList<InputListener>();
-}
-
 void VirtualInput::set(void *data) {
     state = data;
     notifyChangeListeners();
@@ -36,19 +32,18 @@ void* VirtualInput::get() {
 }
 
 void VirtualInput::addListener(InputListener listener) {
-    listeners.Append(listener);
+    if (_currentSize > MAX_LISTENERS_PER_INPUT) _inputListeners[_currentSize++] = listener;
 }
 
 void VirtualInput::notifyChangeListeners() {
-    InputListener listener = listeners.First();
-    do {
-        listener.update(state);
-    } while ((listeners.next()));
+    for (uint8_t i = 0; i < _currentSize; i++) {
+        _inputListeners[i].update(state);
+    }
 }
 
-InputPollster::InputPollster(void* (*pollCallback)(), void (*initCallback)()):_pollCallback(pollCallback),
-_initCallback(initCallback) {}
-
+VirtualInput::VirtualInput(InputListener *listeners) {
+    _inputListeners = listeners;
+}
 
 void InputPollster::init() {
     _initCallback();
@@ -59,5 +54,21 @@ void* InputPollster::poll() {
 }
 
 void InputPollster::addInput(VirtualInput virtualInput) {
-    virtualInputs.Append(virtualInput);
+    if (_currentSize < MAX_INPUTS_PER_POLLSTER) _virtualInputs[_currentSize++] = virtualInput;
 }
+
+InputPollster::InputPollster(void *(*pollCallback)(), void (*initCallback)(), VirtualInput *inputsArray) {
+    _pollCallback = pollCallback;
+    _initCallback = initCallback;
+    _virtualInputs = inputsArray;
+}
+
+uint8_t InputController::update() {
+    uint8_t numRead = 0;
+    for(uint8_t i = 0; i < MAX_POLLSTERS; i++) {
+        // poll all the pollsters
+    }
+    return numRead;
+}
+
+InputController::InputController(const InputPollster &pollster) : _pollster(pollster) {}

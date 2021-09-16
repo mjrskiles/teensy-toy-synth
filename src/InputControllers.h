@@ -22,15 +22,26 @@ extern void noteButtonListenerCallback(InputSnapshot snapshot) {
  * Callback for the pollster, uses the MCP23008 to get the button state
  */
 extern void* note0PollsterCallback() {
-    uint8_t gpio = ~(kbUpper8.readRegister(0x09)); // check the io register
+    uint8_t gpio = kbUpper8.readRegister(0x09); // check the io register
     // check  if note 0 is active
     VirtualButtonState state = VirtualButtonState((gpio & 1));
+    Serial.println("pollster callback:");
+    Serial.printf(" value: %x\n", gpio);
     return (void*)&state;
 }
 
 extern void pollsterInit() {
+    Serial.println("Begin mcp init block");
+    Serial.println("constructor");
     kbUpper8.init();
+    Serial.println("init");
     delay(100);
+    uint8_t iocon = kbUpper8.readRegister(0x05); // check the iocon register
+    Serial.println("iocon read");
+    Serial.printf("MCP IOCON reg: %hhu\n", iocon);
+    uint8_t gppu = kbUpper8.readRegister(0x06);
+    Serial.printf("MCP GPPU reg: %hhu\n", gppu);
+    Serial.println("End mcp init block");
 }
 
 

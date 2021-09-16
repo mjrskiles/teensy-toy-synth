@@ -8,6 +8,10 @@
 #include "../include/LinkedList.h"
 #include "Arduino.h"
 
+#define MAX_LISTENERS_PER_INPUT (uint8_t)4
+#define MAX_INPUTS_PER_POLLSTER (uint8_t)8
+#define MAX_POLLSTERS (uint8_t)24
+
 //extern int bitMasks0thru15[16];
 typedef unsigned long pgmtime_t;
 struct InputSnapshot {
@@ -34,7 +38,7 @@ private:
 
 class VirtualInput {
 public:
-    VirtualInput();
+    explicit VirtualInput(InputListener *listenersArray);
 
     void set(void *data);
     void* get();
@@ -42,41 +46,41 @@ public:
 protected:
     void notifyChangeListeners();
 private:
-    LinkedList<InputListener> listeners;
-    void *state;
+    InputListener *_inputListeners;
+    uint8_t _currentSize = 0;
+    void *state = nullptr;
 };
 
 class InputPollster {
 public:
-    InputPollster(void* (*pollCallback)(), void (*initCallback)());
+    InputPollster(void* (*pollCallback)(), void (*initCallback)(), VirtualInput *inputsArray);
 
     void* poll();
     void init();
     void addInput(VirtualInput);
 private:
-    LinkedList<VirtualInput> virtualInputs;
-    void *_stateBuffer;
+    VirtualInput *_virtualInputs;
+    uint8_t _currentSize = 0;
+    void *_stateBuffer = nullptr;
     void *(*_pollCallback)();
     void (*_initCallback)();
-};
-
-class InputComponent {
-public:
-private:
-    LinkedList<InputComponent> componentList;
-    InputPollster pollster;
 };
 
 // The controller gets raw input from the various peripherals
 // and communicates input to the synthesizer
 class InputController {
 public:
+    InputController(const InputPollster &pollster);
 
+    uint8_t update(); // Returns the number of individual VirtualInputs read
+
+private:
+    InputPollster _pollster;
 };
 
 class VirtualButtonState {
 public:
-    VirtualButtonState(bool state) : _state(state) {}
+    explicit VirtualButtonState(bool state) : _state(state) {}
 
     bool state() { return _state; }
 private:

@@ -68,13 +68,16 @@ extern void (*listener_callback)(InputSnapshot) = &noteButtonListenerCallback;
 extern void* (*pollCallback)() = &note0PollsterCallback;
 extern void (*initCallback)() = &pollsterInit;
 
-
-VirtualInput note0 = VirtualInput();
-InputListener noteButtonListener = InputListener(listener_callback,
-                                                 nametest);
+InputListener note0Listeners[] = {
+        InputListener(listener_callback,
+                      nametest)
+};
+VirtualInput note0 = VirtualInput(note0Listeners);
+VirtualInput mcpUpper8VirtualInputs[] = {
+        note0
+};
 InputPollster pollsterUpper8 = InputPollster(pollCallback,
-                                             initCallback);
-InputTester inputTester = InputTester(nametest, note0, noteButtonListener, pollsterUpper8);
+                                             initCallback, mcpUpper8VirtualInputs);
 
 void setup() {
     Serial.begin(9600);
@@ -82,7 +85,7 @@ void setup() {
     Wire.begin();
 
     delay(300); // Pull up resistors gotta pull up
-
+    pollsterUpper8.init();
     // lcd16x2 should be  good to go after 500ms
     lcd.displayOff();
     lcd.clearDisplay();
@@ -122,10 +125,6 @@ void setup() {
     Serial.printf("MCP GPPU reg: %hhu\n", gppu);
     Serial.println("End mcp init block");
 
-    note0.addListener(noteButtonListener);
-    pollsterUpper8.addInput(note0);
-    pollsterUpper8.init();
-
 }
 
 void loop() {
@@ -142,11 +141,11 @@ void loop() {
     lpfCtrl.frequency(knob_A3);
 
     uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
-    pollsterUpper8.poll();
 
-    if (logPrintoutMillisSince > 1000) {
+    if (logPrintoutMillisSince > 500) {
+        pollsterUpper8.poll();
         if (gpio != lastState) {
-            Serial.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) ~(gpio & 0xFF));
+            Serial.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) gpio);
             size_t written = 0;
 //            written = lcd.writeByte(0x47);
 //            Serial.println("lcd16x2::writeBytes wrote bytes!");
