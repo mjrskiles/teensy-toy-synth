@@ -36,19 +36,6 @@ private:
     uint8_t _olat = 0x0A;
 };
 
-/*// Initialize class members*/
-/*uint8_t MCP23008::_iodir = 0x00;*/
-/*uint8_t MCP23008::_ipol = 0x01;*/
-/*uint8_t MCP23008::_gpinten = 0x02*/;
-/*uint8_t MCP23008::_defval = 0x03;*/
-/*uint8_t MCP23008::_intcon = 0x04;*/
-/*uint8_t MCP23008::_iocon = 0x05;*/
-/*uint8_t MCP23008::_gppu = 0x06;*/
-/*uint8_t MCP23008::_intf = 0x07;*/
-/*uint8_t MCP23008::_intcap = 0x08;*/
-/*uint8_t MCP23008::_gpio = 0x09;*/
-/*uint8_t MCP23008::_olat = 0x0A;*/
-
 MCP23008::MCP23008() {
     _address = 0x20;
     init();
@@ -88,12 +75,14 @@ uint8_t MCP23008::readByte() const {
 }
 
 void MCP23008::init() const {
-    uint8_t ioconWord = 1 << 4; // IO to byte mode
-    uint8_t gppuWord = 0b11111111; // All pull up resistors to on
+    uint8_t ioconWord = 0b00100000; // IO to byte mode
+    uint8_t gppuWord =  0b11111111; // All pull up resistors to on
 
     Wire.begin();
-    writeRegister(_iocon, ioconWord);
+    writeRegister(_iodir, 0xff);
     writeRegister(_ipol, 0xff); // set reverse input polarity
+    writeRegister(_gpinten, 0x0);
+    writeRegister(_iocon, ioconWord);
     writeRegister(_gppu, gppuWord);
 }
 

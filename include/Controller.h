@@ -5,7 +5,7 @@
 #ifndef SYNTH_CONTROLLER_H
 #define SYNTH_CONTROLLER_H
 
-#include "../include/LinkedList.h"
+#include "LinkedList.h"
 #include "Arduino.h"
 
 #define MAX_LISTENERS_PER_INPUT (uint8_t)4

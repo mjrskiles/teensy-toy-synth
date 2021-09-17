@@ -8,37 +8,12 @@
 #include "lcd16x2.h"
 #include "Controller.h"
 #include "InputControllers.h"
+#include "synthesizer.h"
 
 #define DISPLAY_I2C Wire
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       squarewaveBase;      //xy=90,59
-AudioSynthWaveformSine   phaseCtrl1;          //xy=99,237
-AudioSynthWaveformModulated squarewavePhaseMod;   //xy=260,303
-AudioEffectEnvelope      envelope2;      //xy=294,119
-AudioEffectEnvelope      envelope1;      //xy=381,396
-AudioMixer4              mixerEnv1;         //xy=482,113
-AudioMixer4              mixerEnv2;         //xy=482,293
-AudioMixer4              oscCombineMixer;         //xy=613,187
-AudioSynthWaveformSine   lpfCtrl;          //xy=645,300
-AudioFilterStateVariable lpf1;        //xy=781,191
-AudioMixer4              mixer1;         //xy=984,193
-AudioOutputI2S           i2s1;           //xy=1149,189
-AudioConnection          patchCord1(squarewaveBase, envelope2);
-AudioConnection          patchCord2(squarewaveBase, 0, mixerEnv1, 0);
-AudioConnection          patchCord3(phaseCtrl1, 0, squarewavePhaseMod, 0);
-AudioConnection          patchCord4(squarewavePhaseMod, envelope1);
-AudioConnection          patchCord5(squarewavePhaseMod, 0, mixerEnv2, 0);
-AudioConnection          patchCord6(envelope2, 0, mixerEnv1, 1);
-AudioConnection          patchCord7(envelope1, 0, mixerEnv2, 1);
-AudioConnection          patchCord8(mixerEnv1, 0, oscCombineMixer, 0);
-AudioConnection          patchCord9(mixerEnv2, 0, oscCombineMixer, 1);
-AudioConnection          patchCord10(oscCombineMixer, 0, lpf1, 0);
-AudioConnection          patchCord11(lpfCtrl, 0, lpf1, 1);
-AudioConnection          patchCord12(lpf1, 0, mixer1, 0);
-AudioConnection          patchCord13(mixer1, 0, i2s1, 0);
-AudioConnection          patchCord14(mixer1, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=585,481
+   //xy=585,481
 // GUItool: end automatically generated code
 
 const char *scaleName = "C Major\0";
@@ -83,8 +58,9 @@ void setup() {
     Serial.begin(9600);
     Serial7.begin(9600);
     Wire.begin();
-
+    pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     delay(300); // Pull up resistors gotta pull up
+    digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
     pollsterUpper8.init();
     // lcd16x2 should be  good to go after 500ms
     lcd.displayOff();
@@ -97,20 +73,7 @@ void setup() {
     lcd.writeByte((uint8_t)'i');
     lcd.writeByte((uint8_t)'t');
 
-    // Audio connections require memory to work.  For more
-    // detailed information, see the MemoryAndCpuUsage example
-    AudioMemory(24);
-
-    // Comment these out if not using the audio adaptor board.
-    sgtl5000_1.enable();
-    sgtl5000_1.volume(0.5);
-
-    // Configure for middle C note without modulation
-    squarewaveBase.begin(WAVEFORM_SQUARE);
-    squarewavePhaseMod.begin(WAVEFORM_SQUARE);
-    squarewavePhaseMod.phaseModulation(360.0f);
-    phaseCtrl1.frequency(500.0f);
-    lpfCtrl.frequency(20000.0f);
+    synth_init();
 
     Serial.println("Begin mcp init block");
     kbLower8 = MCP23008(0x22);
@@ -136,9 +99,9 @@ void loop() {
     float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
     float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
-    sgtl5000_1.volume(knob_A1);
-    phaseCtrl1.frequency(knob_A2);
-    lpfCtrl.frequency(knob_A3);
+//    sgtl5000_1.volume(knob_A1);
+//    phaseCtrl1.frequency(knob_A2);
+//    lpfCtrl.frequency(knob_A3);
 
     uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
 
@@ -162,14 +125,5 @@ void loop() {
         logPrintoutMillisSince = 0;
     }
 
-    // Button select changes the waveform type
-    if (false) {
-        Serial.println("Log Button");
-        Serial.println("Control  | Value");
-        Serial.printf( "Knob 1     %.2f\n", knob_A1);
-        Serial.printf( "Knob 2     %.2f\n", knob_A2);
-        Serial.printf( "Knob 3     %.2f\n", knob_A3);
-        logPrintoutMillisSince = 0;
-    }
   
 }
