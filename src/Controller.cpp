@@ -7,8 +7,8 @@
 
 #include "Controller.h"
 
-InputSnapshot::InputSnapshot(const char *name, unsigned long time, void *data) : _name(name), _time(time),
-                                                                                 _data(data) {}
+InputSnapshot::InputSnapshot(const char *name, unsigned long time, void *data) : name(name), time(time),
+                                                                                 data(data) {}
 
                                                                                  void InputListener::update(void *data) {
     InputSnapshot snapshot = InputSnapshot(

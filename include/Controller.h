@@ -14,12 +14,20 @@
 
 //extern int bitMasks0thru15[16];
 typedef unsigned long pgmtime_t;
+
+enum InputDataType : uint8_t {
+    BOOL,
+    CONTINUOUS_INTEGER,
+    CONTINUOUS_FLOAT
+};
+
 struct InputSnapshot {
     InputSnapshot(const char *name, pgmtime_t time, void *data);
 
-    const char* _name;
-    pgmtime_t _time;
-    void *_data;
+    const char* name;
+    pgmtime_t time;
+    void *data;
+    InputDataType dataType = BOOL;
 };
 
 /*

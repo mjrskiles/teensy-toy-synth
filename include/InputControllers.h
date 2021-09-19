@@ -16,7 +16,7 @@ MCP23008 kbUpper8 = MCP23008(0x21);
  * Callback for the listener to use
  */
 extern void noteButtonListenerCallback(InputSnapshot snapshot) {
-    Serial.printf("Calling back from button %s", snapshot._name);
+    Serial.printf("Calling back from button %s", snapshot.name);
 }
 
 /*
@@ -80,7 +80,22 @@ void InputTester::init() {
 /***************************
  * Note button listeners
  */
+void logCallback(InputSnapshot snapshot) {
+    Serial.printf("Logback from %s\n", snapshot.name);
+    Serial.printf("Payload: ")
+    switch (snapshot.dataType) {
+        case BOOL:
+            Serial.printf("%s", (bool) (snapshot.data) ? "true" : "false");
+        case CONTINUOUS_INTEGER:
+            Serial.printf("%d", (int)snapshot.data);
+//        case CONTINUOUS_FLOAT:
+//            Serial.printf("%0.2f", (float)*(snapshot.data));
+        default:
+            Serial.println("???");
+    }
+    Serial.printf("\n--\n");
 
+}
 
 
 void eric_holder() {
