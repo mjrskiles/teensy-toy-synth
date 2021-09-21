@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} include/luts.h include/MCP23008.h src/lcd16x2.cpp src/I2C1602.h src/I2C1602.cpp src/SerialLCDWriter.cpp include/SerialLCDWriter.h src/Controller.cpp include/Controller.h include/LinkedList.h include/InputControllers.h include/Globals.h src/synthesizer.cpp include/synthesizer.h)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} include/luts.h include/MCP23008.h src/lcd16x2.cpp src/I2C1602.h src/I2C1602.cpp src/SerialLCDWriter.cpp include/SerialLCDWriter.h src/Controller.cpp include/Controller.h include/LinkedList.h include/InputControllers.h include/Globals.h src/synthesizer.cpp include/synthesizer/synthesizer.h)

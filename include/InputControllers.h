@@ -8,7 +8,7 @@
 #include "Controller.h"
 #include <HardwareSerial.h>
 #include "MCP23008.h"
-#include "synthesizer.h"
+#include "synthesizer/synthesizer.h"
 
 MCP23008 kbUpper8 = MCP23008(0x21);
 
