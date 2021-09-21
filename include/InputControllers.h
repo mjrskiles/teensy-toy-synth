@@ -82,7 +82,7 @@ void InputTester::init() {
  */
 void logCallback(InputSnapshot snapshot) {
     Serial.printf("Logback from %s\n", snapshot.name);
-    Serial.printf("Payload: ")
+    Serial.printf("Payload: ");
     switch (snapshot.dataType) {
         case BOOL:
             Serial.printf("%s", (bool) (snapshot.data) ? "true" : "false");

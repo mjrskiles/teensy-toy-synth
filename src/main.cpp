@@ -8,7 +8,7 @@
 #include "lcd16x2.h"
 #include "Controller.h"
 #include "InputControllers.h"
-#include "synthesizer.h"
+#include "synthesizer/synthesizer.h"
 
 #define DISPLAY_I2C Wire
 

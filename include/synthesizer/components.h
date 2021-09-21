@@ -19,20 +19,20 @@ AudioSynthWaveformSine   lpfCtrl;          //xy=645,300
 AudioFilterStateVariable lpf1;        //xy=781,191
 AudioMixer4              mixer1;         //xy=984,193
 AudioOutputI2S           i2s1;           //xy=1149,189
-AudioConnection          patchCord1(squarewaveBase, envelope2);
-AudioConnection          patchCord2(squarewaveBase, 0, mixerEnv1, 0);
-AudioConnection          patchCord3(phaseCtrl1, 0, squarewavePhaseMod, 0);
-AudioConnection          patchCord4(squarewavePhaseMod, envelope1);
-AudioConnection          patchCord5(squarewavePhaseMod, 0, mixerEnv2, 0);
-AudioConnection          patchCord6(envelope2, 0, mixerEnv1, 1);
-AudioConnection          patchCord7(envelope1, 0, mixerEnv2, 1);
-AudioConnection          patchCord8(mixerEnv1, 0, oscCombineMixer, 0);
-AudioConnection          patchCord9(mixerEnv2, 0, oscCombineMixer, 1);
-AudioConnection          patchCord10(oscCombineMixer, 0, lpf1, 0);
-AudioConnection          patchCord11(lpfCtrl, 0, lpf1, 1);
-AudioConnection          patchCord12(lpf1, 0, mixer1, 0);
-AudioConnection          patchCord13(mixer1, 0, i2s1, 0);
-AudioConnection          patchCord14(mixer1, 0, i2s1, 1);
+AudioConnection          patchCord1;
+AudioConnection          patchCord2;
+AudioConnection          patchCord3;
+AudioConnection          patchCord4;
+AudioConnection          patchCord5;
+AudioConnection          patchCord6;
+AudioConnection          patchCord7;
+AudioConnection          patchCord8;
+AudioConnection          patchCord9;
+AudioConnection          patchCord10;
+AudioConnection          patchCord11;
+AudioConnection          patchCord12;
+AudioConnection          patchCord13;
+AudioConnection          patchCord14;
 AudioControlSGTL5000     sgtl5000_1;
 
 #endif //SYNTH_COMPONENTS_H
