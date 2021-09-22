@@ -4,10 +4,10 @@
 
 #include "teensy41pinout.h"
 #include "luts.h"
-#include "MCP23008.h"
+#include "io/MCP23008.h"
 #include "lcd16x2.h"
-#include "Controller.h"
-#include "InputControllers.h"
+#include "io/Controller.h"
+#include "io/InputControllers.h"
 #include "synthesizer/synthesizer.h"
 
 #define DISPLAY_I2C Wire
@@ -39,7 +39,7 @@ uint8_t lastState = 0;
 const char *nametest = "note0!";
 
 // the callbacks are defined in inputcontrollers.h
-extern void (*listener_callback)(InputSnapshot) = &noteButtonListenerCallback;
+extern void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
 extern void* (*pollCallback)() = &note0PollsterCallback;
 extern void (*initCallback)() = &pollsterInit;
 
