@@ -14,6 +14,8 @@ public:
 
     VirtualInput(InputListener *inputListeners, uint8_t currentSize, int index, InputDataType inputDataType);
 
+    int getIndex() const;
+
     String toString();
     void addListener(InputListener listener);
 protected:

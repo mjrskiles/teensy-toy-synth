@@ -19,6 +19,30 @@ public:
     uint8_t readByte() const;
     void init() const;
 
+    uint8_t getAddress() const;
+
+    uint8_t getIodir() const;
+
+    uint8_t getIpol() const;
+
+    uint8_t getGpinten() const;
+
+    uint8_t getDefval() const;
+
+    uint8_t getIntcon() const;
+
+    uint8_t getIocon() const;
+
+    uint8_t getGppu() const;
+
+    uint8_t getIntf() const;
+
+    uint8_t getIntcap() const;
+
+    uint8_t getGpio() const;
+
+    uint8_t getOlat() const;
+
 private:
     uint8_t _address;
 
@@ -84,6 +108,54 @@ void MCP23008::init() const {
     writeRegister(_gpinten, 0x0);
     writeRegister(_iocon, ioconWord);
     writeRegister(_gppu, gppuWord);
+}
+
+uint8_t MCP23008::getAddress() const {
+    return _address;
+}
+
+uint8_t MCP23008::getIodir() const {
+    return _iodir;
+}
+
+uint8_t MCP23008::getIpol() const {
+    return _ipol;
+}
+
+uint8_t MCP23008::getGpinten() const {
+    return _gpinten;
+}
+
+uint8_t MCP23008::getDefval() const {
+    return _defval;
+}
+
+uint8_t MCP23008::getIntcon() const {
+    return _intcon;
+}
+
+uint8_t MCP23008::getIocon() const {
+    return _iocon;
+}
+
+uint8_t MCP23008::getGppu() const {
+    return _gppu;
+}
+
+uint8_t MCP23008::getIntf() const {
+    return _intf;
+}
+
+uint8_t MCP23008::getIntcap() const {
+    return _intcap;
+}
+
+uint8_t MCP23008::getGpio() const {
+    return _gpio;
+}
+
+uint8_t MCP23008::getOlat() const {
+    return _olat;
 }
 
 

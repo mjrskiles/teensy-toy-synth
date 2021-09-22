@@ -11,8 +11,11 @@
 #include "synthesizer/synthesizer.h"
 #include "synth_globals.h"
 #include "io/InputSnapshot.h"
+#include "VirtualInput.h"
 
-MCP23008 kbUpper8 = MCP23008(0x21);
+MCP23008 mcp_periph1 = MCP23008(0x20);
+MCP23008 mcp_kbUpper8 = MCP23008(0x21);
+MCP23008 mcp_kbLower8 = MCP23008(0x22);
 
 /*
  * Callback for the listener to use
@@ -22,10 +25,27 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
 }
 
 /*
+ * Lower 8 Pollster cb
+ */
+void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
+    uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
+    Serial.println("-Lower 8 Pollster-");
+
+    //put the data in the buffer
+    for(uint8_t i = 0; i < size; i++) {
+        bool isOn = (1 << i) & gpio;
+        VirtualInput input = inputs[i];
+        String nameTest = String("in") +i;
+        InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
+        INPUT_BUFFER_BOOL[input.getIndex()] = snapshot;
+    }
+}
+
+/*
  * Callback for the pollster, uses the MCP23008 to get the button state
  */
 void note0PollsterCallback() {
-    uint8_t gpio = kbUpper8.readRegister(0x09); // check the io register
+    uint8_t gpio = mcp_kbUpper8.readRegister(0x09); // check the io register
     // check  if note 0 is active
     Serial.println("pollster _callback:");
     Serial.printf(" value: %x\n", gpio);
@@ -34,13 +54,13 @@ void note0PollsterCallback() {
 void pollsterInit() {
     Serial.println("Begin mcp init block");
     Serial.println("constructor");
-    kbUpper8.init();
+    mcp_kbUpper8.init();
     Serial.println("init");
     delay(100);
-    uint8_t iocon = kbUpper8.readRegister(0x05); // check the iocon register
+    uint8_t iocon = mcp_kbUpper8.readRegister(0x05); // check the iocon register
     Serial.println("iocon read");
     Serial.printf("MCP IOCON reg: %hhu\n", iocon);
-    uint8_t gppu = kbUpper8.readRegister(0x06);
+    uint8_t gppu = mcp_kbUpper8.readRegister(0x06);
     Serial.printf("MCP GPPU reg: %hhu\n", gppu);
     Serial.println("End mcp init block");
 }

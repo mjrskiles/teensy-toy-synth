@@ -9,16 +9,14 @@
 
 class InputPollster {
 public:
-    InputPollster(void* (*pollCallback)(), void (*initCallback)(), VirtualInput *inputsArray);
+    InputPollster(void (*pollCallback)(VirtualInput *inputs, uint8_t size), void (*initCallback)(), VirtualInput *inputsArray, uint8_t size);
 
-    void* poll();
+    void poll();
     void init();
-    void addInput(VirtualInput);
 private:
     VirtualInput *_virtualInputs;
-    uint8_t _currentSize = 0;
-    void *_stateBuffer = nullptr;
-    void *(*_pollCallback)(); // the poll _callback has to put the dataa in the buffer
+    uint8_t _size = 0;
+    void (*_pollCallback)(VirtualInput *inputs, uint8_t size); // the poll _callback has to put the dataa in the buffer
     void (*_initCallback)();
 };
 

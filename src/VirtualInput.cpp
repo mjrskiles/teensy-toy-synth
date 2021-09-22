@@ -22,3 +22,7 @@ VirtualInput::VirtualInput(InputListener *listeners) {
 
 VirtualInput::VirtualInput(InputListener *inputListeners, uint8_t currentSize, int index, InputDataType inputDataType)
 : _inputListeners(inputListeners), _currentSize(currentSize), _index(index), _inputDataType(inputDataType) {}
+
+int VirtualInput::getIndex() const {
+    return _index;
+}

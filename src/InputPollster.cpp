@@ -15,16 +15,14 @@ void InputPollster::init() {
     _initCallback();
 }
 
-void* InputPollster::poll() {
-    return _pollCallback();
+void InputPollster::poll() {
+    _pollCallback(_virtualInputs, _size);
 }
 
-void InputPollster::addInput(VirtualInput virtualInput) {
-    if (_currentSize < MAX_INPUTS_PER_POLLSTER) _virtualInputs[_currentSize++] = virtualInput;
-}
 
-InputPollster::InputPollster(void *(*pollCallback)(), void (*initCallback)(), VirtualInput *inputsArray) {
+InputPollster::InputPollster(void (*pollCallback)(VirtualInput *inputs, uint8_t size), void (*initCallback)(), VirtualInput *inputsArray, uint8_t size) {
     _pollCallback = pollCallback;
     _initCallback = initCallback;
     _virtualInputs = inputsArray;
+    _size = size;
 }

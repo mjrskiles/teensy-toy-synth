@@ -40,7 +40,7 @@ uint8_t lastState = 0;
 
 // the callbacks are defined in inputcontrollers.h
 void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
-void* (*pollCallback)() = &note0PollsterCallback;
+void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallbackgs;
 void (*initCallback)() = &pollsterInit;
 
 InputListener note0Listeners[] = {
@@ -52,7 +52,9 @@ VirtualInput mcpUpper8VirtualInputs[] = {
         note0
 };
 InputPollster pollsterUpper8 = InputPollster(pollCallback,
-                                             initCallback, mcpUpper8VirtualInputs);
+                                             initCallback,
+                                             mcpUpper8VirtualInputs,
+                                             (uint8_t)1);
 
 void setup() {
     Serial.begin(9600);

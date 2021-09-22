@@ -31,19 +31,19 @@ Name ideas: toy, toy synth
 toy is a 2 oscillator synthesizer with semi-modular signal routing through filters and FX modules. It is also a 16 step
 sequencer with recordable parameter input.
 
-Synth overview:
-    2 tone generating oscillators (OSC1 & OSC2)
-    Phase offset for OSC2
-    4 voices
-    pitch bend
-    2 assignable LFOs
-    Onboard FX:
-        Delay
-        Distortion
-        Phase
-    2 amp envelopes (1 for each OSC)
-    1 assignable envelope
-    3 LPF
+Synth overview
+- 2 tone generating oscillators (OSC1 & OSC2)
+- Phase offset for OSC2
+- 4 voices
+- pitch bend
+- 2 assignable LFOs
+- Onboard FX:
+  - Delay
+  - Distortion
+  - Phase
+-2 amp envelopes (1 for each OSC)
+-1 assignable envelope
+-3 LPF
     
 Sequencer Overview:
     
