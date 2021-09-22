@@ -5,6 +5,8 @@
 #ifndef SYNTH_INPUTPOLLSTER_H
 #define SYNTH_INPUTPOLLSTER_H
 
+#include "VirtualInput.h"
+
 class InputPollster {
 public:
     InputPollster(void* (*pollCallback)(), void (*initCallback)(), VirtualInput *inputsArray);

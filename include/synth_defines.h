@@ -1,0 +1,17 @@
+//
+// Created by Michael Skiles on 9/22/21.
+//
+
+#ifndef SYNTH_SYNTH_DEFINES_H
+#define SYNTH_SYNTH_DEFINES_H
+
+#define MAX_LISTENERS_PER_INPUT (uint8_t)4
+#define MAX_INPUTS_PER_POLLSTER (uint8_t)8
+#define MAX_POLLSTERS (uint8_t)24
+
+#define INPUT_BUFFER_SIZE_BOOLEAN 256
+#define INPUT_BUFFER_SIZE_FLOAT 256
+#define INPUT_BUFFER_SIZE_UINT8 256
+#define INPUT_BUFFER_SIZE_INT16 256
+
+#endif //SYNTH_SYNTH_DEFINES_H

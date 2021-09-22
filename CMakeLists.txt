@@ -32,5 +32,5 @@ add_custom_target(
 
 add_executable(Z_DUMMY_TARGET ${SRC_LIST} include/luts.h include/io/MCP23008.h src/lcd16x2.cpp src/I2C1602.h
         src/I2C1602.cpp src/SerialLCDWriter.cpp include/SerialLCDWriter.h src/Controller.cpp include/io/Controller.h
-        include/LinkedList.h include/io/InputControllers.h include/Globals.h src/synthesizer.cpp
-        include/synthesizer/synthesizer.h include/synthesizer/components.h src/InputSnapshot.cpp include/io/InputSnapshot.h src/Globals.cpp src/VirtualInput.cpp include/io/VirtualInput.h src/InputListener.cpp include/io/InputListener.h src/InputPollster.cpp include/io/InputPollster.h include/io/toyIO.h)
+        include/LinkedList.h include/io/InputControllers.h include/synth_globals.h src/synthesizer.cpp
+        include/synthesizer/synthesizer.h include/synthesizer/components.h src/InputSnapshot.cpp include/io/InputSnapshot.h src/synth_globals.cpp src/VirtualInput.cpp include/io/VirtualInput.h src/InputListener.cpp include/io/InputListener.h src/InputPollster.cpp include/io/InputPollster.h include/io/toyIO.h include/synth_defines.h)

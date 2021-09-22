@@ -5,7 +5,8 @@
 #ifndef SYNTH_VIRTUALINPUT_H
 #define SYNTH_VIRTUALINPUT_H
 
-#include "io/InputSnapshot.h"
+
+#include "InputListener.h"
 
 class VirtualInput {
 public:

@@ -9,7 +9,7 @@
 #include <HardwareSerial.h>
 #include "MCP23008.h"
 #include "synthesizer/synthesizer.h"
-#include "Globals.h"
+#include "synth_globals.h"
 #include "io/InputSnapshot.h"
 
 MCP23008 kbUpper8 = MCP23008(0x21);
@@ -24,7 +24,7 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
 /*
  * Callback for the pollster, uses the MCP23008 to get the button state
  */
-void* note0PollsterCallback() {
+void note0PollsterCallback() {
     uint8_t gpio = kbUpper8.readRegister(0x09); // check the io register
     // check  if note 0 is active
     Serial.println("pollster _callback:");
