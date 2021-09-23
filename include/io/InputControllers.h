@@ -8,7 +8,6 @@
 #include "Controller.h"
 #include <HardwareSerial.h>
 #include "MCP23008.h"
-#include "synthesizer/synthesizer.h"
 #include "synth_globals.h"
 #include "io/InputSnapshot.h"
 #include "VirtualInput.h"

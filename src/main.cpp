@@ -40,7 +40,7 @@ uint8_t lastState = 0;
 
 // the callbacks are defined in inputcontrollers.h
 void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
-void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallbackgs;
+void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallback;
 void (*initCallback)() = &pollsterInit;
 
 InputListener note0Listeners[] = {
