@@ -10,8 +10,6 @@
 
 class VirtualInput {
 public:
-    explicit VirtualInput(InputListener *listenersArray);
-
     VirtualInput(InputListener *inputListeners, uint8_t currentSize, int index, InputDataType inputDataType);
 
     int getIndex() const;

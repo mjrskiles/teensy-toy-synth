@@ -7,7 +7,7 @@
 // GUItool: begin automatically generated code
 AudioSynthWaveform       squarewaveBase;      //xy=90,59
 AudioSynthWaveformSine   phaseCtrl1;          //xy=99,237
-AudioSynthWaveformModulated squarewavePhaseMod;   //xy=260,303
+AudioSynthWaveformModulated triwaveBase;   //xy=260,303
 AudioEffectEnvelope      envelope2;      //xy=294,119
 AudioEffectEnvelope      envelope1;      //xy=381,396
 AudioMixer4              mixerEnv1;         //xy=482,113
@@ -19,9 +19,9 @@ AudioMixer4              mixer1;         //xy=984,193
 AudioOutputI2S           i2s1;           //xy=1149,189
 AudioConnection          patchCord1(squarewaveBase, envelope2);
 AudioConnection          patchCord2(squarewaveBase, 0, mixerEnv1, 0);
-AudioConnection          patchCord3(phaseCtrl1, 0, squarewavePhaseMod, 0);
-AudioConnection          patchCord4(squarewavePhaseMod, envelope1);
-AudioConnection          patchCord5(squarewavePhaseMod, 0, mixerEnv2, 0);
+AudioConnection          patchCord3(phaseCtrl1, 0, triwaveBase, 0);
+AudioConnection          patchCord4(triwaveBase, envelope1);
+AudioConnection          patchCord5(triwaveBase, 0, mixerEnv2, 0);
 AudioConnection          patchCord6(envelope2, 0, mixerEnv1, 1);
 AudioConnection          patchCord7(envelope1, 0, mixerEnv2, 1);
 AudioConnection          patchCord8(mixerEnv1, 0, oscCombineMixer, 0);
@@ -48,8 +48,5 @@ void synth_init() {
 
     // Configure for middle C note without modulation
     squarewaveBase.begin(WAVEFORM_SQUARE);
-    squarewavePhaseMod.begin(WAVEFORM_SQUARE);
-    squarewavePhaseMod.phaseModulation(360.0f);
-    phaseCtrl1.frequency(500.0f);
-    lpfCtrl.frequency(20000.0f);
+    triwaveBase.begin(WAVEFORM_TRIANGLE);
 }

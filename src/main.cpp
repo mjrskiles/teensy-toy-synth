@@ -6,10 +6,9 @@
 #include "luts.h"
 #include "io/MCP23008.h"
 #include "lcd16x2.h"
-#include "io/Controller.h"
-#include "io/InputControllers.h"
 #include "synthesizer/synthesizer.h"
-#include "io/toyIO.h"
+#include "synthesizer/BufferReaderSynthUpdater.h"
+#include "synthesizer/components.h"
 
 #define DISPLAY_I2C Wire
 
@@ -37,24 +36,22 @@ lcd16x2 lcd(displayWriter);
 elapsedMillis logPrintoutMillisSince;
 uint8_t lastState = 0;
 
+uint16_t buttonWordBuffer = 0;
 
-// the callbacks are defined in inputcontrollers.h
-void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
-void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallback;
-void (*initCallback)() = &pollsterInit;
+void updateInputsFromBuffer() {
 
-InputListener note0Listeners[] = {
-        InputListener(listener_callback,
-                      "note0")
-};
-VirtualInput note0 = VirtualInput(note0Listeners);
-VirtualInput mcpUpper8VirtualInputs[] = {
-        note0
-};
-InputPollster pollsterUpper8 = InputPollster(pollCallback,
-                                             initCallback,
-                                             mcpUpper8VirtualInputs,
-                                             (uint8_t)1);
+
+    uint16_t buttonStateWordLast = buttonWordBuffer;
+    buttonWordBuffer = 0;
+    for (int i = 0; i < 15; i++) {
+        InputSnapshotBool snapshot = INPUT_BUFFER_BOOL[i];
+        buttonWordBuffer |= snapshot.asUint8() << i;
+    }//TODO no magic numbers, this is for testing
+    if (buttonStateWordLast != buttonWordBuffer) {
+        Serial.printf("Input buffer: %x", buttonWordBuffer);
+    }
+
+}
 
 void setup() {
     Serial.begin(9600);
@@ -63,6 +60,7 @@ void setup() {
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     delay(300); // Pull up resistors gotta pull up
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
+    pollsterLower8.init();
     pollsterUpper8.init();
     // lcd16x2 should be  good to go after 500ms
     lcd.displayOff();
@@ -76,19 +74,6 @@ void setup() {
     lcd.writeByte((uint8_t)'t');
 
     synth_init();
-
-    Serial.println("Begin mcp init block");
-    kbLower8 = MCP23008(0x22);
-    Serial.println("constructor");
-    kbLower8.init();
-    Serial.println("init");
-    delay(100);
-    uint8_t iocon = kbLower8.readRegister(0x05); // check the iocon register
-    Serial.println("iocon read");
-    Serial.printf("MCP IOCON reg: %hhu\n", iocon);
-    uint8_t gppu = kbLower8.readRegister(0x06);
-    Serial.printf("MCP GPPU reg: %hhu\n", gppu);
-    Serial.println("End mcp init block");
 
 }
 
@@ -106,9 +91,11 @@ void loop() {
 //    lpfCtrl.frequency(knob_A3);
 
     uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
+    updateInputsFromBuffer();
 
     if (logPrintoutMillisSince > 500) {
         pollsterUpper8.poll();
+        pollsterLower8.poll();
         if (gpio != lastState) {
             Serial.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) gpio);
             size_t written = 0;

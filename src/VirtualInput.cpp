@@ -16,10 +16,6 @@ void VirtualInput::notifyChangeListeners() {
     }
 }
 
-VirtualInput::VirtualInput(InputListener *listeners) {
-    _inputListeners = listeners;
-}
-
 VirtualInput::VirtualInput(InputListener *inputListeners, uint8_t currentSize, int index, InputDataType inputDataType)
 : _inputListeners(inputListeners), _currentSize(currentSize), _index(index), _inputDataType(inputDataType) {}
 
