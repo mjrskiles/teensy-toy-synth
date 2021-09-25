@@ -28,11 +28,14 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
  */
 void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-    Serial.println("-Lower 8 Pollster-");
+//    Serial.println("-Lower 8 Pollster-");
 
     //put the data in the buffer
     for(uint8_t i = 0; i < size; i++) {
         bool isOn = (1 << i) & gpio;
+        if (isOn) {
+            Serial.printf("read button on at: %n", i);
+        }
         VirtualInput input = inputs[i];
         String nameTest = String("in") +i;
         InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
