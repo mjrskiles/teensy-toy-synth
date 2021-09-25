@@ -9,6 +9,8 @@
 #include "synthesizer/synthesizer.h"
 #include "synthesizer/BufferReaderSynthUpdater.h"
 #include "synthesizer/components.h"
+#include "Logr.h"
+
 
 #define DISPLAY_I2C Wire
 
@@ -28,6 +30,7 @@ Scale scale {
 
 const char *hello_buf = "Kim is so cute";
 
+Logr logr = Logr();
 int firstPass = 1;
 MCP23008 kbLower8;
 SerialLCDWriter displayWriter = SerialLCDWriter();
@@ -47,10 +50,12 @@ void updateInputsFromBuffer() {
         InputSnapshotBool snapshot = INPUT_BUFFER_BOOL[i];
         buttonWordBuffer |= snapshot.asUint8() << i;
     }//TODO no magic numbers, this is for testing
-    if (buttonStateWordLast != buttonWordBuffer) {
-        Serial.printf("Input buffer: %x", buttonWordBuffer);
-    }
 
+    if (buttonWordBuffer != 0) {
+        for (int i = 0; i < 15; i++) {
+            Serial.printf("%s ", (buttonWordBuffer & (1 <<i)) ? "true" : "false");
+        }
+    }
 }
 
 void setup() {
@@ -97,7 +102,7 @@ void loop() {
         pollsterUpper8.poll();
         pollsterLower8.poll();
         if (gpio != lastState) {
-            Serial.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) gpio);
+//            LOG_INFO.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) gpio);
             size_t written = 0;
 //            written = lcd.writeByte(0x47);
 //            Serial.println("lcd16x2::writeBytes wrote bytes!");
