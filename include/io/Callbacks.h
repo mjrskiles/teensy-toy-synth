@@ -2,8 +2,8 @@
 // Created by Michael Skiles on 9/11/21.
 //
 
-#ifndef SYNTH_INPUTCONTROLLERS_H
-#define SYNTH_INPUTCONTROLLERS_H
+#ifndef SYNTH_CALLBACKS_H
+#define SYNTH_CALLBACKS_H
 
 #include "Controller.h"
 #include <HardwareSerial.h>
@@ -28,19 +28,44 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
  */
 void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-//    Serial.println("-Lower 8 Pollster-");
+    Serial.println("-Lower 8 Pollster-");
+    Serial.printf("gpio: %x\n", gpio);
 
     //put the data in the buffer
-    for(uint8_t i = 0; i < size; i++) {
-        bool isOn = (1 << i) & gpio;
-        if (isOn) {
-            Serial.printf("read button on at: %n", i);
-        }
-        VirtualInput input = inputs[i];
-        String nameTest = String("in") +i;
-        InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
-        INPUT_BUFFER_BOOL[input.getIndex()] = snapshot;
-    }
+//    for(int i = 0; i < size; i++) {
+////        bool isOn = (1 << i) & gpio;
+//        bool isOn = true;
+//        Serial.printf("In%n : %s\n", i, isOn ? "true" : "false");
+//        if (isOn) {
+//            Serial.printf("read button on at: %n", i);
+//        }
+//        VirtualInput input = inputs[i];
+//        String nameTest = String("in") +i;
+//        InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
+//        INPUT_BUFFER_BOOL[input.getIndex()] = snapshot;
+//    }
+    Serial.println("Lower pollster end");
+}
+
+void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
+    uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
+    Serial.println("-Upper 8 Pollster-");
+    Serial.printf("gpio: %x\n", gpio);
+
+    //put the data in the buffer
+    //    for(int i = 0; i < size; i++) {
+    ////        bool isOn = (1 << i) & gpio;
+    //        bool isOn = true;
+    //        Serial.printf("In%n : %s\n", i, isOn ? "true" : "false");
+    //        if (isOn) {
+    //            Serial.printf("read button on at: %n", i);
+    //        }
+    //        VirtualInput input = inputs[i];
+    //        String nameTest = String("in") +i;
+    //        InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
+    //        INPUT_BUFFER_BOOL[input.getIndex()] = snapshot;
+    //    }
+    Serial.println("upper pollster end");
 }
 
 /*
@@ -100,4 +125,4 @@ void eric_holder() {
     }
 }
 
-#endif //SYNTH_INPUTCONTROLLERS_H
+#endif //SYNTH_CALLBACKS_H

@@ -6,11 +6,12 @@
 #define SYNTH_COMPONENTS_H
 #include "io/InputSnapshot.h"
 #include "io/InputPollster.h"
-#include "io/InputControllers.h"
+#include "io/Callbacks.h"
 
 // the callbacks are defined in inputcontrollers.h
 void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
 void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallback;
+void (*upperPollCallback)(VirtualInput *inputs, uint8_t size) = &upper8PollsterCallback;
 void (*initCallback)() = &pollsterInit;
 
 InputListener note0Listeners[] = {
@@ -92,7 +93,7 @@ InputPollster pollsterLower8 = InputPollster(pollCallback,
                                              initCallback,
                                              mcpLower8VirtualInputs,
                                              (uint8_t)8);
-InputPollster pollsterUpper8 = InputPollster(pollCallback,
+InputPollster pollsterUpper8 = InputPollster(upperPollCallback,
                                              initCallback,
                                              mcpUpper8VirtualInputs,
                                              (uint8_t)8);

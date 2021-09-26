@@ -32,7 +32,6 @@ const char *hello_buf = "Kim is so cute";
 
 Logr logr = Logr();
 int firstPass = 1;
-MCP23008 kbLower8;
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 // Debugging / Logging
@@ -48,7 +47,7 @@ void updateInputsFromBuffer() {
     buttonWordBuffer = 0;
     for (int i = 0; i < 15; i++) {
         InputSnapshotBool snapshot = INPUT_BUFFER_BOOL[i];
-        buttonWordBuffer |= snapshot.asUint8() << i;
+        buttonWordBuffer |= snapshot.asBool() ? (1 << i) : 0;
     }//TODO no magic numbers, this is for testing
 
     if (buttonWordBuffer != 0) {
@@ -91,31 +90,13 @@ void loop() {
     float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
     float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
-//    sgtl5000_1.volume(knob_A1);
-//    phaseCtrl1.frequency(knob_A2);
-//    lpfCtrl.frequency(knob_A3);
 
-    uint8_t gpio = kbLower8.readRegister(0x09); // check the io register
-    updateInputsFromBuffer();
+//    updateInputsFromBuffer();
 
     if (logPrintoutMillisSince > 500) {
         pollsterUpper8.poll();
         pollsterLower8.poll();
-        if (gpio != lastState) {
-//            LOG_INFO.printf("--MCP GPIO reg: 0x%02x\n", (unsigned int) gpio);
-            size_t written = 0;
-//            written = lcd.writeByte(0x47);
-//            Serial.println("lcd16x2::writeBytes wrote bytes!");
-            lcd.writeByte(0xfe);
-            lcd.writeByte(0x80);
-            lcd.writeByte((uint8_t)'h');
-            lcd.writeByte((uint8_t)'e');
-            lcd.writeByte((uint8_t)'l');
-            lcd.writeByte((uint8_t)'l');
-            lcd.writeByte((uint8_t)'0');
-            Serial.println((int)written);
-            lastState = gpio;
-        }
+        lastState = 0;
         logPrintoutMillisSince = 0;
     }
 
