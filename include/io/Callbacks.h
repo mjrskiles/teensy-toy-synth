@@ -67,7 +67,7 @@ void note0PollsterCallback() {
     Serial.printf(" value: %x\n", gpio);
 }
 
-void pollsterInit() {
+void pollsterInitUpper() {
     Serial.println("Begin mcp init block");
     Serial.println("constructor");
     mcp_kbUpper8.init();
@@ -77,6 +77,20 @@ void pollsterInit() {
     Serial.println("iocon read");
     Serial.printf("MCP IOCON reg: %hhu\n", iocon);
     uint8_t gppu = mcp_kbUpper8.readRegister(0x06);
+    Serial.printf("MCP GPPU reg: %hhu\n", gppu);
+    Serial.println("End mcp init block");
+}
+
+void pollsterInitLower() {
+    Serial.println("Begin mcp init block");
+    Serial.println("constructor");
+    mcp_kbLower8.init();
+    Serial.println("init");
+    delay(100);
+    uint8_t iocon = mcp_kbLower8.readRegister(0x05); // check the iocon register
+    Serial.println("iocon read");
+    Serial.printf("MCP IOCON reg: %hhu\n", iocon);
+    uint8_t gppu = mcp_kbLower8.readRegister(0x06);
     Serial.printf("MCP GPPU reg: %hhu\n", gppu);
     Serial.println("End mcp init block");
 }
