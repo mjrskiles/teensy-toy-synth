@@ -2,8 +2,8 @@
 // Created by Michael Skiles on 9/15/21.
 //
 
-#ifndef SYNTH_SYNTH_GLOBALS_H
-#define SYNTH_SYNTH_GLOBALS_H
+#ifndef SYNTH_BUFFERS_H
+#define SYNTH_BUFFERS_H
 
 #include <inttypes.h>
 #include "io/InputSnapshot.h"
@@ -14,4 +14,4 @@ InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];
 InputSnapshotUint8 INPUT_BUFFER_UINT8[INPUT_BUFFER_SIZE_UINT8];
 InputSnapshotInt16 INPUT_BUFFER_INT16[INPUT_BUFFER_SIZE_INT16];
 
-#endif //SYNTH_SYNTH_GLOBALS_H
+#endif //SYNTH_BUFFERS_H

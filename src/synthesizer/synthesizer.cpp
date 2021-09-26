@@ -3,6 +3,8 @@
 //
 
 #include "synthesizer/synthesizer.h"
+#include "synth_defines.h"
+#include "io/buffers.h"
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       squarewaveBase;      //xy=90,59
@@ -34,7 +36,9 @@ AudioConnection          patchCord14(mixer1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=585,481
 //// GUItool: end automatically generated code
 
-
+const char *mcpLower8Name = "MCP23008: Lower";
+const char *mcpUpper8Name = "MCP23008: Upper";
+const char *mcpPeriphName = "MCP23008: Peripheral";
 
 void synth_init() {
 
@@ -49,4 +53,9 @@ void synth_init() {
     // Configure for middle C note without modulation
     squarewaveBase.begin(WAVEFORM_SQUARE);
     triwaveBase.begin(WAVEFORM_TRIANGLE);
+
+    for (int i = 0; i < INPUT_BUFFER_SIZE_BOOLEAN; i++) {
+        INPUT_BUFFER_BOOL[i].setName(m)
+        // initialize the buffer to a 0 state
+    }
 }

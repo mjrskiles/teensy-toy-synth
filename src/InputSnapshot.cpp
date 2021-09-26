@@ -23,6 +23,14 @@ InputSnapshot::InputSnapshot() {
     _dataType = BOOL;
 }
 
+void InputSnapshot::setName(const char *newName) {
+    _name = newName;
+}
+
+void InputSnapshot::setTime(pgmtime_t newTime) {
+    _time = newTime;
+}
+
 // BOOL
 String InputSnapshotBool::toString() {
     return _state ? "true" : "false";

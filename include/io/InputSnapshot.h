@@ -36,7 +36,8 @@ public:
     virtual uint8_t asUint8() = 0;
     virtual int16_t asInt16() = 0;
 
-
+    void setName(const char *newName);
+    void setTime(pgmtime_t newTime);
 protected:
     const char* _name;
     pgmtime_t _time;

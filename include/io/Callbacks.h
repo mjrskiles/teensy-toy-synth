@@ -8,7 +8,7 @@
 #include "Controller.h"
 #include <HardwareSerial.h>
 #include "MCP23008.h"
-#include "synth_globals.h"
+#include "buffers.h"
 #include "io/InputSnapshot.h"
 #include "VirtualInput.h"
 
@@ -53,18 +53,7 @@ void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     Serial.printf("gpio: %x\n", gpio);
 
     //put the data in the buffer
-    //    for(int i = 0; i < size; i++) {
-    ////        bool isOn = (1 << i) & gpio;
-    //        bool isOn = true;
-    //        Serial.printf("In%n : %s\n", i, isOn ? "true" : "false");
-    //        if (isOn) {
-    //            Serial.printf("read button on at: %n", i);
-    //        }
-    //        VirtualInput input = inputs[i];
-    //        String nameTest = String("in") +i;
-    //        InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
-    //        INPUT_BUFFER_BOOL[input.getIndex()] = snapshot;
-    //    }
+
     Serial.println("upper pollster end");
 }
 
