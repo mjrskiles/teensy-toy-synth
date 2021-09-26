@@ -12,7 +12,8 @@
 void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
 void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallback;
 void (*upperPollCallback)(VirtualInput *inputs, uint8_t size) = &upper8PollsterCallback;
-void (*initCallback)() = &pollsterInit;
+void (*initCallbackUpper)() = &pollsterInitUpper;
+void (*initCallbackLower)() = &pollsterInitLower;
 
 InputListener note0Listeners[] = {
         InputListener(listener_callback,"note0"),
@@ -90,11 +91,11 @@ VirtualInput mcpUpper8VirtualInputs[] = {
 };
 
 InputPollster pollsterLower8 = InputPollster(pollCallback,
-                                             initCallback,
+                                             initCallbackLower,
                                              mcpLower8VirtualInputs,
                                              (uint8_t)8);
 InputPollster pollsterUpper8 = InputPollster(upperPollCallback,
-                                             initCallback,
+                                             initCallbackUpper,
                                              mcpUpper8VirtualInputs,
                                              (uint8_t)8);
 
