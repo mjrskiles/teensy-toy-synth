@@ -21,7 +21,7 @@ MCP23008 mcp_kbLower8 = MCP23008(0x22);
  * Callback for the listener to use
  */
 void noteButtonListenerCallback(InputSnapshot &snapshot) {
-    Serial.printf("Calling back from button %s", snapshot.name());
+    Serial.printf("Calling back from button %\n", snapshot.name());
 }
 
 /*
@@ -43,7 +43,7 @@ void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
         if (gpio & MCP_INPUT_MASKS[i]) {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(true);
-            inputs[i].
+            inputs[i].notifyChangeListeners();
         } else {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(false);

@@ -16,8 +16,7 @@ public:
 
     String toString();
     void addListener(InputListener listener);
-protected:
-    void notifyChangeListeners(); // make public TODO
+    void notifyChangeListeners();
 private:
     InputListener *_inputListeners;
     uint8_t _currentSize = 0;
