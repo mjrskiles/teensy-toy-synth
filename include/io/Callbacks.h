@@ -11,6 +11,7 @@
 #include "buffers/buffers.h"
 #include "io/InputSnapshot.h"
 #include "VirtualInput.h"
+#include "buffers/luts.h"
 
 MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
@@ -28,33 +29,26 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
  */
 void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-    Serial.println("-Lower 8 Pollster-");
-    Serial.printf("gpio: %x\n", gpio);
-
-    //put the data in the buffer
-//    for(int i = 0; i < size; i++) {
-////        bool isOn = (1 << i) & gpio;
-//        bool isOn = true;
-//        Serial.printf("In%n : %s\n", i, isOn ? "true" : "false");
-//        if (isOn) {
-//            Serial.printf("read button on at: %n", i);
-//        }
-//        VirtualInput input = inputs[i];
-//        String nameTest = String("in") +i;
-//        InputSnapshotBool snapshot = InputSnapshotBool("nameTest", isOn);
-//        INPUT_BUFFER_BOOL[input.getIndex()] = snapshot;
-//    }
-    Serial.println("Lower pollster end");
+//    Serial.println("-Lower 8 Pollster-");
+//    Serial.printf("gpio: %x\n", gpio);
+//    Serial.println("Lower pollster end");
 }
 
 void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
-    Serial.println("-Upper 8 Pollster-");
-    Serial.printf("gpio: %x\n", gpio);
 
-    //put the data in the buffer
 
-    Serial.println("upper pollster end");
+    for (int i = 0; i < size; i++) {
+        int index = inputs[i].getIndex();
+        if (gpio & MCP_INPUT_MASKS[i]) {
+            INPUT_BUFFER_BOOL[index].setTime(millis());
+            INPUT_BUFFER_BOOL[index].setState(true);
+            inputs[i].
+        } else {
+            INPUT_BUFFER_BOOL[index].setTime(millis());
+            INPUT_BUFFER_BOOL[index].setState(false);
+        }
+    }
 }
 
 /*
