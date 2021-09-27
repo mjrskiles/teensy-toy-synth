@@ -76,12 +76,12 @@ void loop() {
     float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
     float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
-
+    pollsterUpper8.poll();
+    pollsterLower8.poll();
 //    updateInputsFromBuffer();
 
     if (logPrintoutMillisSince > 500) {
-        pollsterUpper8.poll();
-        pollsterLower8.poll();
+
         lastState = 0;
         logPrintoutMillisSince = 0;
     }

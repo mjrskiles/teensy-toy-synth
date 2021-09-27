@@ -46,6 +46,7 @@ extern uint8_t MCP_INPUT_MASKS[8];
 extern float midi_frequencies[128];
 extern const char *input_buffer_bool_names[256];
 extern const MidiNotes BbMajorScale[16];
+extern const uint8_t mcp_to_physical_button_map[8];
 
 
 

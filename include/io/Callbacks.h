@@ -28,6 +28,7 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
     // TODO this is garbo, I haven't even written it yet but it needs to be genericized and stuff. jUst to test turning on
     // voices from a callback. Can't use the index directly in the future. Need a map from VI index to virtual keyboard layout
     MidiNotes scaleNote = BbMajorScale[snapshot.getFromIndex()];
+//    Serial.printf("Playing scale tone from VI %n", snapshot.getFromIndex());
     squarewaveBase.frequency(midi_frequencies[scaleNote]);
     squarewaveBase.amplitude(snapshot.asBool() ? 1.0 : 0.0);
 }
