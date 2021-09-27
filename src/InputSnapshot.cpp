@@ -31,6 +31,18 @@ void InputSnapshot::setTime(pgmtime_t newTime) {
     _time = newTime;
 }
 
+void InputSnapshot::setFromIndex(int fromIndex) {
+    _fromIndex = fromIndex;
+}
+
+void InputSnapshot::setDataType(InputDataType dataType) {
+    _dataType = dataType;
+}
+
+int InputSnapshot::getFromIndex() const {
+    return _fromIndex;
+}
+
 // BOOL
 String InputSnapshotBool::toString() {
     return _state ? "true" : "false";

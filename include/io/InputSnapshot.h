@@ -38,10 +38,18 @@ public:
 
     void setName(const char *newName);
     void setTime(pgmtime_t newTime);
+
+    void setDataType(InputDataType dataType);
+
+    void setFromIndex(int fromIndex);
+
+    int getFromIndex() const;
+
 protected:
     const char* _name;
     pgmtime_t _time;
     InputDataType _dataType;
+    int _fromIndex;
 };
 
 class InputSnapshotBool : public InputSnapshot {

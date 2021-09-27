@@ -7,10 +7,6 @@
 
 #include <inttypes.h>
 
-extern uint8_t MCP_INPUT_MASKS[8];
-extern float midi_frequences[128];
-extern const char *input_buffer_bool_names[256];
-
 enum MidiNotes : int {
     NOTE_CMINUS1 , NOTE_CSMINUS1, NOTE_DMINUS1 , NOTE_DSMINUS1,
     NOTE_EMINUS1 , NOTE_FMINUS1 , NOTE_FSMINUS1, NOTE_GMINUS1 ,
@@ -45,6 +41,14 @@ enum MidiNotes : int {
     NOTE_C9 ,NOTE_CS9,NOTE_D9 ,NOTE_DS9,
     NOTE_E9 ,NOTE_F9 ,NOTE_FS9,NOTE_G9
 };
+
+extern uint8_t MCP_INPUT_MASKS[8];
+extern float midi_frequencies[128];
+extern const char *input_buffer_bool_names[256];
+extern const MidiNotes BbMajorScale[16];
+
+
+
 
 extern const MidiNotes bms_CMajor[16];
 

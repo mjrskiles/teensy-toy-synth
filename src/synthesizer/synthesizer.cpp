@@ -112,6 +112,10 @@ void ToySynth::synth_init() {
     // detailed information, see the MemoryAndCpuUsage example
     AudioMemory(24);
 
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
+    squarewaveBase.begin(WAVEFORM_SQUARE);
+
     for (int i = 0; i < INPUT_BUFFER_SIZE_BOOLEAN; i++) {
         INPUT_BUFFER_BOOL[i].setName(INPUT_NAMES_BOOL[i]);
         INPUT_BUFFER_BOOL[i].setState(false);
