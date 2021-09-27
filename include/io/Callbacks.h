@@ -21,7 +21,10 @@ MCP23008 mcp_kbLower8 = MCP23008(0x22);
  * Callback for the listener to use
  */
 void noteButtonListenerCallback(InputSnapshot &snapshot) {
-    Serial.printf("Calling back from button %\n", snapshot.name());
+    Serial.printf("Snapshot | %s\n", snapshot.name());
+    Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
+    Serial.printf("  time: %lu\n", snapshot.time());
+
 }
 
 /*
