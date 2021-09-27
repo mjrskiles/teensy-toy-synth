@@ -2,7 +2,6 @@
 // Created by Michael Skiles on 9/22/21.
 //
 
-#include <synth_defines.h>
 #include "io/InputPollster.h"
 
 

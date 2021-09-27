@@ -5,13 +5,6 @@
 #ifndef SYNTH_LUTS_H
 #define SYNTH_LUTS_H
 
-static const int button_pins[] = {
-        BUTTON_0_PIN, BUTTON_1_PIN, BUTTON_2_PIN, BUTTON_3_PIN,
-        BUTTON_4_PIN, BUTTON_5_PIN, BUTTON_6_PIN, BUTTON_7_PIN,
-        BUTTON_8_PIN, BUTTON_9_PIN, BUTTON_10_PIN, BUTTON_11_PIN,
-        BUTTON_12_PIN, BUTTON_13_PIN, BUTTON_14_PIN, BUTTON_15_PIN
-};
-
 float midi_frequencies[] = {
         8.176,8.662,9.177,9.723,
         10.301,10.913,11.562,12.250,
@@ -103,9 +96,5 @@ struct Scale {
     const char *Name;
     MidiNotes ButtonMap[16];
 };
-
-
-
-
 
 #endif //SYNTH_LUTS_H

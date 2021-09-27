@@ -1,12 +1,11 @@
 #include <Audio.h>
 #include <Wire.h>
 #include <Bounce.h>
+#include <synthesizer/synthesizer.h>
 
 #include "teensy41pinout.h"
-#include "luts.h"
 #include "io/MCP23008.h"
 #include "lcd16x2.h"
-#include "synthesizer/synthesizer.h"
 #include "synthesizer/BufferReaderSynthUpdater.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
@@ -14,22 +13,9 @@
 
 #define DISPLAY_I2C Wire
 
-// GUItool: begin automatically generated code
-   //xy=585,481
-// GUItool: end automatically generated code
-
-const char *scaleName = "C Major\0";
-Scale scale {
-    scaleName, {
-        MidiNotes::NOTE_C4, MidiNotes::NOTE_D4, MidiNotes::NOTE_E4, MidiNotes::NOTE_F4,
-        MidiNotes::NOTE_G4, MidiNotes::NOTE_A4, MidiNotes::NOTE_B4, MidiNotes::NOTE_C5,
-        MidiNotes::NOTE_D5, MidiNotes::NOTE_E5, MidiNotes::NOTE_F5, MidiNotes::NOTE_G5,
-        MidiNotes::NOTE_A5, MidiNotes::NOTE_B5, MidiNotes::NOTE_C6, MidiNotes::NOTE_D6
-    }
-};
-
 const char *hello_buf = "Kim is so cute";
 
+ToySynth toySynth;
 Logr logr = Logr();
 int firstPass = 1;
 SerialLCDWriter displayWriter = SerialLCDWriter();
@@ -77,7 +63,7 @@ void setup() {
     lcd.writeByte((uint8_t)'i');
     lcd.writeByte((uint8_t)'t');
 
-    synth_init();
+    toySynth.synth_init();
 
 }
 

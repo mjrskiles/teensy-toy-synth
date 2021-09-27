@@ -61,6 +61,7 @@ public:
     uint8_t asUint8() override;
     int16_t asInt16() override;
 
+    void setState(boolean state);
 protected:
     bool _state;
 };

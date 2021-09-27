@@ -52,6 +52,10 @@ int16_t InputSnapshotBool::asInt16() {
     return _state ? 1 : 0;
 }
 
+void InputSnapshotBool::setState(boolean state) {
+    _state = state;
+}
+
 InputSnapshotBool::InputSnapshotBool() {
     _name = "Bool Not set";
     _time = millis();

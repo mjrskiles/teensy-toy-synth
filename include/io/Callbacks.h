@@ -8,7 +8,7 @@
 #include "Controller.h"
 #include <HardwareSerial.h>
 #include "MCP23008.h"
-#include "buffers.h"
+#include "buffers/buffers.h"
 #include "io/InputSnapshot.h"
 #include "VirtualInput.h"
 
