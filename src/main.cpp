@@ -6,7 +6,6 @@
 #include "teensy41pinout.h"
 #include "io/MCP23008.h"
 #include "lcd16x2.h"
-#include "synthesizer/BufferReaderSynthUpdater.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
 
