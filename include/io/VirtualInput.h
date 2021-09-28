@@ -10,15 +10,12 @@
 
 class VirtualInput {
 public:
-    explicit VirtualInput(InputListener *listenersArray);
-
     VirtualInput(InputListener *inputListeners, uint8_t currentSize, int index, InputDataType inputDataType);
 
     int getIndex() const;
 
     String toString();
     void addListener(InputListener listener);
-protected:
     void notifyChangeListeners();
 private:
     InputListener *_inputListeners;
