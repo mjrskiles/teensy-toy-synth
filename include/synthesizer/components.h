@@ -135,5 +135,5 @@ InputPollster pollsterUpper8 = InputPollster(upperPollCallback,
 InputPollster pollsterPeriph = InputPollster(periphPollCallback,
                                              initCallbackPeriph,
                                              mcpPeripheralInputs,
-                                             (uint8_t)5)
+                                             (uint8_t)5);
 #endif //SYNTH_COMPONENTS_H

@@ -22,6 +22,7 @@ lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
 uint8_t lastState = 0;
+float asdrScalar = 750.0;
 
 uint16_t buttonWordBuffer = 0;
 
@@ -51,6 +52,7 @@ void setup() {
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
     pollsterLower8.init();
     pollsterUpper8.init();
+    pollsterPeriph.init();
     // lcd16x2 should be  good to go after 500ms
     lcd.displayOff();
     lcd.clearDisplay();
@@ -72,16 +74,28 @@ void loop() {
         Serial.println("First Pass");
     }
 
-    float knob_A1 = (float)analogRead(15) / 1023.0f; //volume knob on audio board
-    float knob_A2 = (float)analogRead(KNOB_1_PIN) / 1023.0f;
-    float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
+    float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
+    float knob_A = (float)analogRead(KNOB_A_PIN) / 1023.0f;
+    float knob_S = (float)analogRead(KNOB_S_PIN) / 1023.0f;
+    float knob_D = (float)analogRead(KNOB_D_PIN) / 1023.0f;
+    float knob_R = (float)analogRead(KNOB_R_PIN) / 1023.0f;
+
+    sgtl5000_1.volume(knob_Volume);
+//
     pollsterUpper8.poll();
     pollsterLower8.poll();
     pollsterPeriph.poll();
 //    updateInputsFromBuffer();
 
     if (logPrintoutMillisSince > 500) {
+        envelope2.attack(asdrScalar * knob_A);
+        envelope2.decay(asdrScalar * knob_D);
+        envelope2.sustain(knob_S);
+        envelope2.release(asdrScalar * knob_R);
 
+        logr.info("B~ logr v0.1 B~");
+        Serial.printf(" A  | S  | D  | R\n");
+        Serial.printf("%4.2f %4.2f %4.2f %4.2f", knob_A, knob_S, knob_D, knob_R);
         lastState = 0;
         logPrintoutMillisSince = 0;
     }

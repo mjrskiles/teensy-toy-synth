@@ -25,8 +25,9 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
     Serial.printf("Snapshot | %s\n", snapshot.name());
     Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
     Serial.printf("  time: %lu\n", snapshot.time());
-    MidiNotes scaleNote = BbMajorScale[snapshot.getFromIndex()];
-    float freq = midi_frequencies[mcp_to_physical_button_map[scaleNote]];
+    uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
+    MidiNotes scaleNote = BbMajorScale[but];
+    float freq = midi_frequencies[scaleNote];
     squarewaveBase.frequency(freq);
     squarewaveBase.amplitude(snapshot.asBool() ? 1.0 : 0.0);
 }
@@ -63,12 +64,12 @@ void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
 
 void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
-    processGpio(gpio, inputs size);
+    processGpio(gpio, inputs, size);
 }
 
 void peripheralPollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_periph1.readRegister(mcp_kbUpper8.getGpio());
-    processGpio(gpio, inputs size);
+    processGpio(gpio, inputs, size);
 }
 
 /*

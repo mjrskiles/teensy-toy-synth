@@ -7,10 +7,11 @@
 
 #define BUTTON_SELECT_PIN 24
 
-#define KNOB_1_PIN 39
-#define KNOB_2_PIN 38
-#define KNOB_3_PIN 40
-#define KNOB_4_PIN 41
+#define KNOB_VOLUME_PIN 15
+#define KNOB_A_PIN 38
+#define KNOB_S_PIN 40
+#define KNOB_D_PIN 39
+#define KNOB_R_PIN 41
 
 #define MCP_RESET_PIN_LOWER_8 28
 #define MCP_RESET_PIN_UPPER_8 26

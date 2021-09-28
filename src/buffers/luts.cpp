@@ -138,8 +138,10 @@ const MidiNotes BbMajorScale[] = {
  *  |  7 |  6 |  5 |  4 |
  */
 const uint8_t mcp_to_physical_button_map[] = {
+        7, 6, 5, 4,
         3, 2, 1, 0,
-        7, 6, 5, 4
+        15, 14, 13, 12,
+        11, 10, 9, 8
 };
 
 
