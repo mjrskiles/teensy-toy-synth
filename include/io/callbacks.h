@@ -30,6 +30,7 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
     float freq = midi_frequencies[scaleNote];
     squarewaveBase.frequency(freq);
     squarewaveBase.amplitude(snapshot.asBool() ? 1.0 : 0.0);
+    snapshot.asBool() ? envelope2.noteOn() : envelope2.noteOff();
 }
 
 void periphLogListenerCallback(InputSnapshot &snapshot) {
@@ -42,14 +43,16 @@ void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
     for (int i = 0; i < size; i++) {
         int index = inputs[i].getIndex();
         uint8_t onInputWord = gpioWord & MCP_INPUT_MASKS[i];
+        bool previousState = INPUT_BUFFER_BOOL[index].asBool(); // Get the buffer state before we change it
+
         if (onInputWord) {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(true);
-            inputs[i].notifyChangeListeners();
-        } else if (INPUT_BUFFER_BOOL[index].asBool()) {
+            if (!previousState) inputs[i].notifyChangeListeners();
+        } else {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(false);
-            inputs[i].notifyChangeListeners();
+            if (previousState) inputs[i].notifyChangeListeners();
         }
     }
 }
@@ -60,6 +63,7 @@ void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
 void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
     processGpio(gpio, inputs, size);
+
 }
 
 void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {

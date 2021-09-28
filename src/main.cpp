@@ -65,6 +65,8 @@ void setup() {
     lcd.writeByte((uint8_t)'t');
 
     toySynth.synth_init();
+    mixerEnv1.gain(0, 0.0);
+    mixerEnv1.gain(1, 1.0);
 
 }
 
@@ -94,8 +96,8 @@ void loop() {
         envelope2.release(asdrScalar * knob_R);
 
         logr.info("B~ logr v0.1 B~");
-        Serial.printf(" A  | S  | D  | R\n");
-        Serial.printf("%4.2f %4.2f %4.2f %4.2f", knob_A, knob_S, knob_D, knob_R);
+        Serial.printf(" A  | D  | S  | R\n");
+        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
         lastState = 0;
         logPrintoutMillisSince = 0;
     }
