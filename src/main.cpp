@@ -77,6 +77,7 @@ void loop() {
     float knob_A3 = (float)analogRead(KNOB_2_PIN) / 1023.0f;
     pollsterUpper8.poll();
     pollsterLower8.poll();
+    pollsterPeriph.poll();
 //    updateInputsFromBuffer();
 
     if (logPrintoutMillisSince > 500) {

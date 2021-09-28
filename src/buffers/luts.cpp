@@ -132,11 +132,17 @@ const MidiNotes BbMajorScale[] = {
 
 /*
  *  Physical button layout for main keypad
- *  |  0 |  1 |  2 |  3 |
- *  |  4 |  5 |  6 |  7 |
- *  |  8 |  9 | 10 | 11 |
- *  | 12 | 13 | 14 | 15 |
+ *  |  3 |  2 |  1 |  0 | <- MCP UPPER
+ *  |  7 |  6 |  5 |  4 |
+ *  |  3 |  2 |  1 |  0 | <- MCP LOWER
+ *  |  7 |  6 |  5 |  4 |
  */
+const uint8_t mcp_to_physical_button_map[] = {
+        3, 2, 1, 0,
+        7, 6, 5, 4
+};
+
+
 struct Scale {
     const char *Name;
     MidiNotes ButtonMap[16];

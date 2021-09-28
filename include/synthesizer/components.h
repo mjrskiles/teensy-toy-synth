@@ -6,14 +6,22 @@
 #define SYNTH_COMPONENTS_H
 #include "io/InputSnapshot.h"
 #include "io/InputPollster.h"
-#include "io/Callbacks.h"
+#include "io/callbacks.h"
 
 // the callbacks are defined in inputcontrollers.h
+// Listeners
 void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
+void (*periphLogCallback)(InputSnapshot&) = &periphLogListenerCallback;
+
+// Pollsters
+//   polling
 void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallback;
 void (*upperPollCallback)(VirtualInput *inputs, uint8_t size) = &upper8PollsterCallback;
+void (*periphPollCallback)(VirtualInput *inputs, uint8_t size) = &peripheralPollsterCallback;
+//   init
 void (*initCallbackUpper)() = &pollsterInitUpper;
 void (*initCallbackLower)() = &pollsterInitLower;
+void (*initCallbackPeriph)() = &pollsterInitPeriph;
 
 InputListener note0Listeners[] = {
         InputListener(listener_callback,"note0"),
@@ -64,6 +72,22 @@ InputListener note15Listeners[] = {
         InputListener(listener_callback,"note15"),
         };
 
+InputListener selectorSwitch1Listeners[] = {
+        InputListener(periphLogCallback,"SS 1"),
+        };
+InputListener selectorSwitch2Listeners[] = {
+        InputListener(periphLogCallback,"SS 2"),
+        };
+InputListener selectorSwitch3Listeners[] = {
+        InputListener(periphLogCallback,"SS 3"),
+        };
+InputListener pb1Listeners[] = {
+        InputListener(periphLogCallback,"PB 1"),
+        };
+InputListener pb2Listeners[] = {
+        InputListener(periphLogCallback,"PB 2"),
+        };
+
 VirtualInput note0 = VirtualInput(note0Listeners, 1, 0, BOOL);
 VirtualInput note1 = VirtualInput(note1Listeners, 1, 1 , BOOL);
 VirtualInput note2 = VirtualInput(note2Listeners, 1, 2 , BOOL);
@@ -81,6 +105,12 @@ VirtualInput note13 = VirtualInput(note13Listeners, 1, 13 , BOOL);
 VirtualInput note14 = VirtualInput(note14Listeners, 1, 14 , BOOL);
 VirtualInput note15 = VirtualInput(note15Listeners, 1, 15 , BOOL);
 
+VirtualInput ss1 = VirtualInput(selectorSwitch1Listeners, 1, 16 , BOOL);
+VirtualInput ss2 = VirtualInput(selectorSwitch2Listeners, 1, 17 , BOOL);
+VirtualInput ss3 = VirtualInput(selectorSwitch3Listeners, 1, 18 , BOOL);
+VirtualInput pb1 = VirtualInput(pb1Listeners, 1, 19 , BOOL);
+VirtualInput pb2 = VirtualInput(pb2Listeners, 1, 20 , BOOL);
+
 VirtualInput mcpLower8VirtualInputs[] = {
         note0, note1, note2, note3,
         note4, note5, note6, note7
@@ -88,6 +118,10 @@ VirtualInput mcpLower8VirtualInputs[] = {
 VirtualInput mcpUpper8VirtualInputs[] = {
         note8, note9, note10, note11,
         note12, note13, note14, note15
+};
+
+VirtualInput mcpPeripheralInputs[] = {
+        ss1, ss2, ss3, pb1, pb2
 };
 
 InputPollster pollsterLower8 = InputPollster(pollCallback,
@@ -98,5 +132,8 @@ InputPollster pollsterUpper8 = InputPollster(upperPollCallback,
                                              initCallbackUpper,
                                              mcpUpper8VirtualInputs,
                                              (uint8_t)8);
-
+InputPollster pollsterPeriph = InputPollster(periphPollCallback,
+                                             initCallbackPeriph,
+                                             mcpPeripheralInputs,
+                                             (uint8_t)5)
 #endif //SYNTH_COMPONENTS_H
