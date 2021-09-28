@@ -30,6 +30,7 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
     float freq = midi_frequencies[scaleNote];
     squarewaveBase.frequency(freq);
     squarewaveBase.amplitude(snapshot.asBool() ? 1.0 : 0.0);
+//    if(snapshot.asBool())  envelope2.noteOn();
     snapshot.asBool() ? envelope2.noteOn() : envelope2.noteOff();
 }
 

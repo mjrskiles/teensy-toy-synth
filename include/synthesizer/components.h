@@ -8,7 +8,7 @@
 #include "io/InputPollster.h"
 #include "io/callbacks.h"
 
-// the callbacks are defined in inputcontrollers.h
+// the callbacks are defined in callbacks.h
 // Listeners
 void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
 void (*periphLogCallback)(InputSnapshot&) = &periphLogListenerCallback;
