@@ -21,6 +21,7 @@ SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
+elapsedMillis scanTime;
 uint8_t lastState = 0;
 float asdrScalar = 750.0;
 
@@ -89,18 +90,20 @@ void loop() {
     pollsterPeriph.poll();
 //    updateInputsFromBuffer();
 
+    logr.info("B~ logr v0.1 B~");
+    logr.info("Program scan ms:");
+    Serial.println(scanTime);
+
     if (logPrintoutMillisSince > 500) {
         envelope2.attack(asdrScalar * knob_A);
         envelope2.decay(asdrScalar * knob_D);
         envelope2.sustain(knob_S);
         envelope2.release(asdrScalar * knob_R);
-
-        logr.info("B~ logr v0.1 B~");
 //        Serial.printf(" A  | D  | S  | R\n");
 //        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
         lastState = 0;
         logPrintoutMillisSince = 0;
     }
 
-  
+    scanTime = 0;
 }
