@@ -50,3 +50,5 @@ Sequencer Overview:
 
 ## Ideas
     Wavetable?
+
+Can the voice management logic be listener callbacks?

@@ -17,6 +17,7 @@ public:
     VoiceList(uint8_t *triggeredInputIndices);
 
     uint8_t currentSize();
+    bool isEmpty();
     uint8_t activeVoiceIndex();
     void addVoice(uint8_t index);
     bool removeVoice(uint8_t index); // returns true if the voice was removed

@@ -18,6 +18,10 @@ uint8_t VoiceList::currentSize() {
     return MAX_VOICES - i;
 }
 
+bool VoiceList::isEmpty() {
+    return (currentSize() == 0);
+}
+
 /*
  * !!! Returns the index into the SNAPSHOT BUFFER, not the voice list.
  */

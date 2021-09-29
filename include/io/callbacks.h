@@ -29,11 +29,12 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
     MidiNotes scaleNote = BbMajorScale[but];
     float freq = midi_frequencies[scaleNote];
     squarewaveBase.frequency(freq);
-    squarewaveBase.amplitude(snapshot.asBool() ? 1.0 : 0.0);
     if (snapshot.asBool()) {
         envelope2.noteOn();
+        squarewaveBase.amplitude(1.0);
 
     } else if (!snapshot.asBool() && (&snapshot == &active_voice)) {
+        squarewaveBase.amplitude(0.0);
         envelope2.noteOff();
         Serial.println("Env2 Off");
     }
@@ -55,14 +56,12 @@ void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(true);
             if (!previousState) {
-                voiceList.addVoice(index);
                 inputs[i].notifyChangeListeners();
             }
         } else {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(false);
             if (previousState){
-                voiceList.removeVoice(index);
                 inputs[i].notifyChangeListeners();
             }
         }
