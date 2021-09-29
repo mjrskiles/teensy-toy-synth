@@ -6,6 +6,7 @@
 #define SYNTH_BUFFERS_H
 
 #include <inttypes.h>
+#include <synthesizer/VoiceList.h>
 #include "io/InputSnapshot.h"
 #include "synth_defines.h"
 
@@ -13,9 +14,9 @@ extern InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
 extern InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];
 extern InputSnapshotUint8 INPUT_BUFFER_UINT8[INPUT_BUFFER_SIZE_UINT8];
 extern InputSnapshotInt16 INPUT_BUFFER_INT16[INPUT_BUFFER_SIZE_INT16];
-extern InputSnapshotBool ACTIVE_VOICES[8];
+extern InputSnapshotBool active_voice;
 
-extern uint8_t num_active_voices();
+extern VoiceList voiceList;
 
 
 #endif //SYNTH_BUFFERS_H
