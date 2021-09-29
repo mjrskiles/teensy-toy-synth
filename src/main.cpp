@@ -28,11 +28,15 @@ float asdrScalar = 750.0;
 // Interrupt routines
 volatile uint8_t lower8NumInterrupts = 0;
 volatile uint8_t upper8NumInterrupts = 0;
+volatile uint8_t periphNumInterrupts = 0;
 void lowerKB_ISR() {
     lower8NumInterrupts++;
 }
 void upperKB_ISR() {
     upper8NumInterrupts++;
+}
+void periph_ISR() {
+    periphNumInterrupts++;
 }
 
 void setup() {
@@ -65,6 +69,7 @@ void setup() {
 
     attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
     attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
+    attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
 }
 
 void loop() {
@@ -94,8 +99,12 @@ void loop() {
         pollsterUpper8.poll();
         upper8NumInterrupts = 0;
     }
-    pollsterPeriph.poll();
-//    updateInputsFromBuffer();
+    if(periphNumInterrupts) {
+        Serial.println("Peripheral I/O INTERRUPT");
+        Serial.println(periphNumInterrupts);
+        pollsterPeriph.poll();
+        periphNumInterrupts = 0;
+    }
 
 
 
