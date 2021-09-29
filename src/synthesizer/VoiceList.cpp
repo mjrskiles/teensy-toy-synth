@@ -5,17 +5,17 @@
 #include "synthesizer/VoiceList.h"
 #include "Logr.h"
 
-Logr logr = Logr();
+Logr logr1 = Logr();
 
 // The list gets filled from the end so each index matches its precedence
 uint8_t VoiceList::currentSize() {
     int i = 0;
-    uint8_t val = UNASSIGNED_VOICE_VALUE;
-    while (val == UNASSIGNED_VOICE_VALUE && i < MAX_VOICES) {
-        val = _triggeredInputIndices[i];
-        i++;
+    for (i; i < MAX_VOICES; i++) {
+        if (_triggeredInputIndices[i] != UNASSIGNED_VOICE_VALUE) {
+            break;
+        }
     }
-    return MAX_VOICES - i; // i will be at least 1
+    return MAX_VOICES - i;
 }
 
 /*
@@ -30,10 +30,14 @@ uint8_t VoiceList::activeVoiceIndex() {
 
 void VoiceList::addVoice(uint8_t index) {
     uint8_t size = currentSize();
-    if (size >= MAX_VOICES) logr.debug("Voice List is full");
+    if (size >= MAX_VOICES) logr1.debug("Voice List is full");
     else {
         _triggeredInputIndices[MAX_VOICES - size - 1] = index;
     }
+    Serial.println("Trigged input buffer loc:");
+    Serial.println(MAX_VOICES - size - 1);
+    Serial.println("value at loc:");
+    Serial.println(_triggeredInputIndices[MAX_VOICES - size - 1]);
 }
 
 // Remove the voice whose stored value is equal to 'index'
@@ -70,12 +74,12 @@ void VoiceList::_removeAtLocation(uint8_t loc) {
     Serial.println(currentSize());
 }
 
-VoiceList::VoiceList(uint8_t *triggeredInputIndices) : _triggeredInputIndices(triggeredInputIndices) {
-    _init();
-}
-
 void VoiceList::_init() {
     for (int i = 0; i < MAX_VOICES; i++) {
         _triggeredInputIndices[i] = UNASSIGNED_VOICE_VALUE;
     }
+}
+
+VoiceList::VoiceList() {
+    _init();
 }

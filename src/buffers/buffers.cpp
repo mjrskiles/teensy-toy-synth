@@ -13,4 +13,5 @@ InputSnapshotUint8 INPUT_BUFFER_UINT8[INPUT_BUFFER_SIZE_UINT8];
 InputSnapshotInt16 INPUT_BUFFER_INT16[INPUT_BUFFER_SIZE_INT16];
 
 InputSnapshotBool active_voice = InputSnapshotBool();
+uint8_t voices[MAX_VOICES];
 VoiceList voiceList = VoiceList();

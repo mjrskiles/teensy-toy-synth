@@ -21,7 +21,7 @@ public:
     void addVoice(uint8_t index);
     bool removeVoice(uint8_t index); // returns true if the voice was removed
 private:
-    uint8_t _triggeredInputIndices[MAX_VOICES]{};
+    uint8_t _triggeredInputIndices[MAX_VOICES];
     void _removeAtLocation(uint8_t loc);
     void _init();
 };

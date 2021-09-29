@@ -96,8 +96,8 @@ void loop() {
         envelope2.release(asdrScalar * knob_R);
 
         logr.info("B~ logr v0.1 B~");
-        Serial.printf(" A  | D  | S  | R\n");
-        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
+//        Serial.printf(" A  | D  | S  | R\n");
+//        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
         lastState = 0;
         logPrintoutMillisSince = 0;
     }

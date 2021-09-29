@@ -16,6 +16,7 @@ extern InputSnapshotUint8 INPUT_BUFFER_UINT8[INPUT_BUFFER_SIZE_UINT8];
 extern InputSnapshotInt16 INPUT_BUFFER_INT16[INPUT_BUFFER_SIZE_INT16];
 extern InputSnapshotBool active_voice;
 
+extern uint8_t voices[MAX_VOICES];
 extern VoiceList voiceList;
 
 

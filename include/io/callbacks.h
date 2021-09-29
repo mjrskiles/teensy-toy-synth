@@ -54,11 +54,17 @@ void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
         if (onInputWord) {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(true);
-            if (!previousState) inputs[i].notifyChangeListeners();
+            if (!previousState) {
+                voiceList.addVoice(index);
+                inputs[i].notifyChangeListeners();
+            }
         } else {
             INPUT_BUFFER_BOOL[index].setTime(millis());
             INPUT_BUFFER_BOOL[index].setState(false);
-            if (previousState) inputs[i].notifyChangeListeners();
+            if (previousState){
+                voiceList.removeVoice(index);
+                inputs[i].notifyChangeListeners();
+            }
         }
     }
 }
