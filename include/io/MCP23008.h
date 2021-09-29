@@ -105,7 +105,7 @@ void MCP23008::init() const {
     Wire.begin();
     writeRegister(_iodir, 0xff);
     writeRegister(_ipol, 0xff); // set reverse input polarity
-    writeRegister(_gpinten, 0x0);
+    writeRegister(_gpinten, 0xff);
     writeRegister(_iocon, ioconWord);
     writeRegister(_gppu, gppuWord);
 }

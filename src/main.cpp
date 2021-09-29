@@ -25,31 +25,25 @@ elapsedMillis scanTime;
 uint8_t lastState = 0;
 float asdrScalar = 750.0;
 
-uint16_t buttonWordBuffer = 0;
-
-void updateInputsFromBuffer() {
-
-
-    uint16_t buttonStateWordLast = buttonWordBuffer;
-    buttonWordBuffer = 0;
-    for (int i = 0; i < 15; i++) {
-        InputSnapshotBool snapshot = INPUT_BUFFER_BOOL[i];
-        buttonWordBuffer |= snapshot.asBool() ? (1 << i) : 0;
-    }//TODO no magic numbers, this is for testing
-
-    if (buttonWordBuffer != 0) {
-        for (int i = 0; i < 15; i++) {
-            Serial.printf("%s ", (buttonWordBuffer & (1 <<i)) ? "true" : "false");
-        }
-    }
+// Interrupt routines
+volatile uint8_t lower8NumInterrupts = 0;
+volatile uint8_t upper8NumInterrupts = 0;
+void lowerKB_ISR() {
+    lower8NumInterrupts++;
+}
+void upperKB_ISR() {
+    upper8NumInterrupts++;
 }
 
 void setup() {
     Serial.begin(9600);
     Serial7.begin(9600);
     Wire.begin();
+
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
+    pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
     delay(300); // Pull up resistors gotta pull up
+
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
     pollsterLower8.init();
     pollsterUpper8.init();
@@ -69,6 +63,8 @@ void setup() {
     mixerEnv1.gain(0, 0.0);
     mixerEnv1.gain(1, 1.0);
 
+    attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
+    attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
 }
 
 void loop() {
@@ -85,16 +81,28 @@ void loop() {
 
     sgtl5000_1.volume(knob_Volume);
 //
-    pollsterUpper8.poll();
-    pollsterLower8.poll();
+    // Poll the inputs because there was an interrupt
+    if(lower8NumInterrupts) {
+        Serial.println("Lower 8 INTERRUPT");
+        Serial.println(lower8NumInterrupts);
+        pollsterLower8.poll();
+        lower8NumInterrupts = 0;
+    }
+    if(upper8NumInterrupts) {
+        Serial.println("Upper 8 INTERRUPT");
+        Serial.println(upper8NumInterrupts);
+        pollsterUpper8.poll();
+        upper8NumInterrupts = 0;
+    }
     pollsterPeriph.poll();
 //    updateInputsFromBuffer();
 
-    logr.info("B~ logr v0.1 B~");
-    logr.info("Program scan ms:");
-    Serial.println(scanTime);
+
 
     if (logPrintoutMillisSince > 500) {
+        logr.info("B~ logr v0.1 B~");
+        logr.info("Program scan ms:");
+        Serial.println(scanTime);
         envelope2.attack(asdrScalar * knob_A);
         envelope2.decay(asdrScalar * knob_D);
         envelope2.sustain(knob_S);
