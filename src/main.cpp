@@ -58,10 +58,45 @@ void setup() {
     lcd.displayOn();
     lcd.writeByte(0xfe);
     lcd.writeByte(0x80);
-    lcd.writeByte((uint8_t)'i');
-    lcd.writeByte((uint8_t)'n');
-    lcd.writeByte((uint8_t)'i');
+
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+
+
+    lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'t');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)'o');
+
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)'y');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)' ');
+
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)'s');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)'y');
+    lcd.writeByte((uint8_t)' ');
+
+    lcd.writeByte((uint8_t)'n');
+    lcd.writeByte((uint8_t)' ');
+    lcd.writeByte((uint8_t)'t');
+    lcd.writeByte((uint8_t)' ');
+
+    lcd.writeByte((uint8_t)'h');
+    lcd.writeByte((uint8_t)' ');
+
 
     toySynth.synth_init();
     mixerEnv1.gain(0, 0.0);

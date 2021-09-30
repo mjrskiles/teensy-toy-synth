@@ -19,5 +19,9 @@ extern InputSnapshotBool active_voice;
 extern uint8_t voices[MAX_VOICES];
 extern VoiceList voiceList;
 
+// LCD
+extern uint8_t LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS];
+extern uint8_t LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS];
+
 
 #endif //SYNTH_BUFFERS_H

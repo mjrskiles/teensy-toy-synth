@@ -18,6 +18,16 @@ size_t lcd16x2::writeBytes(const uint8_t *buffer, size_t size) {
     return _writer.sendBytes(buffer, size);
 }
 
+size_t lcd16x2::writeBuffer(const uint8_t buffer[LCD_ROWS * LCD_COLS]) {
+    for (int i = 0; i < LCD_COLS; i++) {
+        _writer.sendByte(buffer[i]);
+    }
+    setCursorPosition(LCD_LINE_2_START_POS);
+    for (int i = 0; i < LCD_COLS; i++) {
+        _writer.sendByte(buffer[i + LCD_COLS]);
+    }
+}
+
 void lcd16x2::clearDisplay() const {
     _writer.sendActionCommand(FE_CLEAR_DISPLAY);
 }
