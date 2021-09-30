@@ -21,7 +21,7 @@ SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
-elapsedMillis scanTime;
+elapsedMicros scanTime;
 uint8_t lastState = 0;
 float asdrScalar = 750.0;
 
@@ -46,7 +46,7 @@ void setup() {
 
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
-    delay(300); // Pull up resistors gotta pull up
+    delay(500); // Pull up resistors gotta pull up, let everything power up
 
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
     pollsterLower8.init();
@@ -106,11 +106,9 @@ void loop() {
         periphNumInterrupts = 0;
     }
 
-
-
     if (logPrintoutMillisSince > 500) {
         logr.info("B~ logr v0.1 B~");
-        logr.info("Program scan ms:");
+        logr.info("Program scan us:");
         Serial.println(scanTime);
         envelope2.attack(asdrScalar * knob_A);
         envelope2.decay(asdrScalar * knob_D);
