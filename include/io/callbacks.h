@@ -32,8 +32,8 @@ void cb_noteButtonListener(InputSnapshot &snapshot) {
     if (snapshot.asBool()) {
         envelope2.noteOn();
         squarewaveBase.amplitude(1.0);
-
-    } else if (!snapshot.asBool() && (&snapshot == &active_voice)) {
+        active_voice = &snapshot;
+    } else if (!snapshot.asBool() && (&snapshot == active_voice)) {
         squarewaveBase.amplitude(0.0);
         envelope2.noteOff();
         Serial.println("Env2 Off");
@@ -140,6 +140,15 @@ void cb_LayoutMcpLower(lcd_char *buffer) {
 void cb_LayoutMcpUpper(lcd_char *buffer) {
     for (int i = 0; i < 8; i++) {
         buffer[i] = INPUT_BUFFER_BOOL[i + 8].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
+    }
+}
+
+void cb_LayoutCurrentNoteName(lcd_char *buffer) {
+    int i = active_voice->getFromIndex(); // I know this one is in the bool buffer... something needs to be fixed here
+    const lcd_char *namePointer = midi_note_names[i];
+    Serial.println("writing to temp note name buffer...");
+    for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
+        buffer[j] = namePointer[j];
     }
 }
 

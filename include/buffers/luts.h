@@ -6,6 +6,7 @@
 #define SYNTH_LUTS_H
 
 #include <inttypes.h>
+#include <toy_types.h>
 
 enum MidiNotes : int {
     NOTE_CMINUS1 , NOTE_CSMINUS1, NOTE_DMINUS1 , NOTE_DSMINUS1,
@@ -41,6 +42,8 @@ enum MidiNotes : int {
     NOTE_C9 ,NOTE_CS9,NOTE_D9 ,NOTE_DS9,
     NOTE_E9 ,NOTE_F9 ,NOTE_FS9,NOTE_G9
 };
+
+extern const lcd_char* midi_note_names[128];
 
 extern uint8_t MCP_INPUT_MASKS[8];
 extern float midi_frequencies[128];

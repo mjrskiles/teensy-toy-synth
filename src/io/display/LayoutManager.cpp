@@ -14,7 +14,7 @@ void LayoutManager::update() {
             Serial.println("Updating layout manager...");
             _currentLayout.updateGroup();
             _lcd.clearDisplay();
-            _lcd.setCursorPosition(LCD_LINE_1_START_POS);
+            _lcd.setCursorPosition(LCD_LINE_1_START_POS); // TODO get the real cursor pos out of a lookup table
             _lcd.writeBytes(_currentLayout.buffer, 16);
             _lcd.setCursorPosition(LCD_LINE_2_START_POS);
             _lcd.writeBytes((&_currentLayout.buffer[16]), 16); // write the 16 bytes of the 2nd line
