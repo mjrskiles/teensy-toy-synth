@@ -17,5 +17,7 @@
 #define LCD_ROWS 2
 #define LCD_COLS 16
 #define LCD_LINE_2_START_POS 64
+#define LCD_LINE_1_START_POS 0
+#define LCD_UPDATE_HZ 30
 
 #endif //SYNTH_SYNTH_DEFINES_H

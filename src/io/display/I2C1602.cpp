@@ -4,8 +4,8 @@
 
 #include <Wire.h>
 #include <inttypes.h>
-#include "I2C1602.h"
-#include "lcd16x2.h"
+#include "io/display/I2C1602.h"
+#include "io/display/lcd16x2.h"
 
 
 /*

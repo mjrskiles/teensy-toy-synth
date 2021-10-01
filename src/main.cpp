@@ -3,9 +3,9 @@
 #include <Bounce.h>
 #include <synthesizer/synthesizer.h>
 
-#include "teensy41pinout.h"
+#include "buffers/teensy41pinout.h"
 #include "io/MCP23008.h"
-#include "lcd16x2.h"
+#include "io/display/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
 
@@ -52,6 +52,15 @@ void setup() {
     pollsterLower8.init();
     pollsterUpper8.init();
     pollsterPeriph.init();
+
+    toySynth.synth_init();
+    mixerEnv1.gain(0, 0.0);
+    mixerEnv1.gain(1, 1.0);
+
+    attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
+    attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
+    attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
+
     // lcd16x2 should be  good to go after 500ms
     lcd.displayOff();
     lcd.clearDisplay();
@@ -63,7 +72,6 @@ void setup() {
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)' ');
-
 
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'t');
@@ -82,29 +90,18 @@ void setup() {
 
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)' ');
-
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'s');
+
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'y');
     lcd.writeByte((uint8_t)' ');
-
     lcd.writeByte((uint8_t)'n');
+
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'t');
     lcd.writeByte((uint8_t)' ');
-
     lcd.writeByte((uint8_t)'h');
-    lcd.writeByte((uint8_t)' ');
-
-
-    toySynth.synth_init();
-    mixerEnv1.gain(0, 0.0);
-    mixerEnv1.gain(1, 1.0);
-
-    attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
-    attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
-    attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
 }
 
 void loop() {

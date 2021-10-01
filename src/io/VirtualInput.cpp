@@ -4,7 +4,7 @@
 
 #include "io/VirtualInput.h"
 #include "io/InputListener.h"
-#include "synth_defines.h"
+#include "toy_defines.h"
 
 void VirtualInput::addListener(InputListener listener) {
     if (_currentSize > MAX_LISTENERS_PER_INPUT) _inputListeners[_currentSize++] = listener;

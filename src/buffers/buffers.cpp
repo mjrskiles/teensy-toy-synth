@@ -3,7 +3,7 @@
 //
 
 #include <io/InputSnapshot.h>
-#include <synth_defines.h>
+#include <toy_defines.h>
 #include <io/VirtualInput.h>
 #include <synthesizer/VoiceList.h>
 

@@ -143,17 +143,10 @@ void logCallback(InputSnapshot &snapshot) {
 
 }
 
+/*
+ *  Display Layouts
+ */
 
-void eric_holder() {
-    // Button select changes the waveform type
-    if (false) {
-        Serial.println("Log Button");
-        Serial.println("Control  | Value");
-//        Serial.printf( "Knob 1     %.2f\n", knob_A1);
-//        Serial.printf( "Knob 2     %.2f\n", knob_A2);
-//        Serial.printf( "Knob 3     %.2f\n", knob_A3);
-//        logPrintoutMillisSince = 0;
-    }
-}
+
 
 #endif //SYNTH_CALLBACKS_H
