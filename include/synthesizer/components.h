@@ -143,8 +143,8 @@ InputPollster pollsterPeriph = InputPollster(periphPollCallback,
 /*
  * DISPLAY LAYOUTS
  */
-LayoutItem layoutItem_mcpLower = LayoutItem(8, LCD_LAYOUT_BUFFER_MCP_LOWER, 8, cb_LayoutMcpLower);
-LayoutItem layoutItem_mcpUpper = LayoutItem(8, LCD_LAYOUT_BUFFER_MCP_UPPER, 8, cb_LayoutMcpUpper);
+LayoutItem layoutItem_mcpLower = LayoutItem(0, LCD_LAYOUT_BUFFER_MCP_LOWER, 8, cb_LayoutMcpLower);
+LayoutItem layoutItem_mcpUpper = LayoutItem(16, LCD_LAYOUT_BUFFER_MCP_UPPER, 8, cb_LayoutMcpUpper);
 LayoutItem layoutItems[] {layoutItem_mcpLower, layoutItem_mcpUpper};
 Layout layout_noteIO = Layout(layoutItems, 2, LCD_DISP_BACK_BUFFER);
 

@@ -61,7 +61,8 @@ void lcd16x2::displayOff() const {
 }
 
 void lcd16x2::setCursorPosition(uint8_t pos) const {
-
+    _writer.sendByte(0xfe);
+    _writer.sendByte(pos + 128);
 }
 
 void lcd16x2::blinkCursor() const {

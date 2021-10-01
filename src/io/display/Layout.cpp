@@ -9,7 +9,7 @@ void Layout::updateGroup() {
     for (int i = 0; i < size; i++) {
         layoutItems[i].update_cb(layoutItems[i].buffer);
         // put the bytes into the group's buffer
-        for (int j = 0; i < layoutItems[i].size; j++) {
+        for (int j = 0; j < layoutItems[i].size; j++) {
             buffer[layoutItems[i].screenPosition + j] = layoutItems[i].buffer[j];
         }
     }

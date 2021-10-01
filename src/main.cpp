@@ -105,9 +105,10 @@ void setup() {
     lcd.writeByte((uint8_t)'h');
 
     delay(500);
+    lcd.setCursorPosition(LCD_LINE_2_START_POS + 2);
+    lcd.writeByte('b');
     testLayoutManager.startCyclicUpdate();
     testLayoutManager.runLayout();
-
 }
 
 void loop() {
@@ -143,6 +144,8 @@ void loop() {
         pollsterPeriph.poll();
         periphNumInterrupts = 0;
     }
+
+    testLayoutManager.update();
 
     if (logPrintoutMillisSince > 500) {
         logr.info("B~ logr v0.1 B~");

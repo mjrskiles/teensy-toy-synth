@@ -24,7 +24,7 @@ size_t SerialLCDWriter::sendByte(uint8_t data) const {
 }
 
 size_t SerialLCDWriter::sendBytes(const uint8_t *buffer, size_t size) const {
-    return 0;
+    return LCD_SERIAL.write(buffer, size);
 }
 
 uint8_t SerialLCDWriter::sendCommand(uint8_t commandChar, uint8_t command) const {

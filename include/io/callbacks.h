@@ -130,6 +130,11 @@ void cb_LayoutMcpLower(lcd_char *buffer) {
     for (int i = 0; i < 8; i++) {
         buffer[i] = INPUT_BUFFER_BOOL[i].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
     }
+    Serial.println("Layout cb lower");
+    for (int i = 0; i < 8; i++) {
+        Serial.printf("%c",(uint8_t)buffer[i]);
+    }
+    Serial.printf("\n");
 }
 
 void cb_LayoutMcpUpper(lcd_char *buffer) {
