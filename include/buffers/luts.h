@@ -8,6 +8,8 @@
 #include <inttypes.h>
 #include <toy_types.h>
 
+extern uint8_t physical_to_logical_button_loc[16];
+
 enum MidiNotes : int {
     NOTE_CMINUS1 , NOTE_CSMINUS1, NOTE_DMINUS1 , NOTE_DSMINUS1,
     NOTE_EMINUS1 , NOTE_FMINUS1 , NOTE_FSMINUS1, NOTE_GMINUS1 ,
@@ -55,5 +57,7 @@ extern const uint8_t mcp_to_physical_button_map[16];
 
 
 extern const MidiNotes bms_CMajor[16];
+
+extern MidiNotes *currentScale;
 
 #endif //SYNTH_LUTS_H

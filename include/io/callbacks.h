@@ -130,11 +130,6 @@ void cb_LayoutMcpLower(lcd_char *buffer) {
     for (int i = 0; i < 8; i++) {
         buffer[i] = INPUT_BUFFER_BOOL[i].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
     }
-    Serial.println("Layout cb lower");
-    for (int i = 0; i < 8; i++) {
-        Serial.printf("%c",(uint8_t)buffer[i]);
-    }
-    Serial.printf("\n");
 }
 
 void cb_LayoutMcpUpper(lcd_char *buffer) {
@@ -145,11 +140,13 @@ void cb_LayoutMcpUpper(lcd_char *buffer) {
 
 void cb_LayoutCurrentNoteName(lcd_char *buffer) {
     int i = active_voice->getFromIndex(); // I know this one is in the bool buffer... something needs to be fixed here
-    const lcd_char *namePointer = midi_note_names[i];
-    Serial.println("writing to temp note name buffer...");
+    uint8_t logicalLoc = physical_to_logical_button_loc[i];
+    const lcd_char *namePointer = midi_note_names[logicalLoc];
+//    Serial.println("writing to temp note name buffer...");
     for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
         buffer[j] = namePointer[j];
     }
+    Serial.print((const char *) buffer);
 }
 
 #endif //SYNTH_CALLBACKS_H

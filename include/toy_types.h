@@ -6,6 +6,6 @@
 #define TEENSY_SYNTH_TOY_TYPES_H
 
 typedef unsigned long pgmtime_t;
-typedef unsigned char lcd_char;
+typedef char lcd_char;
 
 #endif //TEENSY_SYNTH_TOY_TYPES_H

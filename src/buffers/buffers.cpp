@@ -27,7 +27,7 @@ uint8_t LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS] {
 
 lcd_char LCD_LAYOUT_BUFFER_MCP_LOWER[8];
 lcd_char LCD_LAYOUT_BUFFER_MCP_UPPER[8];
-lcd_char LCD_LAYOUT_BUFFER_NOTE_NAME[LCD_NOTE_NAME_CHAR_WIDTH] {'n','o','n','e'};
+lcd_char LCD_LAYOUT_BUFFER_NOTE_NAME[LCD_NOTE_NAME_CHAR_WIDTH + 1] {'n','o','n','e','\0'};
 
 const char* INPUT_NAMES_BOOL[] = {
         "input_bool_0", "input_bool_1", "input_bool_2", "input_bool_3",
