@@ -20,8 +20,10 @@ extern uint8_t voices[MAX_VOICES];
 extern VoiceList voiceList;
 
 // LCD
-extern uint8_t LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS];
-extern uint8_t LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS];
+extern lcd_char LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS];
+extern lcd_char LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS];
+extern lcd_char LCD_LAYOUT_BUFFER_MCP_LOWER[8];
+extern lcd_char LCD_LAYOUT_BUFFER_MCP_UPPER[8];
 
 
 #endif //SYNTH_BUFFERS_H

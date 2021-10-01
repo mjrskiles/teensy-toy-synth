@@ -4,7 +4,6 @@
 
 #include <io/InputSnapshot.h>
 #include <toy_defines.h>
-#include <io/VirtualInput.h>
 #include <synthesizer/VoiceList.h>
 
 InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
@@ -25,3 +24,6 @@ uint8_t LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS] {
     ' ','t',' ','o','y',' ',' ',' ',
     ' ','s','y','n','t','h',' ',' '
 };
+
+lcd_char LCD_LAYOUT_BUFFER_MCP_LOWER[8];
+lcd_char LCD_LAYOUT_BUFFER_MCP_UPPER[8];

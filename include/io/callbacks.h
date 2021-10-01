@@ -21,7 +21,7 @@ MCP23008 mcp_kbLower8 = MCP23008(0x22);
 /*
  * Callback for the listener to use
  */
-void noteButtonListenerCallback(InputSnapshot &snapshot) {
+void cb_noteButtonListener(InputSnapshot &snapshot) {
     Serial.printf("Snapshot | %s\n", snapshot.name());
     Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
     Serial.printf("  time: %lu\n", snapshot.time());
@@ -40,13 +40,13 @@ void noteButtonListenerCallback(InputSnapshot &snapshot) {
     }
 }
 
-void periphLogListenerCallback(InputSnapshot &snapshot) {
+void cb_periphLogListener(InputSnapshot &snapshot) {
     Serial.printf("Snapshot | %s\n", snapshot.name());
     Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
     Serial.printf("  time: %lu\n", snapshot.time());
 }
 
-void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
+void cb_processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
     for (int i = 0; i < size; i++) {
         int index = inputs[i].getIndex();
         uint8_t onInputWord = gpioWord & MCP_INPUT_MASKS[i];
@@ -71,20 +71,20 @@ void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
 /*
  * Lower 8 Pollster cb
  */
-void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
+void cb_lower8Pollster(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-    processGpio(gpio, inputs, size);
+    cb_processGpio(gpio, inputs, size);
 
 }
 
-void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
+void cb_upper8Pollster(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
-    processGpio(gpio, inputs, size);
+    cb_processGpio(gpio, inputs, size);
 }
 
-void peripheralPollsterCallback(VirtualInput *inputs, uint8_t size) {
+void cb_peripheralPollster(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_periph1.readRegister(mcp_kbUpper8.getGpio());
-    processGpio(gpio, inputs, size);
+    cb_processGpio(gpio, inputs, size);
 }
 
 /*
@@ -97,7 +97,7 @@ void note0PollsterCallback() {
     Serial.printf(" value: %x\n", gpio);
 }
 
-void mcp_init(MCP23008 mcp) {
+void cb_mcpInit(MCP23008 mcp) {
     Serial.println("Begin mcp init block");
     Serial.println("constructor");
     mcp.init();
@@ -111,42 +111,31 @@ void mcp_init(MCP23008 mcp) {
     Serial.println("End mcp init block");
 }
 
-void pollsterInitUpper() {
-    mcp_init(mcp_kbUpper8);
+void cb_pollsterInitUpper() {
+    cb_mcpInit(mcp_kbUpper8);
 }
 
-void pollsterInitLower() {
-    mcp_init(mcp_kbLower8);
+void cb_pollsterInitLower() {
+    cb_mcpInit(mcp_kbLower8);
 }
 
-void pollsterInitPeriph() {
-    mcp_init(mcp_periph1);
-}
-
-/***************************
- * Note button listeners
- */
-void logCallback(InputSnapshot &snapshot) {
-    Serial.printf("Logback from %s\n", snapshot.name());
-    Serial.printf("Payload: ");
-    switch (snapshot.type()) {
-        case BOOL:
-            Serial.printf("%s", (bool) (snapshot.asBool()) ? "true" : "false");
-        case FLOAT:
-            Serial.printf("%d", (int)snapshot.asFloat());
-//        case CONTINUOUS_FLOAT:
-//            Serial.printf("%0.2f", (float)*(snapshot.data));
-        default:
-            Serial.println("???");
-    }
-    Serial.printf("\n--\n");
-
+void cb_pollsterInitPeriph() {
+    cb_mcpInit(mcp_periph1);
 }
 
 /*
  *  Display Layouts
  */
+void cb_LayoutMcpLower(lcd_char *buffer) {
+    for (int i = 0; i < 8; i++) {
+        buffer[i] = INPUT_BUFFER_BOOL[i].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
+    }
+}
 
-
+void cb_LayoutMcpUpper(lcd_char *buffer) {
+    for (int i = 0; i < 8; i++) {
+        buffer[i] = INPUT_BUFFER_BOOL[i + 8].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
+    }
+}
 
 #endif //SYNTH_CALLBACKS_H

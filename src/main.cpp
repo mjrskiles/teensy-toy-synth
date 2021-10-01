@@ -19,6 +19,7 @@ Logr logr = Logr();
 int firstPass = 1;
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
+LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
 elapsedMicros scanTime;
@@ -102,6 +103,11 @@ void setup() {
     lcd.writeByte((uint8_t)'t');
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'h');
+
+    delay(500);
+    testLayoutManager.startCyclicUpdate();
+    testLayoutManager.runLayout();
+
 }
 
 void loop() {

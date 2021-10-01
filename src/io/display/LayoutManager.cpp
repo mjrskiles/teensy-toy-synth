@@ -31,3 +31,5 @@ void LayoutManager::runLayout() {
 void LayoutManager::stopLayout() {
     _runLayoutFlag = false;
 }
+
+LayoutManager::LayoutManager(lcd16x2 &lcd, const Layout &currentLayout) : _lcd(lcd), _currentLayout(currentLayout) {}

@@ -20,6 +20,8 @@
  */
 class LayoutManager {
 public:
+    LayoutManager(lcd16x2 &lcd, const Layout &currentLayout);
+
     void startCyclicUpdate();
     void update();
     void setLayout(Layout &layout);
