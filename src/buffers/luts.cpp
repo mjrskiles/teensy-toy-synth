@@ -107,7 +107,7 @@ const MidiNotes bms_CMajor[] = {
         MidiNotes::NOTE_A5, MidiNotes::NOTE_B5, MidiNotes::NOTE_C6, MidiNotes::NOTE_D6
 };
 
-const MidiNotes BbMajorScale[] = {
+MidiNotes BbMajorScale[] = {
         MidiNotes::NOTE_AS3, NOTE_C4, NOTE_D4, NOTE_DS4,
         NOTE_F4, NOTE_G4, NOTE_A4, NOTE_AS4,
         NOTE_C5, NOTE_D5, NOTE_DS5, NOTE_F5,
@@ -134,4 +134,4 @@ struct Scale {
 };
 
 // TODO lookup the current note from the current scale
-MidiNotes *currentScale;
+MidiNotes *currentScale = BbMajorScale;

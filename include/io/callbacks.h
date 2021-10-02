@@ -26,7 +26,7 @@ void cb_noteButtonListener(InputSnapshot &snapshot) {
     Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
     Serial.printf("  time: %lu\n", snapshot.time());
     uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
-    MidiNotes scaleNote = BbMajorScale[but];
+    MidiNotes scaleNote =BbMajorScale[but];
     float freq = midi_frequencies[scaleNote];
     squarewaveBase.frequency(freq);
     if (snapshot.asBool()) {
@@ -139,9 +139,10 @@ void cb_LayoutMcpUpper(lcd_char *buffer) {
 }
 
 void cb_LayoutCurrentNoteName(lcd_char *buffer) {
-    int i = active_voice->getFromIndex(); // I know this one is in the bool buffer... something needs to be fixed here
+    int i = active_voice->getFromIndex();
     uint8_t logicalLoc = physical_to_logical_button_loc[i];
-    const lcd_char *namePointer = midi_note_names[logicalLoc];
+    uint8_t scaleLoc = currentScale[logicalLoc];
+    const lcd_char *namePointer = midi_note_names[scaleLoc];
 //    Serial.println("writing to temp note name buffer...");
     for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
         buffer[j] = namePointer[j];
