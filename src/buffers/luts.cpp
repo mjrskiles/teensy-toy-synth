@@ -3,7 +3,7 @@
 //
 
 
-#include "buffers/luts.h"
+#include "tables/luts.h"
 
 
 /*

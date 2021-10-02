@@ -1,7 +1,7 @@
 //
 // Created by mjrsk on 10/2/2021.
 //
-#include "io/MCP23008.h"
+#include "MCP23008.h"
 
 MCP23008::MCP23008() {
     _address = 0x20;

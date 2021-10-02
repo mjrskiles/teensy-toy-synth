@@ -5,7 +5,7 @@
 #ifndef TEENSY_SYNTH_LAYOUTMANAGER_H
 #define TEENSY_SYNTH_LAYOUTMANAGER_H
 
-#include "lcd16x2.h"
+#include "../../../lib/LCD16x2/lcd16x2.h"
 #include "Layout.h"
 
 

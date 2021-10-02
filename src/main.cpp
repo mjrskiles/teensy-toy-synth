@@ -3,9 +3,9 @@
 #include <Bounce.h>
 #include <synthesizer/synthesizer.h>
 
-#include "buffers/teensy41pinout.h"
-#include "io/MCP23008.h"
-#include "io/display/lcd16x2.h"
+#include "tables/teensy41pinout.h"
+#include "../lib/MCP23008/MCP23008.h"
+#include "../lib/LCD16x2/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
 

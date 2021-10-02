@@ -2,7 +2,7 @@
 // Created by Michael Skiles on 9/10/21.
 //
 
-#include "io/display/SerialLCDWriter.h"
+#include "SerialLCDWriter.h"
 #define LCD_SERIAL Serial7
 
 #include <Wire.h>

@@ -7,11 +7,11 @@
 
 #include "Controller.h"
 #include <HardwareSerial.h>
-#include "MCP23008.h"
+#include "../../lib/MCP23008/MCP23008.h"
 #include "buffers/buffers.h"
 #include "io/InputSnapshot.h"
 #include "VirtualInput.h"
-#include "buffers/luts.h"
+#include "tables/luts.h"
 #include "synthesizer/synthesizer.h"
 #include "buffers/buf_utils.h"
 

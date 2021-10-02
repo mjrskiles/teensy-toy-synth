@@ -5,7 +5,7 @@
 #ifndef TEENSY_SYNTH_BUF_UTILS_H
 #define TEENSY_SYNTH_BUF_UTILS_H
 
-#include "buffers/buffers.h"
+#include "buffers.h"
 
 bool isAnyKeyboardKeyPressed();
 
