@@ -13,6 +13,7 @@
 #include "VirtualInput.h"
 #include "buffers/luts.h"
 #include "synthesizer/synthesizer.h"
+#include "buffers/buf_utils.h"
 
 MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
@@ -33,7 +34,7 @@ void cb_noteButtonListener(InputSnapshot &snapshot) {
         envelope2.noteOn();
         squarewaveBase.amplitude(1.0);
         active_voice = &snapshot;
-    } else if (!snapshot.asBool() && (&snapshot == active_voice)) {
+    } else if (!isAnyKeyboardKeyPressed()) {
         squarewaveBase.amplitude(0.0);
         envelope2.noteOff();
         Serial.println("Env2 Off");
