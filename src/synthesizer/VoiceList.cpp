@@ -38,7 +38,7 @@ void VoiceList::addVoice(uint8_t index) {
     else {
         _triggeredInputIndices[MAX_VOICES - size - 1] = index;
     }
-    Serial.println("Trigged input buffer loc:");
+    Serial.println("Trigged input topBuffer loc:");
     Serial.println(MAX_VOICES - size - 1);
     Serial.println("value at loc:");
     Serial.println(_triggeredInputIndices[MAX_VOICES - size - 1]);

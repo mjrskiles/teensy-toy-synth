@@ -15,14 +15,13 @@ InputSnapshot *active_voice = &INPUT_BUFFER_BOOL[0];
 uint8_t voices[MAX_VOICES];
 VoiceList voiceList = VoiceList();
 
-uint8_t LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS] {
+uint8_t LCD_DISP_TOP_BUFFER[LCD_COLS] {
     ' ','t',' ','o',' ','y',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' ',
-    ' ','s','y','n','t','h',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' '
+
 };
 
-uint8_t LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS] {
-    ' ',' ',' ',' ', ' ',' ',' ',' ', ' ',' ',' ',' ', ' ',' ',' ',' ',
-    ' ',' ',' ',' ', ' ',' ',' ',' ', ' ',' ',' ',' ', ' ',' ',' ',' '
+uint8_t LCD_DISP_BOTTOM_BUFFER[LCD_COLS] {
+    ' ','s','y','n','t','h',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' '
 };
 
 lcd_char LCD_LAYOUT_BUFFER_MCP_LOWER[8];

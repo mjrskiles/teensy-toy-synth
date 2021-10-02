@@ -17,18 +17,19 @@ struct LayoutItem {
     lcd_char *buffer;
     size_t size;
     /*
-     * The callback should fetch its relevant data and update its own buffer;
+     * The callback should fetch its relevant data and update its own topBuffer;
      */
     void (*update_cb)(lcd_char *buffer);
 };
 struct Layout {
-    Layout(LayoutItem *layoutItems, size_t size, lcd_char *buffer);
+    Layout(LayoutItem *layoutItems, size_t size, lcd_char *bufTop, lcd_char *bufBot);
 
     LayoutItem *layoutItems;
     size_t size;
     void updateGroup();
 
-    lcd_char *buffer;
+    lcd_char *topBuffer;
+    lcd_char *botBuffer;
     size_t bufSize = LCD_ROWS * LCD_COLS;
 };
 

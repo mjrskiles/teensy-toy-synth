@@ -53,6 +53,6 @@ void ToySynth::synth_init() {
         INPUT_BUFFER_BOOL[i].setName(INPUT_NAMES_BOOL[i]);
         INPUT_BUFFER_BOOL[i].setState(false);
         INPUT_BUFFER_BOOL[i].setFromIndex(i);
-        // initialize the buffer to a 0 state
+        // initialize the topBuffer to a 0 state
     }
 }

@@ -13,7 +13,7 @@
  * I want this class to be able to handle the business logic of updating the lcd
  * with relevant data
  *
- * it should be able to play back animations stored in a buffer
+ * it should be able to play back animations stored in a topBuffer
  *
  * it should have some way to register a data layout and update it
  *

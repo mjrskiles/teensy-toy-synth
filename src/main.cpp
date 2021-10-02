@@ -104,9 +104,6 @@ void setup() {
     lcd.writeByte((uint8_t)' ');
     lcd.writeByte((uint8_t)'h');
 
-    delay(500);
-    lcd.setCursorPosition(LCD_LINE_2_START_POS + 2);
-    lcd.writeByte('b');
     testLayoutManager.startCyclicUpdate();
     testLayoutManager.runLayout();
 }
