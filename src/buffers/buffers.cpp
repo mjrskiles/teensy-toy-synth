@@ -2,6 +2,7 @@
 // Created by Michael Skiles on 9/21/21.
 //
 
+#include "model/buffers/buffers.h"
 #include <io/InputSnapshot.h>
 #include <toy_defines.h>
 #include <synthesizer/VoiceList.h>

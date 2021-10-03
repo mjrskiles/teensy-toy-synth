@@ -3,7 +3,7 @@
 //
 
 
-#include "tables/luts.h"
+#include "model/lookups/luts.h"
 
 
 /*

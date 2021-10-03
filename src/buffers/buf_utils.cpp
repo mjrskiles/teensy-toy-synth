@@ -2,7 +2,7 @@
 // Created by Michael Skiles on 10/1/21.
 //
 
-#include "buffers/buf_utils.h"
+#include "model/buffers/buf_utils.h"
 
 
 bool isAnyKeyboardKeyPressed() {
