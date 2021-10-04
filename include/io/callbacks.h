@@ -19,6 +19,8 @@ MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
 MCP23008 mcp_kbLower8 = MCP23008(0x22);
 
+JengaStack jengaStack = JengaStack();
+ToySynth toySynth(jengaStack);
 /*
  * Callback for the listener to use
  */
@@ -29,15 +31,15 @@ void cb_noteButtonListener(InputSnapshot &snapshot) {
     uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
     MidiNotes scaleNote =BbMajorScale[but];
     float freq = midi_frequencies[scaleNote];
-    squarewaveBase.frequency(freq);
+//    squarewaveBase.frequency(freq);
     if (snapshot.asBool()) {
-        envelope2.noteOn();
-        squarewaveBase.amplitude(1.0);
+//        envelope2.noteOn();
+//        squarewaveBase.amplitude(1.0);
         active_voice = &snapshot;
     } else if (!isAnyKeyboardKeyPressed()) {
-        squarewaveBase.amplitude(0.0);
-        envelope2.noteOff();
-        Serial.println("Env2 Off");
+//        squarewaveBase.amplitude(0.0);
+//        envelope2.noteOff();
+//        Serial.println("Env2 Off");
     }
 }
 
@@ -73,13 +75,25 @@ void cb_processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
  * Lower 8 Pollster cb
  */
 void cb_lower8Pollster(VirtualInput *inputs, uint8_t size) {
-    uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-    cb_processGpio(gpio, inputs, size);
+    keyboard_io_word_previous = keyboard_io_word;
 
+    uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
+    uint16_t keyboard_word_masked = keyboard_io_word & 0xff00;
+    keyboard_io_word = keyboard_word_masked | (uint16_t) gpio;
+    toySynth.notify();
+    Serial.printf("Keyboard IO word: %x\n", keyboard_io_word);
+
+    cb_processGpio(gpio, inputs, size);
 }
 
 void cb_upper8Pollster(VirtualInput *inputs, uint8_t size) {
+    keyboard_io_word_previous = keyboard_io_word;
+
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
+    uint16_t keyboard_word_masked = keyboard_io_word & 0x00ff;
+    uint16_t orWord = gpio << 8;
+    keyboard_io_word = keyboard_word_masked | orWord;
+    Serial.printf("Keyboard IO word: %x\n", keyboard_io_word);
     cb_processGpio(gpio, inputs, size);
 }
 
@@ -148,7 +162,7 @@ void cb_LayoutCurrentNoteName(lcd_char *buffer) {
     for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
         buffer[j] = namePointer[j];
     }
-    Serial.print((const char *) buffer);
+//    Serial.print((const char *) buffer);
 }
 
 #endif //SYNTH_CALLBACKS_H

@@ -14,7 +14,6 @@
 
 const char *hello_buf = "Kim is so cute";
 
-ToySynth toySynth;
 Logr logr = Logr();
 int firstPass = 1;
 SerialLCDWriter displayWriter = SerialLCDWriter();
@@ -75,12 +74,14 @@ void setup() {
 
     // Don't start the main loop until the play button is pressed
     // This is a good time to attach the serial monitor
+    Serial.println("Press the play/step button to start the program");
     while(1) {
         if (digitalRead(PLAY_STEP_BUTTON_PIN) == LOW) { // LOW is pressed
             logr.info("Loop Triggered by Play/step button");
             break;
         }
     }
+    logr.info("B~ logr v0.1 B~");
     logr.info("Setup done");
 }
 
@@ -97,6 +98,11 @@ void loop() {
     float knob_S = (float)analogRead(KNOB_S_PIN) / 1023.0f;
     float knob_D = (float)analogRead(KNOB_D_PIN) / 1023.0f;
     float knob_R = (float)analogRead(KNOB_R_PIN) / 1023.0f;
+
+    envelope2.attack(asdrScalar * (1 - knob_A));
+    envelope2.decay(asdrScalar * (1 - knob_D));
+    envelope2.sustain(1 - knob_S);
+    envelope2.release(asdrScalar * (1 - knob_R));
 
     sgtl5000_1.volume(knob_Volume);
 //
@@ -123,14 +129,13 @@ void loop() {
     testLayoutManager.update();
 
     // Logging
-    if (logPrintoutMillisSince > 500) {
-        logr.info("B~ logr v0.1 B~");
+    if (logPrintoutMillisSince > 2000) {
         logr.info("Program scan us:");
         Serial.println(scanTime);
-        envelope2.attack(asdrScalar * knob_A);
-        envelope2.decay(asdrScalar * knob_D);
-        envelope2.sustain(knob_S);
-        envelope2.release(asdrScalar * knob_R);
+        uint8_t lower_state = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
+        Serial.printf("Keyboard IO state: 0x%x\n", lower_state);
+
+
 //        Serial.printf(" A  | D  | S  | R\n");
 //        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
         lastState = 0;

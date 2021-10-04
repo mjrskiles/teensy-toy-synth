@@ -56,3 +56,57 @@ void ToySynth::synth_init() {
         // initialize the buffer to a 0 state
     }
 }
+
+void ToySynth::setVoiceOn(float frequency) {
+    Serial.printf("Setting voice on with freq: %8.2f\n", frequency);
+    squarewaveBase.frequency(frequency);
+    squarewaveBase.amplitude(1.0);
+    if (_active_voices.size() == 0) envelope2.noteOn();
+}
+
+void ToySynth::setVoiceOff() {
+    Serial.println("Setting mono voice to off.");
+    squarewaveBase.amplitude(0.0);
+    envelope2.noteOff();
+}
+
+void ToySynth::notify() {
+    // TODO finish this function to respond to IO changes
+    // TODO it picks up the old and new word fine, I need it to differentiate between new note press and note release
+    // can't just check if the new word < old word because there could be a button release higher than a still pressed
+    // button. Is it worth passing in PRESS | RELEASE to notify()?
+    // How can we tell which key press is the new one?
+    // Compare against the stack?
+    // It's almost inevitable
+    Serial.printf("Old IO word: %x\n", keyboard_io_word_previous);
+    Serial.printf("New IO word: %x\n", keyboard_io_word);
+    uint16_t new_state_mask = keyboard_io_word_previous ^ keyboard_io_word;
+//    Serial.printf("1 Active voices size: %n\n", _active_voices.size());
+    if (new_state_mask) { // if there are 1s in this word it means there have been changes. don't know if press or release yet
+        for (int i = 0; i < JENGA_STACK_SIZE_MAX; i++) {
+            if (new_state_mask & logical_loc_to_mask[i]) {
+                // determine press or release
+                if (keyboard_io_word & logical_loc_to_mask[i]) {
+                    // Press
+                    Serial.println("Note press");
+                    MidiNotes note = _currentScale[i];
+                    float freq = midi_frequencies[note];
+                    setVoiceOn(freq);
+                    _active_voices.push(i);
+//                    Serial.printf("2 Active voices size: %n\n", _active_voices.size());
+                } else if (keyboard_io_word_previous & logical_loc_to_mask[i]) { // was the key on in the last state? turn it off
+                    // Release
+                    Serial.println("Note release");
+                    _active_voices.removeByValue(i);
+//                    Serial.printf("3 Active voices size: %n\n", _active_voices.size());
+                    if (_active_voices.size() == 0) {
+                        setVoiceOff();
+                    }
+                }
+            }
+        }
+    }
+    Serial.printf("Active voices size: %x\n", _active_voices.size());
+}
+
+ToySynth::ToySynth(const JengaStack &activeVoices) : _active_voices(activeVoices) {}

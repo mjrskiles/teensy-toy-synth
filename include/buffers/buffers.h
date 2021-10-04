@@ -7,11 +7,13 @@
 
 #include <inttypes.h>
 #include <synthesizer/VoiceList.h>
+#include <utils/JengaStack.h>
 #include "io/InputSnapshot.h"
 #include "toy_defines.h"
 
 extern uint16_t keyboard_io_word;
-bool keyboard_io_changed = false;
+extern uint16_t keyboard_io_word_previous;
+extern uint8_t jengaStackStack[16];
 
 extern InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
 extern InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];
