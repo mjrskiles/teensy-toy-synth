@@ -22,11 +22,14 @@ uint8_t JengaStack::pop() {
     }
     return val;
 }
-
+// TODO sometimes this function is leaving 1 voice active with no key presses I think
 uint8_t JengaStack::removeAtIndex(uint8_t index) {
+    Serial.printf("Removing from Jenga stack at index: %d\n", index);
+    Serial.printf("Size was: %d\n", _size);
     if (index > _size || _size == 0) return JENGA_ERR;
     if (index == JENGA_STACK_SIZE_MAX) {
         _size--;
+        Serial.printf("Now: %d\n", (int) _size);
         return _stack[_size + 1];
     }
 
@@ -35,7 +38,19 @@ uint8_t JengaStack::removeAtIndex(uint8_t index) {
     for (uint8_t i = index; i < _size; i++) {
         _stack[i] = _stack[i++];
     }
+    _size--;
+    Serial.printf("Now: %d\n", (int) _size);
     return val;
+}
+
+uint8_t JengaStack::removeByValue(uint8_t val) {
+    uint8_t removed = JENGA_ERR;
+    for (int i = 0; i < JENGA_STACK_SIZE_MAX; i++) {
+        if (_stack[i] == val) {
+            removed = removeAtIndex(i);
+        }
+    }
+    return removed;
 }
 
 uint8_t JengaStack::getElemAtIndex(uint8_t index) {

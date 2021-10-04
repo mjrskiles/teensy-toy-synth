@@ -13,7 +13,7 @@
  * 4, 5, 6, 7
  * 0, 1, 2, 3
  */
-uint8_t physical_to_logical_button_loc[16] {
+const uint8_t physical_to_logical_button_loc[16] {
     7, 6, 5, 4,
     3, 2, 1, 0,
     15, 14, 13, 12,

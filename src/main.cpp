@@ -14,7 +14,6 @@
 
 const char *hello_buf = "Kim is so cute";
 
-ToySynth toySynth;
 Logr logr = Logr();
 int firstPass = 1;
 SerialLCDWriter displayWriter = SerialLCDWriter();
@@ -82,6 +81,7 @@ void setup() {
             break;
         }
     }
+    logr.info("B~ logr v0.1 B~");
     logr.info("Setup done");
 }
 
@@ -130,9 +130,11 @@ void loop() {
 
     // Logging
     if (logPrintoutMillisSince > 2000) {
-        logr.info("B~ logr v0.1 B~");
         logr.info("Program scan us:");
         Serial.println(scanTime);
+        uint8_t lower_state = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
+        Serial.printf("Keyboard IO state: 0x%x\n", lower_state);
+
 
 //        Serial.printf(" A  | D  | S  | R\n");
 //        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);

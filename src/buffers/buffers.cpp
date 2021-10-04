@@ -7,6 +7,8 @@
 #include <synthesizer/VoiceList.h>
 
 uint16_t keyboard_io_word = 0;
+uint16_t keyboard_io_word_previous = 0;
+uint8_t jengaStackStack[16];
 
 InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
 InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];

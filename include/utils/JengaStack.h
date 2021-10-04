@@ -6,7 +6,7 @@
 #define TEENSY_SYNTH_JENGASTACK_H
 
 #include "cstdint"
-#include <usb_serial.h>
+#include <Arduino.h>
 #define JENGA_STACK_SIZE_MAX 16
 /*
  * A Jenga stack can have arbitrary members removed while staying intact
@@ -16,6 +16,7 @@ public:
     void push(uint8_t elem);
     uint8_t pop();
     uint8_t removeAtIndex(uint8_t index);
+    uint8_t removeByValue(uint8_t val);
     uint8_t getElemAtIndex(uint8_t index);
     uint8_t size();
 private:

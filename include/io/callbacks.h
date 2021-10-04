@@ -19,6 +19,8 @@ MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
 MCP23008 mcp_kbLower8 = MCP23008(0x22);
 
+JengaStack jengaStack = JengaStack();
+ToySynth toySynth(jengaStack);
 /*
  * Callback for the listener to use
  */
@@ -73,14 +75,20 @@ void cb_processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
  * Lower 8 Pollster cb
  */
 void cb_lower8Pollster(VirtualInput *inputs, uint8_t size) {
+    keyboard_io_word_previous = keyboard_io_word;
+
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
     uint16_t keyboard_word_masked = keyboard_io_word & 0xff00;
     keyboard_io_word = keyboard_word_masked | (uint16_t) gpio;
+    toySynth.notify();
     Serial.printf("Keyboard IO word: %x\n", keyboard_io_word);
+
     cb_processGpio(gpio, inputs, size);
 }
 
 void cb_upper8Pollster(VirtualInput *inputs, uint8_t size) {
+    keyboard_io_word_previous = keyboard_io_word;
+
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
     uint16_t keyboard_word_masked = keyboard_io_word & 0x00ff;
     uint16_t orWord = gpio << 8;

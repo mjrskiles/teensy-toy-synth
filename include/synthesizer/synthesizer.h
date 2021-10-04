@@ -58,6 +58,7 @@ public:
 
 private:
     JengaStack _active_voices;
+    MidiNotes *_currentScale = BbMajorScale;
 };
 
 
