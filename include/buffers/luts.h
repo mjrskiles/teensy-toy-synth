@@ -8,7 +8,8 @@
 #include <inttypes.h>
 #include <toy_types.h>
 
-extern uint8_t physical_to_logical_button_loc[16];
+extern const uint8_t physical_to_logical_button_loc[16];
+extern const uint16_t logical_loc_to_mask[16];
 
 enum MidiNotes : int {
     NOTE_CMINUS1 , NOTE_CSMINUS1, NOTE_DMINUS1 , NOTE_DSMINUS1,

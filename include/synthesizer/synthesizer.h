@@ -7,8 +7,11 @@
 
 #include <Audio.h>
 #include <io/InputSnapshot.h>
+#include <io/notification_receiver.h>
 #include "toy_defines.h"
 #include "buffers/buffers.h"
+#include "utils/JengaStack.h"
+#include "buffers/luts.h"
 
 // GUItool: begin automatically generated code
 extern AudioSynthWaveform       squarewaveBase;      //xy=90,59
@@ -40,11 +43,21 @@ extern AudioConnection          patchCord14;
 extern AudioControlSGTL5000     sgtl5000_1;
 //// GUItool: end automatically generated code
 
-class ToySynth {
+class ToySynth : public NotificationReceiver {
 public:
+    ToySynth(const JengaStack &activeVoices);
+
     void synth_init();
     void setVoiceOn(float frequency);
     void setVoiceOff();
+
+    /*
+     * Notification indicates an I/O change. Check the buffers and update appropriately
+     */
+    void notify() override;
+
+private:
+    JengaStack _active_voices;
 };
 
 

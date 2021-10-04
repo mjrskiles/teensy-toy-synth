@@ -11,7 +11,6 @@
 #include "toy_defines.h"
 
 extern uint16_t keyboard_io_word;
-bool keyboard_io_changed = false;
 
 extern InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
 extern InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];

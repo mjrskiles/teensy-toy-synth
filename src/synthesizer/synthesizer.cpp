@@ -56,3 +56,26 @@ void ToySynth::synth_init() {
         // initialize the buffer to a 0 state
     }
 }
+
+void ToySynth::setVoiceOn(float frequency) {
+    squarewaveBase.frequency(frequency);
+    squarewaveBase.amplitude(1.0);
+}
+
+void ToySynth::setVoiceOff() {
+    squarewaveBase.amplitude(0.0);
+}
+
+void ToySynth::notify() {
+    // TODO finish this function to respond to IO changes
+    // How can we tell which key press is the new one?
+    // Compare against the stack?
+    // It's almost inevitable
+    uint16_t reconstructed_word = 0;
+    for (int i = 0; i < _active_voices.size(); ++i) {
+        reconstructed_word |= logical_loc_to_mask[_active_voices.getElemAtIndex(i)];
+    }
+    uint16_t new_key_mask = reconstructed_word ^ keyboard_io_word;
+}
+
+ToySynth::ToySynth(const JengaStack &activeVoices) : _active_voices(activeVoices) {}
