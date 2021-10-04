@@ -36,6 +36,7 @@ public:
     void blinkCursor() const;
     void displayOff() const;
     void setCursorPosition(uint8_t pos) const;
+    void userSplash();
 private:
     uint8_t _row;
     uint8_t _col;

@@ -68,3 +68,40 @@ void lcd16x2::setCursorPosition(uint8_t pos) const {
 void lcd16x2::blinkCursor() const {
     _writer.sendActionCommand(0x0d);
 }
+
+void lcd16x2::userSplash() {
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'t');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'o');
+
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'y');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'s');
+
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'y');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'n');
+
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'t');
+    writeByte((uint8_t)' ');
+    writeByte((uint8_t)'h');
+}

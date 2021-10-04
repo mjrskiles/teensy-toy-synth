@@ -47,6 +47,8 @@ void setup() {
 
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
+    pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
+    pinMode(RECORD_BUTTON_PIN, INPUT);
     delay(500); // Pull up resistors gotta pull up, let everything power up
 
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
@@ -69,52 +71,25 @@ void setup() {
     lcd.writeByte(0xfe);
     lcd.writeByte(0x80);
 
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
+    lcd.userSplash();
 
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'t');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'o');
-
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'y');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'s');
-
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'y');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'n');
-
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'t');
-    lcd.writeByte((uint8_t)' ');
-    lcd.writeByte((uint8_t)'h');
-
-    delay(500);
-    lcd.setCursorPosition(LCD_LINE_2_START_POS + 2);
-    lcd.writeByte('b');
-    testLayoutManager.startCyclicUpdate();
-    testLayoutManager.runLayout();
+    // Don't start the main loop until the play button is pressed
+    // This is a good time to attach the serial monitor
+    while(1) {
+        if (digitalRead(PLAY_STEP_BUTTON_PIN) == LOW) { // LOW is pressed
+            logr.info("Loop Triggered by Play/step button");
+            break;
+        }
+    }
+    logr.info("Setup done");
 }
 
 void loop() {
     if (firstPass) {
         firstPass = 0;
         Serial.println("First Pass");
+        testLayoutManager.startCyclicUpdate();
+        testLayoutManager.runLayout();
     }
 
     float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
@@ -147,6 +122,7 @@ void loop() {
 
     testLayoutManager.update();
 
+    // Logging
     if (logPrintoutMillisSince > 500) {
         logr.info("B~ logr v0.1 B~");
         logr.info("Program scan us:");
