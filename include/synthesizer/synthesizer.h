@@ -7,7 +7,8 @@
 
 #include <Audio.h>
 #include <io/InputSnapshot.h>
-#include "synth_defines.h"
+#include "toy_defines.h"
+#include "buffers/buffers.h"
 
 // GUItool: begin automatically generated code
 extern AudioSynthWaveform       squarewaveBase;      //xy=90,59

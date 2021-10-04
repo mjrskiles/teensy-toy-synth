@@ -3,9 +3,9 @@
 #include <Bounce.h>
 #include <synthesizer/synthesizer.h>
 
-#include "teensy41pinout.h"
+#include "buffers/teensy41pinout.h"
 #include "io/MCP23008.h"
-#include "lcd16x2.h"
+#include "io/display/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
 
@@ -19,6 +19,7 @@ Logr logr = Logr();
 int firstPass = 1;
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
+LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO);
 // Debugging / Logging
 elapsedMillis logPrintoutMillisSince;
 elapsedMicros scanTime;
@@ -46,22 +47,14 @@ void setup() {
 
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
+    pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
+    pinMode(RECORD_BUTTON_PIN, INPUT);
     delay(500); // Pull up resistors gotta pull up, let everything power up
 
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
     pollsterLower8.init();
     pollsterUpper8.init();
     pollsterPeriph.init();
-    // lcd16x2 should be  good to go after 500ms
-    lcd.displayOff();
-    lcd.clearDisplay();
-    lcd.displayOn();
-    lcd.writeByte(0xfe);
-    lcd.writeByte(0x80);
-    lcd.writeByte((uint8_t)'i');
-    lcd.writeByte((uint8_t)'n');
-    lcd.writeByte((uint8_t)'i');
-    lcd.writeByte((uint8_t)'t');
 
     toySynth.synth_init();
     mixerEnv1.gain(0, 0.0);
@@ -70,12 +63,33 @@ void setup() {
     attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
     attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
     attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
+
+    // lcd16x2 should be  good to go after 500ms
+    lcd.displayOff();
+    lcd.clearDisplay();
+    lcd.displayOn();
+    lcd.writeByte(0xfe);
+    lcd.writeByte(0x80);
+
+    lcd.userSplash();
+
+    // Don't start the main loop until the play button is pressed
+    // This is a good time to attach the serial monitor
+    while(1) {
+        if (digitalRead(PLAY_STEP_BUTTON_PIN) == LOW) { // LOW is pressed
+            logr.info("Loop Triggered by Play/step button");
+            break;
+        }
+    }
+    logr.info("Setup done");
 }
 
 void loop() {
     if (firstPass) {
         firstPass = 0;
         Serial.println("First Pass");
+        testLayoutManager.startCyclicUpdate();
+        testLayoutManager.runLayout();
     }
 
     float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
@@ -106,6 +120,9 @@ void loop() {
         periphNumInterrupts = 0;
     }
 
+    testLayoutManager.update();
+
+    // Logging
     if (logPrintoutMillisSince > 500) {
         logr.info("B~ logr v0.1 B~");
         logr.info("Program scan us:");

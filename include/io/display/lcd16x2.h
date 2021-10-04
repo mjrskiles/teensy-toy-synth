@@ -5,6 +5,7 @@
 #ifndef SYNTH_LCD16X2_H
 #define SYNTH_LCD16X2_H
 #include "SerialLCDWriter.h"
+#include "toy_defines.h"
 
 const uint8_t DISPLAY_COMMAND_CHAR = 0xFE;
 const uint8_t DISPLAY_CONFIG_CHAR = 0x7C;
@@ -24,6 +25,7 @@ public:
     size_t print(const char *buffer) const;
     size_t writeByte(const uint8_t data);
     size_t writeBytes(const uint8_t *buffer, size_t size);
+    size_t writeBuffer(const uint8_t buffer[LCD_ROWS * LCD_COLS]);
     void clearDisplay() const;
     void cursorRight() const;
     void cursorLeft() const;
@@ -34,6 +36,7 @@ public:
     void blinkCursor() const;
     void displayOff() const;
     void setCursorPosition(uint8_t pos) const;
+    void userSplash();
 private:
     uint8_t _row;
     uint8_t _col;

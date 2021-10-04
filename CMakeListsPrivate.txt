@@ -18,7 +18,7 @@ SET(CMAKE_C_FLAGS "-Wall -ffunction-sections -fdata-sections -mthumb -mcpu=corte
 set(CMAKE_CXX_STANDARD 14)
 
 if (CMAKE_BUILD_TYPE MATCHES "teensy41")
-    add_definitions(-D'PLATFORMIO=50101')
+    add_definitions(-D'PLATFORMIO=50200')
     add_definitions(-D'__IMXRT1062__')
     add_definitions(-D'ARDUINO_TEENSY41')
     add_definitions(-D'USB_SERIAL')

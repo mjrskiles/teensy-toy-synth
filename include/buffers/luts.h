@@ -6,6 +6,9 @@
 #define SYNTH_LUTS_H
 
 #include <inttypes.h>
+#include <toy_types.h>
+
+extern uint8_t physical_to_logical_button_loc[16];
 
 enum MidiNotes : int {
     NOTE_CMINUS1 , NOTE_CSMINUS1, NOTE_DMINUS1 , NOTE_DSMINUS1,
@@ -42,15 +45,19 @@ enum MidiNotes : int {
     NOTE_E9 ,NOTE_F9 ,NOTE_FS9,NOTE_G9
 };
 
+extern const lcd_char* midi_note_names[128];
+
 extern uint8_t MCP_INPUT_MASKS[8];
 extern float midi_frequencies[128];
 extern const char *input_buffer_bool_names[256];
-extern const MidiNotes BbMajorScale[16];
+extern MidiNotes BbMajorScale[16];
 extern const uint8_t mcp_to_physical_button_map[16];
 
 
 
 
 extern const MidiNotes bms_CMajor[16];
+
+extern MidiNotes *currentScale;
 
 #endif //SYNTH_LUTS_H

@@ -13,6 +13,7 @@
 #include "VirtualInput.h"
 #include "buffers/luts.h"
 #include "synthesizer/synthesizer.h"
+#include "buffers/buf_utils.h"
 
 MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
@@ -21,32 +22,32 @@ MCP23008 mcp_kbLower8 = MCP23008(0x22);
 /*
  * Callback for the listener to use
  */
-void noteButtonListenerCallback(InputSnapshot &snapshot) {
+void cb_noteButtonListener(InputSnapshot &snapshot) {
     Serial.printf("Snapshot | %s\n", snapshot.name());
     Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
     Serial.printf("  time: %lu\n", snapshot.time());
     uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
-    MidiNotes scaleNote = BbMajorScale[but];
+    MidiNotes scaleNote =BbMajorScale[but];
     float freq = midi_frequencies[scaleNote];
     squarewaveBase.frequency(freq);
     if (snapshot.asBool()) {
         envelope2.noteOn();
         squarewaveBase.amplitude(1.0);
-
-    } else if (!snapshot.asBool() && (&snapshot == &active_voice)) {
+        active_voice = &snapshot;
+    } else if (!isAnyKeyboardKeyPressed()) {
         squarewaveBase.amplitude(0.0);
         envelope2.noteOff();
         Serial.println("Env2 Off");
     }
 }
 
-void periphLogListenerCallback(InputSnapshot &snapshot) {
+void cb_periphLogListener(InputSnapshot &snapshot) {
     Serial.printf("Snapshot | %s\n", snapshot.name());
     Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
     Serial.printf("  time: %lu\n", snapshot.time());
 }
 
-void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
+void cb_processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
     for (int i = 0; i < size; i++) {
         int index = inputs[i].getIndex();
         uint8_t onInputWord = gpioWord & MCP_INPUT_MASKS[i];
@@ -71,20 +72,20 @@ void processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
 /*
  * Lower 8 Pollster cb
  */
-void lower8PollsterCallback(VirtualInput *inputs, uint8_t size) {
+void cb_lower8Pollster(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-    processGpio(gpio, inputs, size);
+    cb_processGpio(gpio, inputs, size);
 
 }
 
-void upper8PollsterCallback(VirtualInput *inputs, uint8_t size) {
+void cb_upper8Pollster(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
-    processGpio(gpio, inputs, size);
+    cb_processGpio(gpio, inputs, size);
 }
 
-void peripheralPollsterCallback(VirtualInput *inputs, uint8_t size) {
+void cb_peripheralPollster(VirtualInput *inputs, uint8_t size) {
     uint8_t gpio = mcp_periph1.readRegister(mcp_kbUpper8.getGpio());
-    processGpio(gpio, inputs, size);
+    cb_processGpio(gpio, inputs, size);
 }
 
 /*
@@ -97,7 +98,7 @@ void note0PollsterCallback() {
     Serial.printf(" value: %x\n", gpio);
 }
 
-void mcp_init(MCP23008 mcp) {
+void cb_mcpInit(MCP23008 mcp) {
     Serial.println("Begin mcp init block");
     Serial.println("constructor");
     mcp.init();
@@ -111,49 +112,43 @@ void mcp_init(MCP23008 mcp) {
     Serial.println("End mcp init block");
 }
 
-void pollsterInitUpper() {
-    mcp_init(mcp_kbUpper8);
+void cb_pollsterInitUpper() {
+    cb_mcpInit(mcp_kbUpper8);
 }
 
-void pollsterInitLower() {
-    mcp_init(mcp_kbLower8);
+void cb_pollsterInitLower() {
+    cb_mcpInit(mcp_kbLower8);
 }
 
-void pollsterInitPeriph() {
-    mcp_init(mcp_periph1);
+void cb_pollsterInitPeriph() {
+    cb_mcpInit(mcp_periph1);
 }
 
-/***************************
- * Note button listeners
+/*
+ *  Display Layouts
  */
-void logCallback(InputSnapshot &snapshot) {
-    Serial.printf("Logback from %s\n", snapshot.name());
-    Serial.printf("Payload: ");
-    switch (snapshot.type()) {
-        case BOOL:
-            Serial.printf("%s", (bool) (snapshot.asBool()) ? "true" : "false");
-        case FLOAT:
-            Serial.printf("%d", (int)snapshot.asFloat());
-//        case CONTINUOUS_FLOAT:
-//            Serial.printf("%0.2f", (float)*(snapshot.data));
-        default:
-            Serial.println("???");
+void cb_LayoutMcpLower(lcd_char *buffer) {
+    for (int i = 0; i < 8; i++) {
+        buffer[i] = INPUT_BUFFER_BOOL[i].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
     }
-    Serial.printf("\n--\n");
-
 }
 
-
-void eric_holder() {
-    // Button select changes the waveform type
-    if (false) {
-        Serial.println("Log Button");
-        Serial.println("Control  | Value");
-//        Serial.printf( "Knob 1     %.2f\n", knob_A1);
-//        Serial.printf( "Knob 2     %.2f\n", knob_A2);
-//        Serial.printf( "Knob 3     %.2f\n", knob_A3);
-//        logPrintoutMillisSince = 0;
+void cb_LayoutMcpUpper(lcd_char *buffer) {
+    for (int i = 0; i < 8; i++) {
+        buffer[i] = INPUT_BUFFER_BOOL[i + 8].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
     }
+}
+
+void cb_LayoutCurrentNoteName(lcd_char *buffer) {
+    int i = active_voice->getFromIndex();
+    uint8_t logicalLoc = physical_to_logical_button_loc[i];
+    uint8_t scaleLoc = currentScale[logicalLoc];
+    const lcd_char *namePointer = midi_note_names[scaleLoc];
+//    Serial.println("writing to temp note name buffer...");
+    for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
+        buffer[j] = namePointer[j];
+    }
+    Serial.print((const char *) buffer);
 }
 
 #endif //SYNTH_CALLBACKS_H

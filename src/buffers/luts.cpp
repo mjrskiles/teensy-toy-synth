@@ -2,78 +2,29 @@
 // Created by Michael Skiles on 9/26/21.
 //
 
+
 #include "buffers/luts.h"
+
+
+/*
+ * Corresponds to physical layout
+ * 12, 13, 14, 15
+ * 8, 9, 10, 11
+ * 4, 5, 6, 7
+ * 0, 1, 2, 3
+ */
+uint8_t physical_to_logical_button_loc[16] {
+    7, 6, 5, 4,
+    3, 2, 1, 0,
+    15, 14, 13, 12,
+    11, 10, 9, 8
+};
+
+
 
 uint8_t MCP_INPUT_MASKS[] = {
         0x01, 0x02, 0x04, 0x08,
         0x10, 0x20, 0x40, 0x80
-};
-
-const char *input_buffer_bool_names[] = {
-        "input_bool_0", "input_bool_1", "input_bool_2", "input_bool_3",
-        "input_bool_4", "input_bool_5", "input_bool_6", "input_bool_7",
-        "input_bool_8", "input_bool_9", "input_bool_10", "input_bool_11",
-        "input_bool_12", "input_bool_13", "input_bool_14", "input_bool_15",
-        "input_bool_16", "input_bool_17", "input_bool_18", "input_bool_19",
-        "input_bool_20", "input_bool_21", "input_bool_22", "input_bool_23",
-        "input_bool_24", "input_bool_25", "input_bool_26", "input_bool_27",
-        "input_bool_28", "input_bool_29", "input_bool_30", "input_bool_31",
-        "input_bool_32", "input_bool_33", "input_bool_34", "input_bool_35",
-        "input_bool_36", "input_bool_37", "input_bool_38", "input_bool_39",
-        "input_bool_40", "input_bool_41", "input_bool_42", "input_bool_43",
-        "input_bool_44", "input_bool_45", "input_bool_46", "input_bool_47",
-        "input_bool_48", "input_bool_49", "input_bool_50", "input_bool_51",
-        "input_bool_52", "input_bool_53", "input_bool_54", "input_bool_55",
-        "input_bool_56", "input_bool_57", "input_bool_58", "input_bool_59",
-        "input_bool_60", "input_bool_61", "input_bool_62", "input_bool_63",
-        "input_bool_64", "input_bool_65", "input_bool_66", "input_bool_67",
-        "input_bool_68", "input_bool_69", "input_bool_70", "input_bool_71",
-        "input_bool_72", "input_bool_73", "input_bool_74", "input_bool_75",
-        "input_bool_76", "input_bool_77", "input_bool_78", "input_bool_79",
-        "input_bool_80", "input_bool_81", "input_bool_82", "input_bool_83",
-        "input_bool_84", "input_bool_85", "input_bool_86", "input_bool_87",
-        "input_bool_88", "input_bool_89", "input_bool_90", "input_bool_91",
-        "input_bool_92", "input_bool_93", "input_bool_94", "input_bool_95",
-        "input_bool_96", "input_bool_97", "input_bool_98", "input_bool_99",
-        "input_bool_100", "input_bool_101", "input_bool_102", "input_bool_103",
-        "input_bool_104", "input_bool_105", "input_bool_106", "input_bool_107",
-        "input_bool_108", "input_bool_109", "input_bool_110", "input_bool_111",
-        "input_bool_112", "input_bool_113", "input_bool_114", "input_bool_115",
-        "input_bool_116", "input_bool_117", "input_bool_118", "input_bool_119",
-        "input_bool_120", "input_bool_121", "input_bool_122", "input_bool_123",
-        "input_bool_124", "input_bool_125", "input_bool_126", "input_bool_127",
-        "input_bool_128", "input_bool_129", "input_bool_130", "input_bool_131",
-        "input_bool_132", "input_bool_133", "input_bool_134", "input_bool_135",
-        "input_bool_136", "input_bool_137", "input_bool_138", "input_bool_139",
-        "input_bool_140", "input_bool_141", "input_bool_142", "input_bool_143",
-        "input_bool_144", "input_bool_145", "input_bool_146", "input_bool_147",
-        "input_bool_148", "input_bool_149", "input_bool_150", "input_bool_151",
-        "input_bool_152", "input_bool_153", "input_bool_154", "input_bool_155",
-        "input_bool_156", "input_bool_157", "input_bool_158", "input_bool_159",
-        "input_bool_160", "input_bool_161", "input_bool_162", "input_bool_163",
-        "input_bool_164", "input_bool_165", "input_bool_166", "input_bool_167",
-        "input_bool_168", "input_bool_169", "input_bool_170", "input_bool_171",
-        "input_bool_172", "input_bool_173", "input_bool_174", "input_bool_175",
-        "input_bool_176", "input_bool_177", "input_bool_178", "input_bool_179",
-        "input_bool_180", "input_bool_181", "input_bool_182", "input_bool_183",
-        "input_bool_184", "input_bool_185", "input_bool_186", "input_bool_187",
-        "input_bool_188", "input_bool_189", "input_bool_190", "input_bool_191",
-        "input_bool_192", "input_bool_193", "input_bool_194", "input_bool_195",
-        "input_bool_196", "input_bool_197", "input_bool_198", "input_bool_199",
-        "input_bool_200", "input_bool_201", "input_bool_202", "input_bool_203",
-        "input_bool_204", "input_bool_205", "input_bool_206", "input_bool_207",
-        "input_bool_208", "input_bool_209", "input_bool_210", "input_bool_211",
-        "input_bool_212", "input_bool_213", "input_bool_214", "input_bool_215",
-        "input_bool_216", "input_bool_217", "input_bool_218", "input_bool_219",
-        "input_bool_220", "input_bool_221", "input_bool_222", "input_bool_223",
-        "input_bool_224", "input_bool_225", "input_bool_226", "input_bool_227",
-        "input_bool_228", "input_bool_229", "input_bool_230", "input_bool_231",
-        "input_bool_232", "input_bool_233", "input_bool_234", "input_bool_235",
-        "input_bool_236", "input_bool_237", "input_bool_238", "input_bool_239",
-        "input_bool_240", "input_bool_241", "input_bool_242", "input_bool_243",
-        "input_bool_244", "input_bool_245", "input_bool_246", "input_bool_247",
-        "input_bool_248", "input_bool_249", "input_bool_250", "input_bool_251",
-        "input_bool_252", "input_bool_253", "input_bool_254", "input_bool_255"
 };
 
 float midi_frequencies[] = {
@@ -111,7 +62,40 @@ float midi_frequencies[] = {
         10548.1,11175.3,11839.8,12543.9,
         };
 
-
+const lcd_char* midi_note_names[] {
+    "C -1\0", "C#-1\0", "D -1\0", "D#-1\0",
+    "E -1\0", "F -1\0", "F#-1\0", "G -1\0",
+    "G#-1\0", "A -1\0", "Bb-1\0", "B -1\0",
+    "C  0\0", "C# 0\0", "D  0\0", "D#-1\0",
+    "E  0\0", "F  0\0", "F# 0\0", "G  0\0",
+    "G# 0\0", "A  0\0", "Bb 0\0", "B  0\0",
+    "C  1\0", "C# 1\0", "D  1\0", "D# 1\0",
+    "E  1\0", "F  1\0", "F# 1\0", "G  1\0",
+    "G# 1\0", "A  1\0", "Bb 1\0", "B  1\0",
+    "C  2\0", "C# 2\0", "D  2\0", "D# 2\0",
+    "E  2\0", "F  2\0", "F# 2\0", "G  2\0",
+    "G# 2\0", "A  2\0", "Bb 2\0", "B  2\0",
+    "C  3\0", "C# 3\0", "D  3\0", "D# 3\0",
+    "E  3\0", "F  3\0", "F# 3\0", "G  3\0",
+    "G# 3\0", "A  3\0", "Bb 3\0", "B  3\0",
+    "C  4\0", "C# 4\0", "D  4\0", "D# 4\0",
+    "E  4\0", "F  4\0", "F# 4\0", "G  4\0",
+    "G# 4\0", "A  4\0", "Bb 4\0", "B  4\0",
+    "C  5\0", "C# 5\0", "D  5\0", "D# 5\0",
+    "E  5\0", "F  5\0", "F# 5\0", "G  5\0",
+    "G# 5\0", "A  5\0", "Bb 5\0", "B  5\0",
+    "C  6\0", "C# 6\0", "D  6\0", "D# 6\0",
+    "E  6\0", "F  6\0", "F# 6\0", "G  6\0",
+    "G# 6\0", "A  6\0", "Bb 6\0", "B  6\0",
+    "C  7\0", "C# 7\0", "D  7\0", "D# 7\0",
+    "E  7\0", "F  7\0", "F# 7\0", "G  7\0",
+    "G# 7\0", "A  7\0", "Bb 7\0", "B  7\0",
+    "C  8\0", "C# 8\0", "D  8\0", "D# 8\0",
+    "E  8\0", "F  8\0", "F# 8\0", "G  8\0",
+    "G# 8\0", "A  8\0", "Bb 8\0", "B  8\0",
+    "C  9\0", "C# 9\0", "D  9\0", "D# 9\0",
+    "E  9\0", "F  9\0", "F# 9\0", "G  9\0"
+};
 
 static const char scaleNameCMajor[32] = "C Major\0";
 
@@ -123,7 +107,7 @@ const MidiNotes bms_CMajor[] = {
         MidiNotes::NOTE_A5, MidiNotes::NOTE_B5, MidiNotes::NOTE_C6, MidiNotes::NOTE_D6
 };
 
-const MidiNotes BbMajorScale[] = {
+MidiNotes BbMajorScale[] = {
         MidiNotes::NOTE_AS3, NOTE_C4, NOTE_D4, NOTE_DS4,
         NOTE_F4, NOTE_G4, NOTE_A4, NOTE_AS4,
         NOTE_C5, NOTE_D5, NOTE_DS5, NOTE_F5,
@@ -144,8 +128,10 @@ const uint8_t mcp_to_physical_button_map[] = {
         11, 10, 9, 8
 };
 
-
 struct Scale {
     const char *Name;
     MidiNotes ButtonMap[16];
 };
+
+// TODO lookup the current note from the current scale
+MidiNotes *currentScale = BbMajorScale;

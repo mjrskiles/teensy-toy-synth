@@ -4,24 +4,27 @@
 
 #ifndef SYNTH_COMPONENTS_H
 #define SYNTH_COMPONENTS_H
+
+#include <io/display/Layout.h>
+#include <io/display/LayoutManager.h>
 #include "io/InputSnapshot.h"
 #include "io/InputPollster.h"
 #include "io/callbacks.h"
 
 // the callbacks are defined in callbacks.h
 // Listeners
-void (*listener_callback)(InputSnapshot&) = &noteButtonListenerCallback;
-void (*periphLogCallback)(InputSnapshot&) = &periphLogListenerCallback;
+void (*listener_callback)(InputSnapshot&) = &cb_noteButtonListener;
+void (*periphLogCallback)(InputSnapshot&) = &cb_periphLogListener;
 
 // Pollsters
 //   polling
-void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &lower8PollsterCallback;
-void (*upperPollCallback)(VirtualInput *inputs, uint8_t size) = &upper8PollsterCallback;
-void (*periphPollCallback)(VirtualInput *inputs, uint8_t size) = &peripheralPollsterCallback;
+void (*pollCallback)(VirtualInput *inputs, uint8_t size) = &cb_lower8Pollster;
+void (*upperPollCallback)(VirtualInput *inputs, uint8_t size) = &cb_upper8Pollster;
+void (*periphPollCallback)(VirtualInput *inputs, uint8_t size) = &cb_peripheralPollster;
 //   init
-void (*initCallbackUpper)() = &pollsterInitUpper;
-void (*initCallbackLower)() = &pollsterInitLower;
-void (*initCallbackPeriph)() = &pollsterInitPeriph;
+void (*initCallbackUpper)() = &cb_pollsterInitUpper;
+void (*initCallbackLower)() = &cb_pollsterInitLower;
+void (*initCallbackPeriph)() = &cb_pollsterInitPeriph;
 
 InputListener note0Listeners[] = {
         InputListener(listener_callback,"note0"),
@@ -136,4 +139,15 @@ InputPollster pollsterPeriph = InputPollster(periphPollCallback,
                                              initCallbackPeriph,
                                              mcpPeripheralInputs,
                                              (uint8_t)5);
+
+/*
+ * DISPLAY LAYOUTS
+ */
+LayoutItem layoutItem_mcpLower = LayoutItem(0, LCD_LAYOUT_BUFFER_MCP_LOWER, 8, cb_LayoutMcpLower);
+LayoutItem layoutItem_mcpUpper = LayoutItem(16, LCD_LAYOUT_BUFFER_MCP_UPPER, 8, cb_LayoutMcpUpper);
+LayoutItem layoutItem_noteName = LayoutItem(12, LCD_LAYOUT_BUFFER_NOTE_NAME, LCD_NOTE_NAME_CHAR_WIDTH,
+                                            cb_LayoutCurrentNoteName);
+LayoutItem layoutItems[] {layoutItem_mcpUpper, layoutItem_mcpLower, layoutItem_noteName};
+Layout layout_noteIO = Layout(layoutItems, 3, LCD_DISP_BACK_BUFFER);
+
 #endif //SYNTH_COMPONENTS_H

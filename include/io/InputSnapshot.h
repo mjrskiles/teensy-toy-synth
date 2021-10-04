@@ -6,8 +6,7 @@
 #define SYNTH_INPUTSNAPSHOT_H
 
 #include <Arduino.h>
-
-typedef unsigned long pgmtime_t;
+#include "toy_types.h"
 
 enum InputDataType : uint8_t {
     BOOL,
