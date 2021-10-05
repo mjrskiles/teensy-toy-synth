@@ -26,17 +26,12 @@ uint8_t JengaStack::pop() {
 uint8_t JengaStack::removeAtIndex(uint8_t index) {
     Serial.printf("Removing from Jenga stack at index: %d\n", index);
     Serial.printf("Size was: %d\n", _size);
-    if (index > _size || _size == 0) return JENGA_ERR;
-    if (index == JENGA_STACK_SIZE_MAX) {
-        _size--;
-        Serial.printf("Now: %d\n", (int) _size);
-        return _stack[_size + 1];
-    }
+    if (index > _size || index >= JENGA_STACK_SIZE_MAX || _size == 0) return JENGA_ERR;
 
-    // if control has reached this point, the stack is between 1 and max -1 size
+    // if control has reached this point, the stack is between 1 and max size
     uint8_t val = _stack[index];
-    for (uint8_t i = index; i < _size; i++) {
-        _stack[i] = _stack[i++];
+    for (uint8_t i = index; i < _size - 1; i++) {
+        _stack[i] = _stack[i+1];
     }
     _size--;
     Serial.printf("Now: %d\n", (int) _size);

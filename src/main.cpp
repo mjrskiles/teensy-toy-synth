@@ -129,7 +129,7 @@ void loop() {
     testLayoutManager.update();
 
     // Logging
-    if (logPrintoutMillisSince > 2000) {
+    if (digitalRead(RECORD_BUTTON_PIN) == LOW && logPrintoutMillisSince > 100) {
         logr.info("Program scan us:");
         Serial.println(scanTime);
         uint8_t lower_state = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
