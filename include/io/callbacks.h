@@ -19,97 +19,34 @@ MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
 MCP23008 mcp_kbLower8 = MCP23008(0x22);
 
+// TODO move these out of this file
 JengaStack jengaStack = JengaStack();
 ToySynth toySynth(jengaStack);
 /*
- * Callback for the listener to use
- */
-void cb_noteButtonListener(InputSnapshot &snapshot) {
-//    Serial.printf("Snapshot | %s\n", snapshot.name());
-//    Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
-//    Serial.printf("  time: %lu\n", snapshot.time());
-//    uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
-//    MidiNotes scaleNote =BbMajorScale[but];
-//    float freq = midi_frequencies[scaleNote];
-////    squarewaveBase.frequency(freq);
-//    if (snapshot.asBool()) {
-////        envelope2.noteOn();
-////        squarewaveBase.amplitude(1.0);
-//        active_voice = &snapshot;
-//    } else if (!isAnyKeyboardKeyPressed()) {
-////        squarewaveBase.amplitude(0.0);
-////        envelope2.noteOff();
-////        Serial.println("Env2 Off");
-//    }
-}
-
-void cb_periphLogListener(InputSnapshot &snapshot) {
-    Serial.printf("Snapshot | %s\n", snapshot.name());
-    Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
-    Serial.printf("  time: %lu\n", snapshot.time());
-}
-
-void cb_processGpio(uint8_t gpioWord, VirtualInput *inputs, uint8_t size) {
-    for (int i = 0; i < size; i++) {
-        int index = inputs[i].getIndex();
-        uint8_t onInputWord = gpioWord & MCP_INPUT_MASKS[i];
-        bool previousState = INPUT_BUFFER_BOOL[index].asBool(); // Get the buffer state before we change it
-
-        if (onInputWord) {
-            INPUT_BUFFER_BOOL[index].setTime(millis());
-            INPUT_BUFFER_BOOL[index].setState(true);
-            if (!previousState) {
-                inputs[i].notifyChangeListeners();
-            }
-        } else {
-            INPUT_BUFFER_BOOL[index].setTime(millis());
-            INPUT_BUFFER_BOOL[index].setState(false);
-            if (previousState){
-                inputs[i].notifyChangeListeners();
-            }
-        }
-    }
-}
-
-/*
  * Lower 8 Pollster cb
  */
-void cb_lower8Pollster(VirtualInput *inputs, uint8_t size) {
+void cb_lower8Pollster() {
     keyboard_io_word_previous = keyboard_io_word;
 
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
     uint16_t keyboard_word_masked = keyboard_io_word & 0xff00;
     keyboard_io_word = keyboard_word_masked | (uint16_t) gpio;
     toySynth.notify();
-    Serial.printf("Keyboard IO word: %x\n", keyboard_io_word);
-
-    cb_processGpio(gpio, inputs, size);
 }
 
-void cb_upper8Pollster(VirtualInput *inputs, uint8_t size) {
+void cb_upper8Pollster() {
     keyboard_io_word_previous = keyboard_io_word;
 
     uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
     uint16_t keyboard_word_masked = keyboard_io_word & 0x00ff;
     uint16_t orWord = gpio << 8;
     keyboard_io_word = keyboard_word_masked | orWord;
-    Serial.printf("Keyboard IO word: %x\n", keyboard_io_word);
-    cb_processGpio(gpio, inputs, size);
+    toySynth.notify();
 }
 
-void cb_peripheralPollster(VirtualInput *inputs, uint8_t size) {
+void cb_peripheralPollster() {
     uint8_t gpio = mcp_periph1.readRegister(mcp_kbUpper8.getGpio());
-    cb_processGpio(gpio, inputs, size);
-}
-
-/*
- * Callback for the pollster, uses the MCP23008 to get the button state
- */
-void note0PollsterCallback() {
-    uint8_t gpio = mcp_kbUpper8.readRegister(0x09); // check the io register
-    // check  if note 0 is active
-    Serial.println("pollster _callback:");
-    Serial.printf(" value: %x\n", gpio);
+    Serial.printf("Periph IO word: %x\n", gpio);
 }
 
 void cb_mcpInit(MCP23008 mcp) {
