@@ -7,7 +7,7 @@
 #define JENGA_ERR 255
 
 void JengaStack::push(uint8_t elem) {
-    if (_size < JENGA_STACK_SIZE_MAX) {
+    if (_size < (JENGA_STACK_SIZE_MAX - 1)) {
         _stack[_size] = elem;
         _size++;
     } else {
@@ -17,11 +17,12 @@ void JengaStack::push(uint8_t elem) {
 
 uint8_t JengaStack::pop() {
     uint8_t val = JENGA_ERR;
-    if (_size) {
-        val = _stack[_size];
+    if (_size > 0 && _size <= JENGA_STACK_SIZE_MAX) {
+        val = _stack[--_size];
     }
     return val;
 }
+
 // TODO sometimes this function is leaving 1 voice active with no key presses I think
 uint8_t JengaStack::removeAtIndex(uint8_t index) {
     Serial.printf("Removing from Jenga stack at index: %d\n", index);
