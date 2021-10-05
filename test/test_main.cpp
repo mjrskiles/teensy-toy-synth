@@ -2,7 +2,7 @@
 // Created by mjrsk on 10/4/2021.
 //
 #include <unity.h>
-#include "../include/utils/JengaStack.h"
+#include "../lib/JengaStack/JengaStack.h"
 
 uint8_t test_stack[JENGA_STACK_SIZE_MAX];
 JengaStack jengaStack = JengaStack();
@@ -23,7 +23,6 @@ void test_push() {
 }
 
 void setup() {
-    delay(2000);
     UNITY_BEGIN();
     RUN_TEST(test_push);
 }

@@ -10,7 +10,7 @@
 #include <io/notification_receiver.h>
 #include "toy_defines.h"
 #include "buffers/buffers.h"
-#include "utils/JengaStack.h"
+#include "../../lib/JengaStack/JengaStack.h"
 #include "buffers/luts.h"
 
 // GUItool: begin automatically generated code

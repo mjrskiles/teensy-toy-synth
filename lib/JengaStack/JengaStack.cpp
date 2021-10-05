@@ -3,7 +3,7 @@
 //
 
 
-#include "utils/JengaStack.h"
+#include "JengaStack.h"
 #define JENGA_ERR 255
 
 void JengaStack::push(uint8_t elem) {

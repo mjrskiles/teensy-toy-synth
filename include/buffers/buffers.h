@@ -7,7 +7,7 @@
 
 #include <inttypes.h>
 #include <synthesizer/VoiceList.h>
-#include <utils/JengaStack.h>
+#include "../../lib/JengaStack/JengaStack.h"
 #include "io/InputSnapshot.h"
 #include "toy_defines.h"
 
