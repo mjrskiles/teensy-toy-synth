@@ -89,7 +89,8 @@ void ToySynth::notify() {
                 if (keyboard_io_word & logical_loc_to_mask[i]) {
                     // Press
                     Serial.println("Note press");
-                    MidiNotes note = _currentScale[i];
+                    uint8_t logicalLoc = physical_to_logical_button_loc[i];
+                    MidiNotes note = _currentScale[logicalLoc];
                     float freq = midi_frequencies[note];
                     setVoiceOn(freq);
                     _active_voices.push(i);

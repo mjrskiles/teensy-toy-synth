@@ -24,6 +24,14 @@
 #define PLAY_STEP_BUTTON_PIN 33
 #define RECORD_BUTTON_PIN 34
 
+// Rotary Encoder
+#define ENCODER1_A_PIN 35
+#define ENCODER1_B_PIN 36
+#define ENCODER1_SW_PIN 37
+#define ENCODER1_R_PIN 27
+#define ENCODER1_G_PIN 26
+#define ENCODER1_B_PIN 25
+
 #endif //SYNTH_TEENSY41PINOUT_H
 
 /*
