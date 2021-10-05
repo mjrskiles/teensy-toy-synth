@@ -66,13 +66,13 @@ void ToySynth::setVoiceOn(float frequency) {
 
 void ToySynth::setVoiceOff() {
     Serial.println("Setting mono voice to off.");
-    squarewaveBase.amplitude(0.0);
+//    squarewaveBase.amplitude(0.0);
     envelope2.noteOff();
 }
 
 void ToySynth::notify() {
     // TODO finish this function to respond to IO changes
-    // TODO it picks up the old and new word fine, I need it to differentiate between new note press and note release
+    //
     // can't just check if the new word < old word because there could be a button release higher than a still pressed
     // button. Is it worth passing in PRESS | RELEASE to notify()?
     // How can we tell which key press is the new one?

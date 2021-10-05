@@ -25,22 +25,22 @@ ToySynth toySynth(jengaStack);
  * Callback for the listener to use
  */
 void cb_noteButtonListener(InputSnapshot &snapshot) {
-    Serial.printf("Snapshot | %s\n", snapshot.name());
-    Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
-    Serial.printf("  time: %lu\n", snapshot.time());
-    uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
-    MidiNotes scaleNote =BbMajorScale[but];
-    float freq = midi_frequencies[scaleNote];
-//    squarewaveBase.frequency(freq);
-    if (snapshot.asBool()) {
-//        envelope2.noteOn();
-//        squarewaveBase.amplitude(1.0);
-        active_voice = &snapshot;
-    } else if (!isAnyKeyboardKeyPressed()) {
-//        squarewaveBase.amplitude(0.0);
-//        envelope2.noteOff();
-//        Serial.println("Env2 Off");
-    }
+//    Serial.printf("Snapshot | %s\n", snapshot.name());
+//    Serial.printf("  val: %s\n", snapshot.asBool() ? "true" : "false");
+//    Serial.printf("  time: %lu\n", snapshot.time());
+//    uint8_t but = mcp_to_physical_button_map[snapshot.getFromIndex()];
+//    MidiNotes scaleNote =BbMajorScale[but];
+//    float freq = midi_frequencies[scaleNote];
+////    squarewaveBase.frequency(freq);
+//    if (snapshot.asBool()) {
+////        envelope2.noteOn();
+////        squarewaveBase.amplitude(1.0);
+//        active_voice = &snapshot;
+//    } else if (!isAnyKeyboardKeyPressed()) {
+////        squarewaveBase.amplitude(0.0);
+////        envelope2.noteOff();
+////        Serial.println("Env2 Off");
+//    }
 }
 
 void cb_periphLogListener(InputSnapshot &snapshot) {
