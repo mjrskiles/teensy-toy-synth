@@ -1,5 +1,7 @@
 # toy synth
 
+![IMG_1750](https://user-images.githubusercontent.com/17223287/136628141-6d5fe5d3-4705-466a-9222-c0e7e7da51ba.JPEG)
+
 ## useful commands and stuff
 `pio init --ide clion`
 
@@ -15,11 +17,20 @@
 
 `pio run`
 
+
 - build the project
 
 `pio run --target upload`
 
 - build the project and upload it to the board
+
+## Hardware
+
+![IMG_1565](https://user-images.githubusercontent.com/17223287/136628525-00d37722-524a-4e84-80d3-80b344049b7d.JPEG)
+
+![IMG_1660](https://user-images.githubusercontent.com/17223287/136628574-7a35da4a-c04f-4f15-b230-306e4ad26346.JPEG)
+
+![IMG_1790](https://user-images.githubusercontent.com/17223287/136628652-0ed00920-a731-41c8-9183-796adabf0d62.JPEG)
 
 
 ## Roadmap 
@@ -45,7 +56,6 @@ Synth overview
 -1 assignable envelope
 -3 LPF
     
-Sequencer Overview:
     
 
 ## Ideas
