@@ -28,9 +28,9 @@
 
 Hardware consists of a control pad and the main synthesizer module.
 
-The control pad has 16 note/step sequence momentary push buttons, 2 general purpose momentary PB, 3 Selector Switches, 3 10K linear rotary pots, 1 linear 10K slider pot. The digital inputs are managed by 3 MCP23008 I/O expander ICs.
+The control pad has 16 note/step sequence momentary push buttons, 2 general purpose momentary PB, 3 Selector Switches, 3 linear 10K ohm rotary pots, 1 linear 10K slider pot. The digital inputs are managed by 3 MCP23008 I/O expander ICs.
 
-The main synth module has a Teensy 4.1 (the brain) with IMXRT1062DVJ6 microcontroller, a 3.2" Color touch display, 2 128 PPR rotary encoders, 16 LEDS, 2 momentary PB, 1 small data display, a power supply, and a stereo amplifier.
+The main synth module has a Teensy 4.1 (the brain) with IMXRT1062DVJ6 microcontroller, a 16x2 character display, 2 128 PPR rotary encoders, 16 LEDS, 2 momentary PB, 1 small data display, a power supply, and a stereo amplifier.
 
 ![IMG_1565](https://user-images.githubusercontent.com/17223287/136628525-00d37722-524a-4e84-80d3-80b344049b7d.JPEG)
 
