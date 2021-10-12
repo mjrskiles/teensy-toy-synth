@@ -56,14 +56,15 @@ void ToySynth::synth_init() {
 }
 
 void ToySynth::setNoteOn(MidiNote note, uint8_t velocity) {
-    Serial.printf("Setting voice on with freq: %8.2f\n", note);
-    squarewaveBase.frequency(note);
+    float freq = midi_frequencies[note];
+    Serial.printf("Setting voice on with freq: %8.2f\n", freq);
+    squarewaveBase.frequency(freq);
     squarewaveBase.amplitude(1.0);
-    if (_active_voices.size() == 0) envelope2.noteOn();
+    envelope2.noteOn();
 }
 
 void ToySynth::setNoteOff(MidiNote note) {
-    Serial.println("Setting mono voice to off.");
+    Serial.println("Setting voice to off.");
     envelope2.noteOff();
 }
 
@@ -74,9 +75,17 @@ void ToySynth::setNoteOff(MidiNote note) {
 void ToySynth::notify() {
     // Check which notes are newly on and turn on the voice
     uint16_t newlyOn = whichBitsAreNewlyOn(keyboard_io_word_previous, keyboard_io_word);
+    for (int i = 0; i < 16; i++) {
+        if (isOneAtIndex(newlyOn, i)) {
+            Serial.println("Note press");
+            uint8_t logicalLoc = physical_to_logical_button_loc[i];
+            MidiNote note = _currentScale[logicalLoc];
+            setNoteOn(note, 127);
+        }
+    }
 
-
-    // Check which are newly off and turn off the voice
+    // For now just turn off the voice if there are no key presses
+    if (!keyboard_io_word) setNoteOff(NOTE_AMINUS1);
 }
 
 ToySynth::ToySynth() {}

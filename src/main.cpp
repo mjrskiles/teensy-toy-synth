@@ -53,7 +53,7 @@ void setup() {
     Serial7.begin(9600);
     while(!Serial && !Serial7);
     Wire.begin();
-    AudioMemory(24);
+    AudioMemory(48);
 
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
@@ -105,10 +105,6 @@ void loop() {
         testLayoutManager.runLayout();
     }
 
-    if (digitalRead(RECORD_BUTTON_PIN) == LOW) {
-        Serial.println("==Marker== note stuck");
-    }
-
     float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
     float knob_A = (float)analogRead(KNOB_A_PIN) / 1023.0f;
     float knob_S = (float)analogRead(KNOB_S_PIN) / 1023.0f;
@@ -149,7 +145,11 @@ void loop() {
         logr.info("Program scan us:");
         Serial.println(scanTime);
         uint8_t lower_state = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-        Serial.printf("Keyboard IO state: 0x%x\n", lower_state);
+        uint8_t upper_state = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
+        Serial.printf("Keyboard IO word: 0x%x\n", keyboard_io_word);
+        Serial.printf("Keyboard actual lower: 0x%x\n", lower_state);
+        Serial.printf("Keyboard actual upper: 0x%x\n", upper_state);
+
 
 
 //        Serial.printf(" A  | D  | S  | R\n");

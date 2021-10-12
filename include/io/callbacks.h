@@ -19,6 +19,9 @@ MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);
 MCP23008 mcp_kbLower8 = MCP23008(0x22);
 
+uint8_t gpio_lower_previous = 0;
+uint8_t gpio_upper_previous = 0;
+
 // TODO move these out of this file
 ToySynth toySynth = ToySynth();
 /*
@@ -26,19 +29,33 @@ ToySynth toySynth = ToySynth();
  */
 void cb_lower8Pollster() {
     keyboard_io_word_previous = keyboard_io_word;
-
-    uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
-    uint16_t keyboard_word_masked = keyboard_io_word & 0xff00;
-    keyboard_io_word = keyboard_word_masked | (uint16_t) gpio;
+    uint8_t gpio;
+    noInterrupts()
+    // The reason for this do while loop is to prevent note sticking due to button bounce.
+    // It seems that sometimes this function would get triggered due to a legitimate state change
+    // but the MCP would read an erroneous value, which had changed between the interrupt and code execution.
+    do {
+        gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
+        keyboard_io_word &= 0xff00; // zero out the word to take in the new data
+        keyboard_io_word |= gpio;
+    } while (gpio == gpio_lower_previous); // This function should only be called on change of state
+    interrupts();
+    gpio_lower_previous = gpio;
+    toySynth.notify();
 }
 
 void cb_upper8Pollster() {
     keyboard_io_word_previous = keyboard_io_word;
-
-    uint8_t gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
-    uint16_t keyboard_word_masked = keyboard_io_word & 0x00ff;
-    uint16_t orWord = gpio << 8;
-    keyboard_io_word = keyboard_word_masked | orWord;
+    uint8_t gpio;
+    noInterrupts();
+    do {
+        gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
+        keyboard_io_word &= 0x00ff;
+        keyboard_io_word |= gpio << 8;
+    } while (gpio == gpio_upper_previous);
+    interrupts();
+    gpio_upper_previous = gpio;
+    toySynth.notify();
 }
 
 void cb_peripheralPollster() {

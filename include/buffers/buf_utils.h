@@ -7,8 +7,10 @@
 
 #include "buffers/buffers.h"
 
-bool isAnyKeyboardKeyPressed();
+extern const uint16_t logical_loc_to_mask[16];
 
+bool isAnyKeyboardKeyPressed();
+bool isOneAtIndex(uint16_t word, int index);
 uint16_t whichBitsAreNewlyOn(uint16_t oldWord, uint16_t newWord);
 uint16_t whichBitsAreNewlyOff(uint16_t oldWord, uint16_t newWord);
 
