@@ -11,3 +11,18 @@ bool isAnyKeyboardKeyPressed() {
     }
     return false;
 }
+
+uint16_t whichBitsAreNewlyOn(uint16_t oldWord, uint16_t newWord) {
+    uint16_t changed = oldWord ^ newWord;
+    return changed & newWord;
+}
+
+uint16_t whichBitsAreNewlyOff(uint16_t oldWord, uint16_t newWord) {
+    uint16_t changed = oldWord ^ newWord;
+    return changed & ~newWord;
+}
+
+/*
+ *
+
+ */

@@ -15,6 +15,8 @@ extern uint16_t keyboard_io_word;
 extern uint16_t keyboard_io_word_previous;
 extern uint8_t jengaStackStack[16];
 
+extern bool DISCRETE_INPUTS[INPUT_BUFFER_SIZE_BOOLEAN];
+
 extern InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
 extern InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];
 extern InputSnapshotUint8 INPUT_BUFFER_UINT8[INPUT_BUFFER_SIZE_UINT8];

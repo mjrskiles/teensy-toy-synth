@@ -11,7 +11,7 @@
 extern const uint8_t physical_to_logical_button_loc[16];
 extern const uint16_t logical_loc_to_mask[16];
 
-enum MidiNotes : int {
+enum MidiNote : int {
     NOTE_CMINUS1 , NOTE_CSMINUS1, NOTE_DMINUS1 , NOTE_DSMINUS1,
     NOTE_EMINUS1 , NOTE_FMINUS1 , NOTE_FSMINUS1, NOTE_GMINUS1 ,
     NOTE_GSMINUS1, NOTE_AMINUS1 , NOTE_ASMINUS1, NOTE_BMINUS1 ,
@@ -51,14 +51,14 @@ extern const lcd_char* midi_note_names[128];
 extern uint8_t MCP_INPUT_MASKS[8];
 extern float midi_frequencies[128];
 extern const char *input_buffer_bool_names[256];
-extern MidiNotes BbMajorScale[16];
+extern MidiNote BbMajorScale[16];
 extern const uint8_t mcp_to_physical_button_map[16];
 
 
 
 
-extern const MidiNotes bms_CMajor[16];
+extern const MidiNote bms_CMajor[16];
 
-extern MidiNotes *currentScale;
+extern MidiNote *currentScale;
 
 #endif //SYNTH_LUTS_H

@@ -12,6 +12,7 @@
 #include "buffers/buffers.h"
 #include "../../lib/JengaStack/JengaStack.h"
 #include "buffers/luts.h"
+#include "buffers/buf_utils.h"
 
 // GUItool: begin automatically generated code
 extern AudioSynthWaveform       squarewaveBase;      //xy=90,59
@@ -45,20 +46,23 @@ extern AudioControlSGTL5000     sgtl5000_1;
 
 class ToySynth : public NotificationReceiver {
 public:
-    ToySynth(const JengaStack &activeVoices);
+    ToySynth();
 
     void synth_init();
-    void setVoiceOn(float frequency);
-    void setVoiceOff();
 
     /*
-     * Notification indicates an I/O change. Check the buffers and update appropriately
+     * Midi Interface
      */
-    void notify() override;
+    void setNoteOn(MidiNote note, uint8_t velocity);
+    void setNoteOff(MidiNote note);
 
+    /*
+     * Direct I/O interface
+     */
+    void notify();
 private:
     JengaStack _active_voices;
-    MidiNotes *_currentScale = BbMajorScale;
+    MidiNote *_currentScale = BbMajorScale;
 };
 
 

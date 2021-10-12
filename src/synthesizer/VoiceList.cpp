@@ -5,6 +5,8 @@
 #include "synthesizer/VoiceList.h"
 #include "Logr.h"
 
+// TODO this file is marked for deletion
+
 Logr logr1 = Logr();
 
 // The list gets filled from the end so each index matches its precedence

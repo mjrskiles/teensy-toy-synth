@@ -20,8 +20,7 @@ MCP23008 mcp_kbUpper8 = MCP23008(0x21);
 MCP23008 mcp_kbLower8 = MCP23008(0x22);
 
 // TODO move these out of this file
-JengaStack jengaStack = JengaStack();
-ToySynth toySynth(jengaStack);
+ToySynth toySynth = ToySynth();
 /*
  * Lower 8 Pollster cb
  */
@@ -31,7 +30,6 @@ void cb_lower8Pollster() {
     uint8_t gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
     uint16_t keyboard_word_masked = keyboard_io_word & 0xff00;
     keyboard_io_word = keyboard_word_masked | (uint16_t) gpio;
-    toySynth.notify();
 }
 
 void cb_upper8Pollster() {
@@ -41,7 +39,6 @@ void cb_upper8Pollster() {
     uint16_t keyboard_word_masked = keyboard_io_word & 0x00ff;
     uint16_t orWord = gpio << 8;
     keyboard_io_word = keyboard_word_masked | orWord;
-    toySynth.notify();
 }
 
 void cb_peripheralPollster() {

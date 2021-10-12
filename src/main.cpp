@@ -18,7 +18,6 @@ SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO);
 
-
 // Debugging / Logging
 Logr logr = Logr();
 int firstPass = 1;
@@ -54,6 +53,7 @@ void setup() {
     Serial7.begin(9600);
     while(!Serial && !Serial7);
     Wire.begin();
+    AudioMemory(24);
 
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);

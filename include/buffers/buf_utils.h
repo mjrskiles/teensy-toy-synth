@@ -9,4 +9,7 @@
 
 bool isAnyKeyboardKeyPressed();
 
+uint16_t whichBitsAreNewlyOn(uint16_t oldWord, uint16_t newWord);
+uint16_t whichBitsAreNewlyOff(uint16_t oldWord, uint16_t newWord);
+
 #endif //TEENSY_SYNTH_BUF_UTILS_H
