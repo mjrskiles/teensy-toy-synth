@@ -10,9 +10,11 @@
 #include "../../lib/JengaStack/JengaStack.h"
 #include "io/InputSnapshot.h"
 #include "toy_defines.h"
+#include "luts.h"
 
 extern uint16_t keyboard_io_word;
 extern uint16_t keyboard_io_word_previous;
+extern MidiNote activeNote;
 extern uint8_t jengaStackStack[16];
 
 extern bool DISCRETE_INPUTS[INPUT_BUFFER_SIZE_BOOLEAN];

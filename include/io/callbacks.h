@@ -38,7 +38,7 @@ void cb_lower8Pollster() {
         gpio = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
         keyboard_io_word &= 0xff00; // zero out the word to take in the new data
         keyboard_io_word |= gpio;
-    } while (gpio == gpio_lower_previous); // This function should only be called on change of state
+    } while (gpio && gpio == gpio_lower_previous); // This function should only be called on change of state
     interrupts();
     gpio_lower_previous = gpio;
     toySynth.notify();
@@ -52,7 +52,7 @@ void cb_upper8Pollster() {
         gpio = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
         keyboard_io_word &= 0x00ff;
         keyboard_io_word |= gpio << 8;
-    } while (gpio == gpio_upper_previous);
+    } while (gpio && gpio == gpio_upper_previous);
     interrupts();
     gpio_upper_previous = gpio;
     toySynth.notify();
@@ -94,21 +94,21 @@ void cb_pollsterInitPeriph() {
  */
 void cb_LayoutMcpLower(lcd_char *buffer) {
     for (int i = 0; i < 8; i++) {
-        buffer[i] = INPUT_BUFFER_BOOL[i].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
+        buffer[i] = isOneAtIndex(keyboard_io_word, i) ? '1' : '0'; // TODO need to pass in a proper array index somehow
     }
 }
 
 void cb_LayoutMcpUpper(lcd_char *buffer) {
     for (int i = 0; i < 8; i++) {
-        buffer[i] = INPUT_BUFFER_BOOL[i + 8].asBool() ? '1' : '0'; // TODO need to pass in a proper array index somehow
+        buffer[i] = isOneAtIndex(keyboard_io_word, i + 8) ? '1' : '0'; // TODO need to pass in a proper array index somehow
     }
 }
 
 void cb_LayoutCurrentNoteName(lcd_char *buffer) {
-    int i = active_voice->getFromIndex();
-    uint8_t logicalLoc = physical_to_logical_button_loc[i];
-    uint8_t scaleLoc = currentScale[logicalLoc];
-    const lcd_char *namePointer = midi_note_names[scaleLoc];
+//    int i = active_voice->getFromIndex();
+//    uint8_t logicalLoc = physical_to_logical_button_loc[i];
+//    uint8_t scaleLoc = currentScale[logicalLoc];
+    const lcd_char *namePointer = midi_note_names[activeNote];
 //    Serial.println("writing to temp note name buffer...");
     for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
         buffer[j] = namePointer[j];

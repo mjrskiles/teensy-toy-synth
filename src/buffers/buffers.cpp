@@ -5,9 +5,12 @@
 #include <io/InputSnapshot.h>
 #include <toy_defines.h>
 #include <synthesizer/VoiceList.h>
+#include <buffers/luts.h>
 
 uint16_t keyboard_io_word = 0;
 uint16_t keyboard_io_word_previous = 0;
+MidiNote activeNote = NOTE_AMINUS1;
+
 uint8_t jengaStackStack[16];
 
 bool DISCRETE_INPUTS[INPUT_BUFFER_SIZE_BOOLEAN];

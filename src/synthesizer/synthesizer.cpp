@@ -56,6 +56,7 @@ void ToySynth::synth_init() {
 }
 
 void ToySynth::setNoteOn(MidiNote note, uint8_t velocity) {
+    activeNote = note;
     float freq = midi_frequencies[note];
     Serial.printf("Setting voice on with freq: %8.2f\n", freq);
     squarewaveBase.frequency(freq);
