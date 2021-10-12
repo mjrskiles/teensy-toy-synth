@@ -26,7 +26,7 @@ uint8_t JengaStack::pop() {
 uint8_t JengaStack::removeAtIndex(uint8_t index) {
     Serial.printf("Removing from Jenga stack at index: %d\n", index);
     Serial.printf("Size was: %d\n", _size);
-    if (index > _size || index >= JENGA_STACK_SIZE_MAX || _size == 0) return JENGA_ERR;
+    if (index >= JENGA_STACK_SIZE_MAX || _size == 0) return JENGA_ERR;
 
     // if control has reached this point, the stack is between 1 and max size
     uint8_t val = _stack[index];
@@ -34,6 +34,7 @@ uint8_t JengaStack::removeAtIndex(uint8_t index) {
         _stack[i] = _stack[i+1];
     }
     _size--;
+    _stack[_size] = JENGA_STACK_UNUSED_SLOT_VALUE;
     Serial.printf("Now: %d\n", (int) _size);
     return val;
 }
@@ -56,4 +57,10 @@ uint8_t JengaStack::getElemAtIndex(uint8_t index) {
 
 uint8_t JengaStack::size() {
     return _size;
+}
+
+JengaStack::JengaStack() {
+    for (int i = 0; i < JENGA_STACK_SIZE_MAX; i++) {
+        _stack[i] = JENGA_STACK_UNUSED_SLOT_VALUE;
+    }
 }

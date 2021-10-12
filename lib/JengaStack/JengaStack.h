@@ -8,11 +8,14 @@
 #include "cstdint"
 #include <Arduino.h>
 #define JENGA_STACK_SIZE_MAX 16
+#define JENGA_STACK_UNUSED_SLOT_VALUE 255
 /*
  * A Jenga stack can have arbitrary members removed while staying intact
  */
 class JengaStack {
 public:
+    JengaStack();
+
     void push(uint8_t elem);
     uint8_t pop();
     uint8_t removeAtIndex(uint8_t index);

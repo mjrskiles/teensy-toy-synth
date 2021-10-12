@@ -80,7 +80,7 @@ void ToySynth::notify() {
     // It's almost inevitable
     Serial.printf("Old IO word: %x\n", keyboard_io_word_previous);
     Serial.printf("New IO word: %x\n", keyboard_io_word);
-    uint16_t new_state_mask = keyboard_io_word_previous ^ keyboard_io_word;
+    uint16_t new_state_mask = keyboard_io_word_previous | keyboard_io_word;
 //    Serial.printf("1 Active voices size: %n\n", _active_voices.size());
     if (new_state_mask) { // if there are 1s in this word it means there have been changes. don't know if press or release yet
         for (int i = 0; i < JENGA_STACK_SIZE_MAX; i++) {

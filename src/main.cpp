@@ -14,26 +14,36 @@
 
 const char *hello_buf = "Kim is so cute";
 
-Logr logr = Logr();
-int firstPass = 1;
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO);
+
+
 // Debugging / Logging
+Logr logr = Logr();
+int firstPass = 1;
 elapsedMillis logPrintoutMillisSince;
 elapsedMicros scanTime;
 uint8_t lastState = 0;
 float asdrScalar = 750.0;
 
 // Interrupt routines
+elapsedMicros lowerDebounce;
+elapsedMicros upperDebounce;
 volatile uint8_t lower8NumInterrupts = 0;
 volatile uint8_t upper8NumInterrupts = 0;
 volatile uint8_t periphNumInterrupts = 0;
 void lowerKB_ISR() {
-    lower8NumInterrupts++;
+    if (lowerDebounce > 750) {
+        lower8NumInterrupts++;
+        lowerDebounce = 0;
+    }
 }
 void upperKB_ISR() {
-    upper8NumInterrupts++;
+    if (upperDebounce > 750) {
+        upper8NumInterrupts++;
+        upperDebounce = 0;
+    }
 }
 void periph_ISR() {
     periphNumInterrupts++;
@@ -42,12 +52,14 @@ void periph_ISR() {
 void setup() {
     Serial.begin(9600);
     Serial7.begin(9600);
+    while(!Serial && !Serial7);
     Wire.begin();
 
     pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
     pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
     pinMode(RECORD_BUTTON_PIN, INPUT);
+    digitalWrite(MCP_RESET_PIN_LOWER_8, LOW);
     delay(500); // Pull up resistors gotta pull up, let everything power up
 
     digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
@@ -91,6 +103,10 @@ void loop() {
         Serial.println("First Pass");
         testLayoutManager.startCyclicUpdate();
         testLayoutManager.runLayout();
+    }
+
+    if (digitalRead(RECORD_BUTTON_PIN) == LOW) {
+        Serial.println("==Marker== note stuck");
     }
 
     float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
