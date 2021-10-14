@@ -108,6 +108,7 @@ void MCP23008::init() const {
     writeRegister(_gpinten, 0xff);
     writeRegister(_iocon, ioconWord);
     writeRegister(_gppu, gppuWord);
+    readRegister(_gpio);
 }
 
 uint8_t MCP23008::getAddress() const {

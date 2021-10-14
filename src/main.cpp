@@ -62,18 +62,18 @@ void setup() {
     digitalWrite(MCP_RESET_PIN_LOWER_8, LOW);
     delay(500); // Pull up resistors gotta pull up, let everything power up
 
-    digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
-    pollsterLower8.init();
-    pollsterUpper8.init();
-    pollsterPeriph.init();
+    attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
+    attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
+    attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
 
     toySynth.synth_init();
     mixerEnv1.gain(0, 0.0);
     mixerEnv1.gain(1, 1.0);
 
-    attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
-    attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
-    attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
+    digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
+    pollsterLower8.init();
+    pollsterUpper8.init();
+    pollsterPeriph.init();
 
     // lcd16x2 should be  good to go after 500ms
     lcd.displayOff();
