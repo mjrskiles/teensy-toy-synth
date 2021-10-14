@@ -13,7 +13,7 @@
 #define KNOB_S_PIN 40
 #define KNOB_R_PIN 41
 
-#define MCP_RESET_PIN_LOWER_8 28
+#define MCP_RESET_PIN 28
 #define MCP_RESET_PIN_UPPER_8 26
 #define MCP_RESET_PIN_TERTIARY 27
 

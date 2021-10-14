@@ -48,26 +48,23 @@ void periph_ISR() {
     periphNumInterrupts++;
 }
 
+void (*resetFunc)(void) = 0;
+
 void setup() {
+    Wire.begin();
     Serial.begin(9600);
     Serial7.begin(9600);
-    while(!Serial && !Serial7);
-    Wire.begin();
+    while(!Serial || !Serial7 || !Wire.available());
     AudioMemory(48);
+    toySynth.synth_init();
 
-    pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
+    pinMode(MCP_UPPER_INTERRUPT_PIN, INPUT_PULLUP);
+    pinMode(MCP_PERIPH_INTERRUPT_PIN, INPUT_PULLUP);
     pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
     pinMode(RECORD_BUTTON_PIN, INPUT);
-    digitalWrite(MCP_RESET_PIN_LOWER_8, LOW);
-    delay(500); // Pull up resistors gotta pull up, let everything power up
+    delay(500);// Pull up resistors gotta pull up, let everything power up
 
-    digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
-    pollsterLower8.init();
-    pollsterUpper8.init();
-    pollsterPeriph.init();
-
-    toySynth.synth_init();
     mixerEnv1.gain(0, 0.0);
     mixerEnv1.gain(1, 1.0);
 
@@ -93,6 +90,10 @@ void setup() {
             break;
         }
     }
+    MCP23008::global_init();
+    pollsterLower8.init();
+    pollsterUpper8.init();
+    pollsterPeriph.init();
     logr.info("B~ logr v0.1 B~");
     logr.info("Setup done");
 }

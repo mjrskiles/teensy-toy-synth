@@ -7,6 +7,8 @@
 
 #include <Wire.h>
 #include <inttypes.h>
+#include <Arduino.h>
+#include "buffers/teensy41pinout.h"
 
 #define BUFFER_SIZE 32
 
@@ -18,6 +20,7 @@ public:
     uint8_t readRegister(uint8_t reg) const;
     uint8_t readByte() const;
     void init() const;
+    static void global_init();
 
     uint8_t getAddress() const;
 
@@ -87,6 +90,7 @@ uint8_t MCP23008::readRegister(uint8_t reg) const {
     return data;
 }
 
+// Does this even work? TODO
 uint8_t MCP23008::readByte() const {
     uint8_t one = 1;
     Wire.requestFrom(_address, one);
@@ -102,12 +106,19 @@ void MCP23008::init() const {
     uint8_t ioconWord = 0b00100000; // IO to byte mode
     uint8_t gppuWord =  0b11111111; // All pull up resistors to on
 
-    Wire.begin();
     writeRegister(_iodir, 0xff);
     writeRegister(_ipol, 0xff); // set reverse input polarity
     writeRegister(_gpinten, 0xff);
     writeRegister(_iocon, ioconWord);
     writeRegister(_gppu, gppuWord);
+}
+
+static void MCP23008::global_init() {
+    pinMode(MCP_RESET_PIN, OUTPUT);
+    digitalWrite(MCP_RESET_PIN, LOW);
+    delay(10);
+    digitalWrite(MCP_RESET_PIN, HIGH);
+    delay(10);
 }
 
 uint8_t MCP23008::getAddress() const {
