@@ -55,11 +55,11 @@ void setup() {
     Wire.begin();
     AudioMemory(48);
 
-    pinMode(MCP_RESET_PIN_LOWER_8, OUTPUT);
+    pinMode(MCP_RESET_PIN, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
     pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
     pinMode(RECORD_BUTTON_PIN, INPUT);
-    digitalWrite(MCP_RESET_PIN_LOWER_8, LOW);
+    digitalWrite(MCP_RESET_PIN, LOW);
     delay(500); // Pull up resistors gotta pull up, let everything power up
 
     attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
@@ -70,7 +70,7 @@ void setup() {
     mixerEnv1.gain(0, 0.0);
     mixerEnv1.gain(1, 1.0);
 
-    digitalWrite(MCP_RESET_PIN_LOWER_8, HIGH);
+    digitalWrite(MCP_RESET_PIN, HIGH);
     pollsterLower8.init();
     pollsterUpper8.init();
     pollsterPeriph.init();
