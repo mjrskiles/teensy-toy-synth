@@ -33,16 +33,10 @@ volatile uint8_t lower8NumInterrupts = 0;
 volatile uint8_t upper8NumInterrupts = 0;
 volatile uint8_t periphNumInterrupts = 0;
 void lowerKB_ISR() {
-    if (lowerDebounce > 750) {
-        lower8NumInterrupts++;
-        lowerDebounce = 0;
-    }
+    lower8NumInterrupts++;
 }
 void upperKB_ISR() {
-    if (upperDebounce > 750) {
-        upper8NumInterrupts++;
-        upperDebounce = 0;
-    }
+    upper8NumInterrupts++;
 }
 void periph_ISR() {
     periphNumInterrupts++;
@@ -111,10 +105,10 @@ void loop() {
     float knob_D = (float)analogRead(KNOB_D_PIN) / 1023.0f;
     float knob_R = (float)analogRead(KNOB_R_PIN) / 1023.0f;
 
-    envelope2.attack(asdrScalar * (1 - knob_A));
-    envelope2.decay(asdrScalar * (1 - knob_D));
-    envelope2.sustain(1 - knob_S);
-    envelope2.release(asdrScalar * (1 - knob_R));
+    waveform1Envelope.attack(asdrScalar * (1 - knob_A));
+    waveform1Envelope.decay(asdrScalar * (1 - knob_D));
+    waveform1Envelope.sustain(1 - knob_S);
+    waveform1Envelope.release(asdrScalar * (1 - knob_R));
 
     sgtl5000_1.volume(knob_Volume);
 

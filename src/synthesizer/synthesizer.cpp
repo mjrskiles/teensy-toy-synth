@@ -5,11 +5,11 @@
 #include "synthesizer/synthesizer.h"
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       squarewaveBase;      //xy=90,59
+AudioSynthWaveform       waveform1;      //xy=90,59
 AudioSynthWaveformSine   phaseCtrl1;          //xy=99,237
-AudioSynthWaveformModulated triwaveBase;   //xy=260,303
-AudioEffectEnvelope      envelope2;      //xy=294,119
-AudioEffectEnvelope      envelope1;      //xy=381,396
+AudioSynthWaveformModulated waveform2;   //xy=260,303
+AudioEffectEnvelope      waveform1Envelope;      //xy=294,119
+AudioEffectEnvelope      waveform2Envelope;      //xy=381,396
 AudioMixer4              mixerEnv1;         //xy=482,113
 AudioMixer4              mixerEnv2;         //xy=482,293
 AudioMixer4              oscCombineMixer;         //xy=613,187
@@ -17,13 +17,13 @@ AudioSynthWaveformSine   lpfCtrl;          //xy=645,300
 AudioFilterStateVariable lpf1;        //xy=781,191
 AudioMixer4              mixer1;         //xy=984,193
 AudioOutputI2S           i2s1;           //xy=1149,189
-AudioConnection          patchCord1 = AudioConnection(squarewaveBase, envelope2);
-AudioConnection          patchCord2 = AudioConnection(squarewaveBase, 0, mixerEnv1, 0);
-AudioConnection          patchCord3 = AudioConnection(phaseCtrl1, 0, triwaveBase, 0);
-AudioConnection          patchCord4 = AudioConnection(triwaveBase, envelope1);
-AudioConnection          patchCord5 = AudioConnection(triwaveBase, 0, mixerEnv2, 0);
-AudioConnection          patchCord6 = AudioConnection(envelope2, 0, mixerEnv1, 1);
-AudioConnection          patchCord7 = AudioConnection(envelope1, 0, mixerEnv2, 1);
+AudioConnection          patchCord1 = AudioConnection(waveform1, waveform1Envelope);
+AudioConnection          patchCord2 = AudioConnection(waveform1, 0, mixerEnv1, 0);
+AudioConnection          patchCord3 = AudioConnection(phaseCtrl1, 0, waveform2, 0);
+AudioConnection          patchCord4 = AudioConnection(waveform2, waveform2Envelope);
+AudioConnection          patchCord5 = AudioConnection(waveform2, 0, mixerEnv2, 0);
+AudioConnection          patchCord6 = AudioConnection(waveform1Envelope, 0, mixerEnv1, 1);
+AudioConnection          patchCord7 = AudioConnection(waveform2Envelope, 0, mixerEnv2, 1);
 AudioConnection          patchCord8 = AudioConnection(mixerEnv1, 0, oscCombineMixer, 0);
 AudioConnection          patchCord9 = AudioConnection(mixerEnv2, 0, oscCombineMixer, 1);
 AudioConnection          patchCord10 = AudioConnection(oscCombineMixer, 0, lpf1, 0);
@@ -46,7 +46,7 @@ void ToySynth::synth_init() {
     // detailed information, see the MemoryAndCpuUsage example
     sgtl5000_1.enable();
     sgtl5000_1.volume(1.0);
-    squarewaveBase.begin(WAVEFORM_SQUARE);
+    waveform1.begin(WAVEFORM_SQUARE);
     for (int i = 0; i < INPUT_BUFFER_SIZE_BOOLEAN; i++) {
         INPUT_BUFFER_BOOL[i].setName(INPUT_NAMES_BOOL[i]);
         INPUT_BUFFER_BOOL[i].setState(false);
@@ -59,14 +59,14 @@ void ToySynth::setNoteOn(MidiNote note, uint8_t velocity) {
     activeNote = note;
     float freq = midi_frequencies[note];
     Serial.printf("Setting voice on with freq: %8.2f\n", freq);
-    squarewaveBase.frequency(freq);
-    squarewaveBase.amplitude(1.0);
-    envelope2.noteOn();
+    waveform1.frequency(freq);
+    waveform1.amplitude(1.0);
+    waveform1Envelope.noteOn();
 }
 
 void ToySynth::setNoteOff(MidiNote note) {
     Serial.println("Setting voice to off.");
-    envelope2.noteOff();
+    waveform1Envelope.noteOff();
 }
 
 /*

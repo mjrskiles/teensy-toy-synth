@@ -15,11 +15,11 @@
 #include "buffers/buf_utils.h"
 
 // GUItool: begin automatically generated code
-extern AudioSynthWaveform       squarewaveBase;      //xy=90,59
+extern AudioSynthWaveform       waveform1;      //xy=90,59
 extern AudioSynthWaveformSine   phaseCtrl1;          //xy=99,237
-extern AudioSynthWaveformModulated triwaveBase;   //xy=260,303
-extern AudioEffectEnvelope      envelope2;      //xy=294,119
-extern AudioEffectEnvelope      envelope1;      //xy=381,396
+extern AudioSynthWaveformModulated waveform2;   //xy=260,303
+extern AudioEffectEnvelope      waveform1Envelope;      //xy=294,119
+extern AudioEffectEnvelope      waveform2Envelope;      //xy=381,396
 extern AudioMixer4              mixerEnv1;         //xy=482,113
 extern AudioMixer4              mixerEnv2;         //xy=482,293
 extern AudioMixer4              oscCombineMixer;         //xy=613,187
