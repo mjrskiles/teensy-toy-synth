@@ -117,7 +117,20 @@ void loop() {
     envelope2.release(asdrScalar * (1 - knob_R));
 
     sgtl5000_1.volume(knob_Volume);
-//
+
+    // This clears the interrupt in case it gets stuck on. There is probably a more logical way to do this.
+    // The MCP interrupts don't get cleared till either INTCAP or GPIO register is read. If the callback read fails
+    // for any reason the interrupt will get stuck on. This is basically a watchdog for that.
+    if (lower8NumInterrupts == 0 && digitalRead(MCP_LOWER_INTERRUPT_PIN) == LOW) {
+        mcp_kbLower8.readRegister(mcp_kbLower8.getIntcap());
+    }
+    if (upper8NumInterrupts == 0 && digitalRead(MCP_UPPER_INTERRUPT_PIN) == LOW) {
+        mcp_kbUpper8.readRegister(mcp_kbUpper8.getIntcap());
+    }
+    if (periphNumInterrupts == 0 && digitalRead(MCP_PERIPH_INTERRUPT_PIN) == LOW) {
+        mcp_periph1.readRegister(mcp_periph1.getIntcap());
+    }
+
     // Poll the inputs because there was an interrupt
     if(lower8NumInterrupts) {
         Serial.println("Lower 8 INTERRUPT");
@@ -125,7 +138,7 @@ void loop() {
         pollsterLower8.poll();
         lower8NumInterrupts = 0;
     }
-    if(upper8NumInterrupts) {
+    if(upper8NumInterrupts || digitalRead(MCP_UPPER_INTERRUPT_PIN) == LOW) {
         Serial.println("Upper 8 INTERRUPT");
         Serial.println(upper8NumInterrupts);
         pollsterUpper8.poll();
