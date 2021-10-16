@@ -22,8 +22,7 @@ MCP23008 mcp_kbLower8 = MCP23008(0x22);
 uint8_t gpio_lower_previous = 0;
 uint8_t gpio_upper_previous = 0;
 
-// TODO move these out of this file
-ToySynth toySynth = ToySynth();
+
 /*
  * Lower 8 Pollster cb
  */

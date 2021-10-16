@@ -65,6 +65,8 @@ private:
     MidiNote *_currentScale = BbMajorScale;
 };
 
+extern ToySynth toySynth;
+
 
 
 #endif //SYNTH_SYNTHESIZER_H

@@ -8,12 +8,13 @@
 #include "io/display/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
-
+#include "synthesizer/midi_callbacks.h"
 
 #define DISPLAY_I2C Wire
 
 const char *hello_buf = "Kim is so cute";
 
+ToySynth toySynth = ToySynth();
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO);
@@ -41,6 +42,10 @@ void upperKB_ISR() {
 void periph_ISR() {
     periphNumInterrupts++;
 }
+
+// MIDI
+usbMIDI.setHandleNoteOn(cb_handleNoteOn);
+usbMIDI.setHandleNoteOff(cb_handleNoteoff);
 
 void setup() {
     Serial.begin(9600);
