@@ -50,13 +50,15 @@ extern const lcd_char* midi_note_names[128];
 extern uint8_t MCP_INPUT_MASKS[8];
 extern float midi_frequencies[128];
 extern const char *input_buffer_bool_names[256];
-extern MidiNote BbMajorScale[16];
 extern const uint8_t mcp_to_physical_button_map[16];
 
 
 
-
-extern const MidiNote bms_CMajor[16];
+// Scales
+// bms - button mapped scale
+extern MidiNote bms_CMajor[16];
+extern MidiNote bms_BbMajor[16];
+extern MidiNote bms_BbChromatic[16];
 
 extern MidiNote *currentScale;
 

@@ -62,7 +62,7 @@ public:
     void notify();
 private:
     JengaStack _active_voices;
-    MidiNote *_currentScale = BbMajorScale;
+    MidiNote *_currentScale = bms_BbChromatic;
 };
 
 extern ToySynth toySynth;

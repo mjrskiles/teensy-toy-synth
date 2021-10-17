@@ -100,18 +100,25 @@ const lcd_char* midi_note_names[] {
 static const char scaleNameCMajor[32] = "C Major\0";
 
 // TODO make scales generic
-const MidiNote bms_CMajor[] = {
+MidiNote bms_CMajor[] = {
         MidiNote::NOTE_C4, MidiNote::NOTE_D4, MidiNote::NOTE_E4, MidiNote::NOTE_F4,
         MidiNote::NOTE_G4, MidiNote::NOTE_A4, MidiNote::NOTE_B4, MidiNote::NOTE_C5,
         MidiNote::NOTE_D5, MidiNote::NOTE_E5, MidiNote::NOTE_F5, MidiNote::NOTE_G5,
         MidiNote::NOTE_A5, MidiNote::NOTE_B5, MidiNote::NOTE_C6, MidiNote::NOTE_D6
 };
 
-MidiNote BbMajorScale[] = {
+MidiNote bms_BbMajor[] = {
         MidiNote::NOTE_AS3, NOTE_C4, NOTE_D4, NOTE_DS4,
         NOTE_F4, NOTE_G4, NOTE_A4, NOTE_AS4,
         NOTE_C5, NOTE_D5, NOTE_DS5, NOTE_F5,
         NOTE_G5, NOTE_A5, NOTE_AS5, NOTE_C6
+};
+
+MidiNote bms_BbChromatic[16] = {
+        NOTE_AS3, NOTE_B3, NOTE_C4, NOTE_CS4,
+        NOTE_D4, NOTE_DS4, NOTE_E4, NOTE_F4,
+        NOTE_FS4, NOTE_G4, NOTE_GS4, NOTE_A4,
+        NOTE_AS4, NOTE_B4, NOTE_C5, NOTE_CS5
 };
 
 /*
@@ -134,4 +141,4 @@ struct Scale {
 };
 
 // TODO lookup the current note from the current scale
-MidiNote *currentScale = BbMajorScale;
+MidiNote *currentScale = bms_BbMajor;
