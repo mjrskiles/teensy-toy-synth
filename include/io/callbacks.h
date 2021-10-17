@@ -91,6 +91,7 @@ void cb_pollsterInitPeriph() {
 /*
  *  Display Layouts
  */
+// Digital IO page
 void cb_LayoutMcpLower(lcd_char *buffer) {
     for (int i = 0; i < 8; i++) {
         buffer[i] = isOneAtIndex(keyboard_io_word, i) ? '1' : '0'; // TODO need to pass in a proper array index somehow
@@ -104,15 +105,34 @@ void cb_LayoutMcpUpper(lcd_char *buffer) {
 }
 
 void cb_LayoutCurrentNoteName(lcd_char *buffer) {
-//    int i = active_voice->getFromIndex();
-//    uint8_t logicalLoc = physical_to_logical_button_loc[i];
-//    uint8_t scaleLoc = currentScale[logicalLoc];
     const lcd_char *namePointer = midi_note_names[activeNote];
-//    Serial.println("writing to temp note name buffer...");
     for (int j = 0; j < LCD_NOTE_NAME_CHAR_WIDTH; j++) {
         buffer[j] = namePointer[j];
     }
 //    Serial.print((const char *) buffer);
+}
+
+// Page 2
+void cb_LayoutTest1(lcd_char *buffer) {
+    const char *test = "Test String 1";
+    int i = 0;
+    char current = test[i];
+    while (current != '\0') {
+        buffer[i] = current;
+        current = buffer[++i];
+    }
+}
+
+
+// Page 3
+void cb_LayoutTest2(lcd_char *buffer) {
+    const char *test = "--Test Str2--";
+    int i = 0;
+    char current = test[i];
+    while (current != '\0') {
+        buffer[i] = current;
+        current = buffer[++i];
+    }
 }
 
 #endif //SYNTH_CALLBACKS_H

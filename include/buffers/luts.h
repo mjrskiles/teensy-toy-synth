@@ -55,6 +55,12 @@ extern const uint8_t mcp_to_physical_button_map[16];
 
 
 // Scales
+struct Scale {
+    const char *name;
+    MidiNote notes[16];
+};
+
+
 // bms - button mapped scale
 extern MidiNote bms_CMajor[16];
 extern MidiNote bms_BbMajor[16];

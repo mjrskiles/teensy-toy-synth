@@ -38,6 +38,9 @@ lcd_char LCD_LAYOUT_BUFFER_MCP_LOWER[8];
 lcd_char LCD_LAYOUT_BUFFER_MCP_UPPER[8];
 lcd_char LCD_LAYOUT_BUFFER_NOTE_NAME[LCD_NOTE_NAME_CHAR_WIDTH + 1] {'n','o','n','e','\0'};
 
+lcd_char LCD_LAYOUT_TEST1[16];
+lcd_char LCD_LAYOUT_TEST2[16];
+
 const char* INPUT_NAMES_BOOL[] = {
         "input_bool_0", "input_bool_1", "input_bool_2", "input_bool_3",
         "input_bool_4", "input_bool_5", "input_bool_6", "input_bool_7",

@@ -35,6 +35,10 @@ extern lcd_char LCD_LAYOUT_BUFFER_MCP_LOWER[8];
 extern lcd_char LCD_LAYOUT_BUFFER_MCP_UPPER[8];
 extern lcd_char LCD_LAYOUT_BUFFER_NOTE_NAME[LCD_NOTE_NAME_CHAR_WIDTH]; // 4
 
+// page 2
+extern lcd_char LCD_LAYOUT_TEST1[16];
+extern lcd_char LCD_LAYOUT_TEST2[16];
+
 extern const char *INPUT_NAMES_BOOL[];
 
 

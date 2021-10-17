@@ -135,10 +135,5 @@ const uint8_t mcp_to_physical_button_map[] = {
         11, 10, 9, 8
 };
 
-struct Scale {
-    const char *Name;
-    MidiNote ButtonMap[16];
-};
-
 // TODO lookup the current note from the current scale
 MidiNote *currentScale = bms_BbMajor;

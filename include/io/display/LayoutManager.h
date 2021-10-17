@@ -18,19 +18,25 @@
  * it should have some way to register a data layout and update it
  *
  */
+#define NUM_LAYOUTS 3
+
 class LayoutManager {
 public:
-    LayoutManager(lcd16x2 &lcd, const Layout &currentLayout);
+    LayoutManager(lcd16x2 &lcd, const Layout &currentLayout, Layout *layouts);
 
     void startCyclicUpdate();
     void update();
     void setLayout(Layout &layout);
+    void nextLayout();
+    void previousLayout();
     void runLayout();
     void stopLayout();
 private:
     bool _runLayoutFlag = false;
     lcd16x2& _lcd;
     Layout _currentLayout;
+    uint8_t _currentLayoutIndex = 0;
+    Layout *_layouts;
     elapsedMillis _updateTicker;
 };
 

@@ -27,6 +27,16 @@ void LayoutManager::setLayout(Layout &layout) {
     _currentLayout = layout;
 }
 
+void LayoutManager::nextLayout() {
+    _currentLayoutIndex = (NUM_LAYOUTS + _currentLayoutIndex + 1) % NUM_LAYOUTS;
+    setLayout(_layouts[_currentLayoutIndex]);
+}
+
+void LayoutManager::previousLayout() {
+    _currentLayoutIndex = (NUM_LAYOUTS + _currentLayoutIndex - 1) % NUM_LAYOUTS;
+    setLayout(_layouts[_currentLayoutIndex]);
+}
+
 void LayoutManager::runLayout() {
     _runLayoutFlag = true;
 }
@@ -35,4 +45,5 @@ void LayoutManager::stopLayout() {
     _runLayoutFlag = false;
 }
 
-LayoutManager::LayoutManager(lcd16x2 &lcd, const Layout &currentLayout) : _lcd(lcd), _currentLayout(currentLayout) {}
+LayoutManager::LayoutManager(lcd16x2 &lcd, const Layout &currentLayout, Layout *layouts) : _lcd(lcd), _currentLayout(
+        currentLayout), _layouts(layouts) {}

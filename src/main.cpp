@@ -18,7 +18,7 @@ const char *hello_buf = "Kim is so cute";
 ToySynth toySynth = ToySynth();
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
-LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO);
+LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO, layouts);
 
 // Debugging / Logging
 Logr logr = Logr();
@@ -163,7 +163,7 @@ void loop() {
         Serial.printf("Keyboard actual lower: 0x%x\n", lower_state);
         Serial.printf("Keyboard actual upper: 0x%x\n", upper_state);
 
-
+        testLayoutManager.nextLayout();
 
 //        Serial.printf(" A  | D  | S  | R\n");
 //        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
