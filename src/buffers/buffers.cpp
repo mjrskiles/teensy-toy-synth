@@ -25,8 +25,8 @@ uint8_t voices[MAX_VOICES];
 VoiceList voiceList = VoiceList();
 
 uint8_t LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS] {
-    ' ','t',' ','o',' ','y',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' ',
-    ' ','s','y','n','t','h',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' '
+    ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' ',
+    ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' '
 };
 
 uint8_t LCD_DISP_BACK_BUFFER[LCD_ROWS * LCD_COLS] {

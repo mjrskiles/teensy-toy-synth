@@ -114,12 +114,9 @@ void cb_LayoutCurrentNoteName(lcd_char *buffer) {
 
 // Page 2
 void cb_LayoutTest1(lcd_char *buffer) {
-    const char *test = "Test String 1";
-    int i = 0;
-    char current = test[i];
-    while (current != '\0') {
-        buffer[i] = current;
-        current = buffer[++i];
+    const lcd_char *test = "Test String";
+    for (int i = 0; i < 11; i++) {
+        buffer[i] = test[i];
     }
 }
 
@@ -127,11 +124,8 @@ void cb_LayoutTest1(lcd_char *buffer) {
 // Page 3
 void cb_LayoutTest2(lcd_char *buffer) {
     const char *test = "--Test Str2--";
-    int i = 0;
-    char current = test[i];
-    while (current != '\0') {
-        buffer[i] = current;
-        current = buffer[++i];
+    for (int i = 0; i < 13; i++) {
+        buffer[i] = test[i];
     }
 }
 

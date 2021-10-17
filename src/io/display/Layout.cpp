@@ -4,8 +4,16 @@
 
 #include "io/display/Layout.h"
 
+void Layout::clearBuffer() {
+    for (int i = 0; i < bufSize; i++) {
+        buffer[i] = ' ';
+    }
+}
+
 // Update each layout item and assemble them into the buffer
+
 void Layout::updateGroup() {
+    clearBuffer();
     for (int i = 0; i < size; i++) {
         layoutItems[i].update_cb(layoutItems[i].buffer);
         // put the bytes into the group's buffer

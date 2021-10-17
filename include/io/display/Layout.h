@@ -27,7 +27,7 @@ struct Layout {
     LayoutItem *layoutItems;
     size_t size;
     void updateGroup();
-
+    void clearBuffer();
     lcd_char *buffer;
     size_t bufSize = LCD_ROWS * LCD_COLS;
 };

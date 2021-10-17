@@ -42,12 +42,12 @@ LayoutItem layoutItem_noteName = LayoutItem(12, LCD_LAYOUT_BUFFER_NOTE_NAME, LCD
 LayoutItem layoutItems[] {layoutItem_mcpUpper, layoutItem_mcpLower, layoutItem_noteName};
 Layout layout_noteIO = Layout(layoutItems, 3, LCD_DISP_BACK_BUFFER);
 
-LayoutItem li_Test1 = LayoutItem(0, LCD_LAYOUT_TEST1, 16, cb_LayoutTest1);
-LayoutItem li_Test2 = LayoutItem(0, LCD_LAYOUT_TEST1, 16, cb_LayoutTest2);
+LayoutItem li_Test1 = LayoutItem(0, LCD_LAYOUT_TEST1, 11, cb_LayoutTest1);
+LayoutItem li_Test2 = LayoutItem(0, LCD_LAYOUT_TEST2, 13, cb_LayoutTest2);
 LayoutItem layoutItemsP2[]{li_Test1};
 LayoutItem layoutItemsP3[]{li_Test2};
-Layout layout_P2 = Layout(layoutItemsP2, 1, LCD_DISP_BACK_BUFFER);
-Layout layout_P3 = Layout(layoutItemsP3, 1, LCD_DISP_BACK_BUFFER);
+Layout layout_P2 = Layout(layoutItemsP2, 1, LCD_DISP_FRONT_BUFFER);
+Layout layout_P3 = Layout(layoutItemsP3, 1, LCD_DISP_FRONT_BUFFER);
 
 Layout layouts[NUM_LAYOUTS] {layout_noteIO, layout_P2, layout_P3};
 #endif //SYNTH_COMPONENTS_H
