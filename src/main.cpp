@@ -8,6 +8,7 @@
 #include "io/display/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
+#include <USB-MIDI.h>
 #include "synthesizer/midi_callbacks.h"
 
 #define DISPLAY_I2C Wire
@@ -43,15 +44,15 @@ void periph_ISR() {
     periphNumInterrupts++;
 }
 
-// MIDI
-usbMIDI.setHandleNoteOn(cb_handleNoteOn);
-usbMIDI.setHandleNoteOff(cb_handleNoteoff);
 
 void setup() {
     Serial.begin(9600);
     Serial7.begin(9600);
     while(!Serial && !Serial7);
     Wire.begin();
+    usbMIDI.begin();
+    usbMIDI.setHandleNoteOn(cb_handleNoteOn);
+    usbMIDI.setHandleNoteOff(cb_handleNoteoff);
     AudioMemory(48);
 
     pinMode(MCP_RESET_PIN, OUTPUT);

@@ -46,7 +46,7 @@ void ToySynth::synth_init() {
     // detailed information, see the MemoryAndCpuUsage example
     sgtl5000_1.enable();
     sgtl5000_1.volume(1.0);
-    waveform1.begin(WAVEFORM_SQUARE);
+    waveform1.begin(WAVEFORM_TRIANGLE);
     for (int i = 0; i < INPUT_BUFFER_SIZE_BOOLEAN; i++) {
         INPUT_BUFFER_BOOL[i].setName(INPUT_NAMES_BOOL[i]);
         INPUT_BUFFER_BOOL[i].setState(false);
