@@ -44,6 +44,26 @@ void periph_ISR() {
     periphNumInterrupts++;
 }
 
+#define NO_CHANGE 0
+#define NEXT_PAGE 1
+#define PREV_PAGE 2
+volatile uint8_t encoderLast = 3; // Starts at 0b11
+volatile uint8_t encoderCurrent = 3;
+volatile bool encoderBState = true;
+void encoderBPinChange_ISR() {
+    encoderBState = !encoderBState;
+}
+volatile bool encoderAState = true;
+volatile uint8_t encoderCommandWord = 0;
+void encoderAPinLow_ISR() {
+    encoderAState = !encoderAState;
+    if (encoderAState) {
+        encoderCommandWord = encoderBState ? NEXT_PAGE : PREV_PAGE;
+    }
+}
+
+
+
 
 void setup() {
     Serial.begin(9600);
@@ -57,6 +77,8 @@ void setup() {
 
     pinMode(MCP_RESET_PIN, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
+    pinMode(ENCODER1_A_PIN, INPUT);
+    pinMode(ENCODER1_B_PIN, INPUT);
     pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
     pinMode(RECORD_BUTTON_PIN, INPUT);
     digitalWrite(MCP_RESET_PIN, LOW);
@@ -65,6 +87,8 @@ void setup() {
     attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
     attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
     attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
+    attachInterrupt(ENCODER1_A_PIN, encoderAPinLow_ISR, CHANGE);
+    attachInterrupt(ENCODER1_B_PIN, encoderBPinChange_ISR, CHANGE);
 
     toySynth.synth_init();
     mixerEnv1.gain(0, 0.0);
@@ -149,6 +173,16 @@ void loop() {
         Serial.println(periphNumInterrupts);
         pollsterPeriph.poll();
         periphNumInterrupts = 0;
+    }
+
+    if (encoderCommandWord) {
+        if (encoderCommandWord == NEXT_PAGE) {
+            testLayoutManager.nextLayout();
+        }
+        if (encoderCommandWord == PREV_PAGE) {
+            testLayoutManager.previousLayout();
+        }
+        encoderCommandWord = NO_CHANGE;
     }
 
     testLayoutManager.update();
