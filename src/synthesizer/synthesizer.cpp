@@ -34,12 +34,6 @@ AudioConnection          patchCord14 = AudioConnection(mixer1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=585,481
 //// GUItool: end automatically generated code
 
-const char *mcpLower8Name = "MCP23008: Lower";
-const char *mcpUpper8Name = "MCP23008: Upper";
-const char *mcpPeriphName = "MCP23008: Peripheral";
-
-extern InputSnapshotBool INPUT_BUFFER_BOOL[];
-
 void ToySynth::synth_init() {
 
     // Audio connections require memory to work.  For more
@@ -47,12 +41,6 @@ void ToySynth::synth_init() {
     sgtl5000_1.enable();
     sgtl5000_1.volume(1.0);
     waveform1.begin(WAVEFORM_SQUARE);
-    for (int i = 0; i < INPUT_BUFFER_SIZE_BOOLEAN; i++) {
-        INPUT_BUFFER_BOOL[i].setName(INPUT_NAMES_BOOL[i]);
-        INPUT_BUFFER_BOOL[i].setState(false);
-        INPUT_BUFFER_BOOL[i].setFromIndex(i);
-        // initialize the buffer to a 0 state
-    }
 }
 
 void ToySynth::setNoteOn(MidiNote note, uint8_t velocity) {
