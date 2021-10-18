@@ -28,8 +28,9 @@ void LayoutManager::setLayout(Layout &layout) {
 }
 
 void LayoutManager::nextLayout() {
-    _currentLayoutIndex = (NUM_LAYOUTS + _currentLayoutIndex + 1) % NUM_LAYOUTS;
+    _currentLayoutIndex = (_currentLayoutIndex + 1) % NUM_LAYOUTS;
     setLayout(_layouts[_currentLayoutIndex]);
+    Serial.printf("Set layout index to %d\n", _currentLayoutIndex);
 }
 
 void LayoutManager::previousLayout() {

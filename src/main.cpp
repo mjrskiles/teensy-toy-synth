@@ -18,7 +18,7 @@ const char *hello_buf = "Kim is so cute";
 ToySynth toySynth = ToySynth();
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
-LayoutManager testLayoutManager = LayoutManager(lcd, layout_noteIO, layouts);
+LayoutManager layoutManager = LayoutManager(lcd, layout_noteIO, layouts);
 
 // Debugging / Logging
 Logr logr = Logr();
@@ -44,22 +44,13 @@ void periph_ISR() {
     periphNumInterrupts++;
 }
 
+// Rotary encoder for 16x2 LCD
 #define NO_CHANGE 0
 #define NEXT_PAGE 1
-#define PREV_PAGE 2
-volatile uint8_t encoderLast = 3; // Starts at 0b11
-volatile uint8_t encoderCurrent = 3;
-volatile bool encoderBState = true;
-void encoderBPinChange_ISR() {
-    encoderBState = !encoderBState;
-}
-volatile bool encoderAState = true;
+elapsedMillis pageChangeDebounce = 0;
 volatile uint8_t encoderCommandWord = 0;
 void encoderAPinLow_ISR() {
-    encoderAState = !encoderAState;
-    if (encoderAState) {
-        encoderCommandWord = encoderBState ? NEXT_PAGE : PREV_PAGE;
-    }
+    encoderCommandWord = NEXT_PAGE;
 }
 
 
@@ -78,7 +69,6 @@ void setup() {
     pinMode(MCP_RESET_PIN, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
     pinMode(ENCODER1_A_PIN, INPUT);
-    pinMode(ENCODER1_B_PIN, INPUT);
     pinMode(PLAY_STEP_BUTTON_PIN, INPUT);
     pinMode(RECORD_BUTTON_PIN, INPUT);
     digitalWrite(MCP_RESET_PIN, LOW);
@@ -87,8 +77,7 @@ void setup() {
     attachInterrupt(MCP_LOWER_INTERRUPT_PIN, lowerKB_ISR, FALLING);
     attachInterrupt(MCP_UPPER_INTERRUPT_PIN, upperKB_ISR, FALLING);
     attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
-    attachInterrupt(ENCODER1_A_PIN, encoderAPinLow_ISR, CHANGE);
-    attachInterrupt(ENCODER1_B_PIN, encoderBPinChange_ISR, CHANGE);
+    attachInterrupt(ENCODER1_A_PIN, encoderAPinLow_ISR, FALLING);
 
     toySynth.synth_init();
     mixerEnv1.gain(0, 0.0);
@@ -125,8 +114,8 @@ void loop() {
     if (firstPass) {
         firstPass = 0;
         Serial.println("First Pass");
-        testLayoutManager.startCyclicUpdate();
-        testLayoutManager.runLayout();
+        layoutManager.startCyclicUpdate();
+        layoutManager.runLayout();
     }
 
     float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
@@ -175,17 +164,13 @@ void loop() {
         periphNumInterrupts = 0;
     }
 
-    if (encoderCommandWord) {
-        if (encoderCommandWord == NEXT_PAGE) {
-            testLayoutManager.nextLayout();
-        }
-        if (encoderCommandWord == PREV_PAGE) {
-            testLayoutManager.previousLayout();
-        }
-        encoderCommandWord = NO_CHANGE;
+    if (pageChangeDebounce > 100 && encoderCommandWord == NEXT_PAGE) {
+        layoutManager.nextLayout();
+        pageChangeDebounce = 0;
     }
+    encoderCommandWord = NO_CHANGE;
 
-    testLayoutManager.update();
+    layoutManager.update();
 
     // Logging
     if (digitalRead(RECORD_BUTTON_PIN) == LOW && logPrintoutMillisSince > 100) {
@@ -196,8 +181,6 @@ void loop() {
         Serial.printf("Keyboard IO word: 0x%x\n", keyboard_io_word);
         Serial.printf("Keyboard actual lower: 0x%x\n", lower_state);
         Serial.printf("Keyboard actual upper: 0x%x\n", upper_state);
-
-        testLayoutManager.nextLayout();
 
 //        Serial.printf(" A  | D  | S  | R\n");
 //        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
