@@ -124,7 +124,7 @@ void cb_LayoutAttack(lcd_char *buffer) {
     LCD_LAYOUT_ATTACK[0] = 'A';
     LCD_LAYOUT_ATTACK[1] = ':';
     LCD_LAYOUT_ATTACK[2] = ' ';
-    itoa(attackValueRaw, attackStr, 10);
+    itoa(1023 - attackValueRaw, attackStr, 10);
     for (int i = 0; i < 4; i++) {
         LCD_LAYOUT_ATTACK[i + 3] = attackStr[i];
     }
@@ -137,7 +137,7 @@ void cb_LayoutDecay(lcd_char *buffer) {
     LCD_LAYOUT_DECAY[0] = 'D';
     LCD_LAYOUT_DECAY[1] = ':';
     LCD_LAYOUT_DECAY[2] = ' ';
-    itoa(decayValueRaw, decayStr, 10);
+    itoa(1023 - decayValueRaw, decayStr, 10);
     for (int i = 0; i < 4; i++) {
         LCD_LAYOUT_DECAY[i + 3] = decayStr[i];
     }
@@ -150,7 +150,7 @@ void cb_LayoutSustain(lcd_char *buffer) {
     LCD_LAYOUT_SUSTAIN[0] = 'S';
     LCD_LAYOUT_SUSTAIN[1] = ':';
     LCD_LAYOUT_SUSTAIN[2] = ' ';
-    itoa(sustainValueRaw, sustainStr, 10);
+    itoa(1023 - sustainValueRaw, sustainStr, 10);
     for (int i = 0; i < 4; i++) {
         LCD_LAYOUT_SUSTAIN[i + 3] = sustainStr[i];
     }
@@ -163,7 +163,7 @@ void cb_LayoutRelease(lcd_char *buffer) {
     LCD_LAYOUT_RELEASE[0] = 'R';
     LCD_LAYOUT_RELEASE[1] = ':';
     LCD_LAYOUT_RELEASE[2] = ' ';
-    itoa(releaseValueRaw, releaseStr, 10);
+    itoa(1023 - releaseValueRaw, releaseStr, 10);
     for (int i = 0; i < 4; i++) {
         LCD_LAYOUT_RELEASE[i + 3] = releaseStr[i];
     }
