@@ -120,6 +120,59 @@ void cb_LayoutTest1(lcd_char *buffer) {
     }
 }
 
+void cb_LayoutAttack(lcd_char *buffer) {
+    LCD_LAYOUT_ATTACK[0] = 'A';
+    LCD_LAYOUT_ATTACK[1] = ':';
+    LCD_LAYOUT_ATTACK[2] = ' ';
+    itoa(attackValueRaw, attackStr, 10);
+    for (int i = 0; i < 4; i++) {
+        LCD_LAYOUT_ATTACK[i + 3] = attackStr[i];
+    }
+    if (attackValueRaw < 1000) {
+        // only 3 characters
+        LCD_LAYOUT_ATTACK[7] = ' ';
+    }
+}
+void cb_LayoutDecay(lcd_char *buffer) {
+    LCD_LAYOUT_DECAY[0] = 'D';
+    LCD_LAYOUT_DECAY[1] = ':';
+    LCD_LAYOUT_DECAY[2] = ' ';
+    itoa(decayValueRaw, decayStr, 10);
+    for (int i = 0; i < 4; i++) {
+        LCD_LAYOUT_DECAY[i + 3] = decayStr[i];
+    }
+    if (decayValueRaw < 1000) {
+        // only 3 characters
+        LCD_LAYOUT_DECAY[7] = ' ';
+    }
+}
+void cb_LayoutSustain(lcd_char *buffer) {
+    LCD_LAYOUT_SUSTAIN[0] = 'S';
+    LCD_LAYOUT_SUSTAIN[1] = ':';
+    LCD_LAYOUT_SUSTAIN[2] = ' ';
+    itoa(sustainValueRaw, sustainStr, 10);
+    for (int i = 0; i < 4; i++) {
+        LCD_LAYOUT_SUSTAIN[i + 3] = sustainStr[i];
+    }
+    if (sustainValueRaw < 1000) {
+        // only 3 characters
+        LCD_LAYOUT_SUSTAIN[7] = ' ';
+    }
+}
+void cb_LayoutRelease(lcd_char *buffer) {
+    LCD_LAYOUT_RELEASE[0] = 'R';
+    LCD_LAYOUT_RELEASE[1] = ':';
+    LCD_LAYOUT_RELEASE[2] = ' ';
+    itoa(releaseValueRaw, releaseStr, 10);
+    for (int i = 0; i < 4; i++) {
+        LCD_LAYOUT_RELEASE[i + 3] = releaseStr[i];
+    }
+    if (releaseValueRaw < 1000) {
+        // only 3 characters
+        LCD_LAYOUT_RELEASE[7] = ' ';
+    }
+}
+
 
 // Page 3
 void cb_LayoutTest2(lcd_char *buffer) {

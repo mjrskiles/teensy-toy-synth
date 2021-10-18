@@ -26,7 +26,7 @@ int firstPass = 1;
 elapsedMillis logPrintoutMillisSince;
 elapsedMicros scanTime;
 uint8_t lastState = 0;
-float asdrScalar = 750.0;
+float adsrScalarMs = 750.0; //in milliseconds
 
 // Interrupt routines
 elapsedMicros lowerDebounce;
@@ -118,18 +118,23 @@ void loop() {
         layoutManager.runLayout();
     }
 
-    float knob_Volume = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
-    float knob_A = (float)analogRead(KNOB_A_PIN) / 1023.0f;
-    float knob_S = (float)analogRead(KNOB_S_PIN) / 1023.0f;
-    float knob_D = (float)analogRead(KNOB_D_PIN) / 1023.0f;
-    float knob_R = (float)analogRead(KNOB_R_PIN) / 1023.0f;
+    attackValueRaw = analogRead(KNOB_A_PIN);
+    decayValueRaw = analogRead(KNOB_D_PIN);
+    sustainValueRaw = analogRead(KNOB_S_PIN);
+    releaseValueRaw = analogRead(KNOB_R_PIN);
 
-    waveform1Envelope.attack(asdrScalar * (1 - knob_A));
-    waveform1Envelope.decay(asdrScalar * (1 - knob_D));
+    knobVolumeScaled = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
+    float knob_A = ((float)attackValueRaw / 1023.0f) * adsrScalarMs;
+    float knob_D = ((float)decayValueRaw / 1023.0f) * adsrScalarMs;
+    float knob_S = ((float)sustainValueRaw / 1023.0f);
+    float knob_R = ((float)releaseValueRaw / 1023.0f) * adsrScalarMs;
+
+    waveform1Envelope.attack(adsrScalarMs * (1 - knob_A));
+    waveform1Envelope.decay(adsrScalarMs * (1 - knob_D));
     waveform1Envelope.sustain(1 - knob_S);
-    waveform1Envelope.release(asdrScalar * (1 - knob_R));
+    waveform1Envelope.release(adsrScalarMs * (1 - knob_R));
 
-    sgtl5000_1.volume(knob_Volume);
+    sgtl5000_1.volume(knobVolumeScaled);
 
     // This clears the interrupt in case it gets stuck on. There is probably a more logical way to do this.
     // The MCP interrupts don't get cleared till either INTCAP or GPIO register is read. If the callback read fails

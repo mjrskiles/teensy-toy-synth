@@ -15,18 +15,16 @@
 extern uint16_t keyboard_io_word;
 extern uint16_t keyboard_io_word_previous;
 extern MidiNote activeNote;
-extern uint8_t jengaStackStack[16];
+extern int attackValueRaw;
+extern int decayValueRaw;
+extern int sustainValueRaw;
+extern int releaseValueRaw;
+extern float knobVolumeScaled;
 
-extern bool DISCRETE_INPUTS[INPUT_BUFFER_SIZE_BOOLEAN];
-
-extern InputSnapshotBool INPUT_BUFFER_BOOL[INPUT_BUFFER_SIZE_BOOLEAN];
-extern InputSnapshotFloat INPUT_BUFFER_FLOAT[INPUT_BUFFER_SIZE_FLOAT];
-extern InputSnapshotUint8 INPUT_BUFFER_UINT8[INPUT_BUFFER_SIZE_UINT8];
-extern InputSnapshotInt16 INPUT_BUFFER_INT16[INPUT_BUFFER_SIZE_INT16];
-extern InputSnapshot *active_voice;
-
-extern uint8_t voices[MAX_VOICES];
-extern VoiceList voiceList;
+extern char attackStr[5]; // max value will be 1023
+extern char decayStr[5];
+extern char sustainStr[5];
+extern char releaseStr[5];
 
 // LCD
 extern lcd_char LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS];
@@ -39,7 +37,13 @@ extern lcd_char LCD_LAYOUT_BUFFER_NOTE_NAME[LCD_NOTE_NAME_CHAR_WIDTH]; // 4
 extern lcd_char LCD_LAYOUT_TEST1[16];
 extern lcd_char LCD_LAYOUT_TEST2[16];
 
-extern const char *INPUT_NAMES_BOOL[];
+
+extern lcd_char LCD_LAYOUT_ATTACK[7];
+extern lcd_char LCD_LAYOUT_DECAY[7];
+extern lcd_char LCD_LAYOUT_SUSTAIN[7];
+extern lcd_char LCD_LAYOUT_RELEASE[7];
+
+
 
 
 #endif //SYNTH_BUFFERS_H

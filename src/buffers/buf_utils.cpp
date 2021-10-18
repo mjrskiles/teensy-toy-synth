@@ -23,12 +23,6 @@ const uint16_t logical_loc_to_mask[] = {
         0b1000000000000000
 };
 
-bool isAnyKeyboardKeyPressed() {
-    for(int i = 0; i < 16; i++) {
-        if (INPUT_BUFFER_BOOL[i].asBool()) return true;
-    }
-    return false;
-}
 
 bool isOneAtIndex(uint16_t word, int index) {
     uint16_t mask = logical_loc_to_mask[index];
