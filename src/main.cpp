@@ -80,8 +80,8 @@ void setup() {
     attachInterrupt(ENCODER1_A_PIN, encoderAPinLow_ISR, FALLING);
 
     toySynth.synth_init();
-    mixerEnv1.gain(0, 0.0);
-    mixerEnv1.gain(1, 1.0);
+//    mixerEnv1.gain(0, 0.0);
+//    mixerEnv1.gain(1, 1.0);
 
     digitalWrite(MCP_RESET_PIN, HIGH);
     pollsterLower8.init();
@@ -129,12 +129,12 @@ void loop() {
     float knob_S = ((float)sustainValueRaw / 1023.0f);
     float knob_R = ((float)releaseValueRaw / 1023.0f) * adsrScalarMs;
 
-    waveform1Envelope.attack(adsrScalarMs * (1 - knob_A));
-    waveform1Envelope.decay(adsrScalarMs * (1 - knob_D));
-    waveform1Envelope.sustain(1 - knob_S);
-    waveform1Envelope.release(adsrScalarMs * (1 - knob_R));
-
-    sgtl5000_1.volume(knobVolumeScaled);
+//    waveform1Envelope.attack(adsrScalarMs * (1 - knob_A));
+//    waveform1Envelope.decay(adsrScalarMs * (1 - knob_D));
+//    waveform1Envelope.sustain(1 - knob_S);
+//    waveform1Envelope.release(adsrScalarMs * (1 - knob_R));
+//
+//    sgtl5000_1.volume(knobVolumeScaled);
 
     // This clears the interrupt in case it gets stuck on. There is probably a more logical way to do this.
     // The MCP interrupts don't get cleared till either INTCAP or GPIO register is read. If the callback read fails
