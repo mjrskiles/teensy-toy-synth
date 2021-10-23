@@ -40,7 +40,8 @@ void cb_lower8Pollster() {
     } while (gpio && gpio == gpio_lower_previous); // This function should only be called on change of state
     interrupts();
     gpio_lower_previous = gpio;
-    toySynth.notify();
+//    toySynth.notify();
+    pwmSynth.update();
 }
 
 void cb_upper8Pollster() {
@@ -54,7 +55,8 @@ void cb_upper8Pollster() {
     } while (gpio && gpio == gpio_upper_previous);
     interrupts();
     gpio_upper_previous = gpio;
-    toySynth.notify();
+//    toySynth.notify();
+    pwmSynth.update();
 }
 
 void cb_peripheralPollster() {

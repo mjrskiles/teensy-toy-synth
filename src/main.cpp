@@ -9,6 +9,7 @@
 #include "synthesizer/components.h"
 #include "Logr.h"
 #include <USB-MIDI.h>
+#include <synthesizer/pwm_synth.h>
 #include "synthesizer/midi_callbacks.h"
 
 #define DISPLAY_I2C Wire
@@ -16,6 +17,7 @@
 const char *hello_buf = "Kim is so cute";
 
 ToySynth toySynth = ToySynth();
+PwmSynth pwmSynth = PwmSynth();
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 LayoutManager layoutManager = LayoutManager(lcd, layout_noteIO, layouts);
@@ -117,6 +119,8 @@ void loop() {
         layoutManager.startCyclicUpdate();
         layoutManager.runLayout();
     }
+//    pwmSynth.update();
+
 
     attackValueRaw = analogRead(KNOB_A_PIN);
     decayValueRaw = analogRead(KNOB_D_PIN);

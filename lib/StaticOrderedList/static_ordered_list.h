@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <iostream>
 
-const uint16_t BUFFER_SIZE {8};
+const uint16_t BUFFER_SIZE {4};
 
 template <class T>
         class StaticOrderedList {
@@ -22,6 +22,9 @@ template <class T>
             uint16_t head();
             uint16_t tail();
             bool isEmpty() { return _size == 0; }
+            bool isFull() {return _size == BUFFER_SIZE; }
+            bool contains(T item);
+            uint16_t indexOf(T val);
             uint16_t size();
             uint16_t maxSize() { return BUFFER_SIZE; }
 
@@ -139,6 +142,28 @@ bool StaticOrderedList<T>::compareTList(T *list, int size) {
         if (list[i] != *(_list[i])) return false;
     }
     return true;
+}
+
+template<class T>
+bool StaticOrderedList<T>::contains(T item) {
+    bool found = false;
+    for (int i = 0; i < BUFFER_SIZE; i++) {
+        T *curr = _list[i];
+        if (curr != nullptr) {
+            if (*curr == item) found = true;
+        }
+    }
+    return found;
+}
+
+template<class T>
+uint16_t StaticOrderedList<T>::indexOf(T val) {
+    for (uint16_t i = 0; i < BUFFER_SIZE; i++) {
+        if (*(_list[i]) == val) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 #endif //STATIC_ORDERED_LIST_STATIC_ORDERED_LIST_H

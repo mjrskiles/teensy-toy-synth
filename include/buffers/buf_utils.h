@@ -5,7 +5,7 @@
 #ifndef TEENSY_SYNTH_BUF_UTILS_H
 #define TEENSY_SYNTH_BUF_UTILS_H
 
-#include "buffers/buffers.h"
+#include <cstdint>
 
 extern const uint16_t logical_loc_to_mask[16];
 
