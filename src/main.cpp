@@ -92,9 +92,10 @@ void setup() {
     attachInterrupt(MCP_PERIPH_INTERRUPT_PIN, periph_ISR, FALLING);
     attachInterrupt(ENCODER1_A_PIN, encoderAPinLow_ISR, FALLING);
 
-    toySynth.synth_init();
+//    toySynth.synth_init();
 //    mixerEnv1.gain(0, 0.0);
 //    mixerEnv1.gain(1, 1.0);
+    pwmSynth.init();
 
     digitalWrite(MCP_RESET_PIN, HIGH);
     pollsterLower8.init();
