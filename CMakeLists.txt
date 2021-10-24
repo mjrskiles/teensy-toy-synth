@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} include/synthesizer/pwm_synth.h src/synthesizer/pwm_synth.cpp src/synthesizer/synth_signal_chain.cpp)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST})

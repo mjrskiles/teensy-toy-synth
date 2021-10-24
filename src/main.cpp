@@ -77,7 +77,7 @@ void setup() {
     MIDI.begin(1);
     MIDI.setHandleNoteOn(handleNoteOn);
     MIDI.setHandleNoteOff(handleNoteOff);
-    AudioMemory(48);
+    AudioMemory(64);
 
     pinMode(MCP_RESET_PIN, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
