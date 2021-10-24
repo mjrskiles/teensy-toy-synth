@@ -23,8 +23,10 @@ LayoutManager layoutManager = LayoutManager(lcd, layout_noteIO, layouts);
 
 // MIDI
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial6, MIDI);
+volatile int noteOnCounter = 0;
 void handleNoteOn(byte channel, byte pitch, byte velocity) {
     pwmSynth.noteOn(MidiNote(pitch), 127);
+    noteOnCounter++;
 }
 
 void handleNoteOff(byte channel, byte pitch, byte velocity) {
@@ -122,6 +124,8 @@ void setup() {
 }
 
 void loop() {
+    MIDI.read();
+
     if (firstPass) {
         firstPass = 0;
         Serial.println("First Pass");
@@ -199,6 +203,8 @@ void loop() {
         Serial.printf("Keyboard IO word: 0x%x\n", keyboard_io_word);
         Serial.printf("Keyboard actual lower: 0x%x\n", lower_state);
         Serial.printf("Keyboard actual upper: 0x%x\n", upper_state);
+
+        Serial.printf("Midi note on counter: %d\n", noteOnCounter);
 
 //        Serial.printf(" A  | D  | S  | R\n");
 //        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);

@@ -52,14 +52,6 @@ void PwmSynth::update() {
             noteOff(note);
         }
     }
-
-    if (!keyboard_io_word) {
-        for (int i = 0; i < NUM_OSCILLATORS; i++) {
-            if (!voices[i].envelope->isActive()) {
-                voices[i].oscillator->amplitude(0.0);
-            }
-        }
-    }
 }
 
 uint16_t PwmSynth::getNextUpOscillator() {
