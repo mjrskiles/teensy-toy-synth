@@ -72,12 +72,12 @@ void encoderAPinLow_ISR() {
 void setup() {
     Serial.begin(9600);
     Serial7.begin(9600);
+    MIDI.begin(1);
     while(!Serial && !Serial7);
     Wire.begin();
-    MIDI.begin(1);
     MIDI.setHandleNoteOn(handleNoteOn);
     MIDI.setHandleNoteOff(handleNoteOff);
-    AudioMemory(64);
+    AudioMemory(96);
 
     pinMode(MCP_RESET_PIN, OUTPUT);
     pinMode(MCP_LOWER_INTERRUPT_PIN, INPUT_PULLUP);
@@ -141,17 +141,21 @@ void loop() {
     releaseValueRaw = analogRead(KNOB_R_PIN);
 
     knobVolumeScaled = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
-    float knob_A = ((float)attackValueRaw / 1023.0f) * adsrScalarMs;
-    float knob_D = ((float)decayValueRaw / 1023.0f) * adsrScalarMs;
-    float knob_S = ((float)sustainValueRaw / 1023.0f);
-    float knob_R = ((float)releaseValueRaw / 1023.0f) * adsrScalarMs;
+    float knob_A = ((float)attackValueRaw / 511.5f) - 1;
+    float knob_D = ((float)decayValueRaw / 511.5f) - 1;
+    float knob_S = ((float)sustainValueRaw / 511.5f) - 1;
+    float knob_R = ((float)releaseValueRaw / 511.5f) - 1;
 
 //    waveform1Envelope.attack(adsrScalarMs * (1 - knob_A));
 //    waveform1Envelope.decay(adsrScalarMs * (1 - knob_D));
 //    waveform1Envelope.sustain(1 - knob_S);
 //    waveform1Envelope.release(adsrScalarMs * (1 - knob_R));
+    dc1.amplitude(knob_A);
+    dc2.amplitude(knob_D);
+    dc3.amplitude(knob_S);
+    dc4.amplitude(knob_R);
 //
-//    sgtl5000_1.volume(knobVolumeScaled);
+    sgtl5000_1.volume(knobVolumeScaled);
 
     // This clears the interrupt in case it gets stuck on. There is probably a more logical way to do this.
     // The MCP interrupts don't get cleared till either INTCAP or GPIO register is read. If the callback read fails
@@ -206,8 +210,8 @@ void loop() {
 
         Serial.printf("Midi note on counter: %d\n", noteOnCounter);
 
-//        Serial.printf(" A  | D  | S  | R\n");
-//        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
+        Serial.printf(" A  | D  | S  | R\n");
+        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
         lastState = 0;
         logPrintoutMillisSince = 0;
     }
