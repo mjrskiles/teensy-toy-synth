@@ -4,13 +4,12 @@
 #include <synthesizer/synthesizer.h>
 
 #include "buffers/teensy41pinout.h"
-#include "io/MCP23008.h"
 #include "io/display/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
-#include <USB-MIDI.h>
 #include <synthesizer/pwm_synth.h>
 #include "synthesizer/midi_callbacks.h"
+#include <MIDI.h>
 
 #define DISPLAY_I2C Wire
 
@@ -21,6 +20,16 @@ PwmSynth pwmSynth = PwmSynth();
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);
 LayoutManager layoutManager = LayoutManager(lcd, layout_noteIO, layouts);
+
+// MIDI
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial6, MIDI);
+void handleNoteOn(byte channel, byte pitch, byte velocity) {
+    pwmSynth.noteOn(MidiNote(pitch), 127);
+}
+
+void handleNoteOff(byte channel, byte pitch, byte velocity) {
+    pwmSynth.noteOff(MidiNote(pitch));
+}
 
 // Debugging / Logging
 Logr logr = Logr();
@@ -63,9 +72,9 @@ void setup() {
     Serial7.begin(9600);
     while(!Serial && !Serial7);
     Wire.begin();
-    usbMIDI.begin();
-    usbMIDI.setHandleNoteOn(cb_handleNoteOn);
-    usbMIDI.setHandleNoteOff(cb_handleNoteoff);
+    MIDI.begin(1);
+    MIDI.setHandleNoteOn(handleNoteOn);
+    MIDI.setHandleNoteOff(handleNoteOff);
     AudioMemory(48);
 
     pinMode(MCP_RESET_PIN, OUTPUT);
