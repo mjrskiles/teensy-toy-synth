@@ -10,6 +10,7 @@
 #include "toy_defines.h"
 #include "luts.h"
 
+
 extern uint16_t keyboard_io_word;
 extern uint16_t keyboard_io_word_previous;
 extern MidiNote activeNote;
@@ -23,6 +24,13 @@ extern char attackStr[5]; // max value will be 1023
 extern char decayStr[5];
 extern char sustainStr[5];
 extern char releaseStr[5];
+
+extern uint8_t bankSelectByte;
+
+extern float analog_control_1;
+extern float analog_control_2;
+extern float analog_control_3;
+extern float analog_control_4;
 
 // LCD
 extern lcd_char LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS];

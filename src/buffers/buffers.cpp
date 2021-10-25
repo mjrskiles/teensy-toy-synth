@@ -18,6 +18,13 @@ char decayStr[5];
 char sustainStr[5];
 char releaseStr[5];
 
+uint8_t bankSelectByte = 0;
+
+float analog_control_1 = 0.0;
+float analog_control_2 = 0.0;
+float analog_control_3 = 0.0;
+float analog_control_4 = 0.0;
+
 lcd_char LCD_DISP_FRONT_BUFFER[LCD_ROWS * LCD_COLS] {
     ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' ',
     ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ', ' ',' ',' ',' '

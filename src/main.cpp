@@ -142,20 +142,16 @@ void loop() {
     releaseValueRaw = analogRead(KNOB_R_PIN);
 
     knobVolumeScaled = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
-    float knob_A = ((float)attackValueRaw / 511.5f) - 1;
-    float knob_D = ((float)decayValueRaw / 511.5f) - 1;
-    float knob_S = ((float)sustainValueRaw / 511.5f) - 1;
-    float knob_R = ((float)releaseValueRaw / 511.5f) - 1;
+    analog_control_1 = 1 - ((float)attackValueRaw / 1023.0f);
+    analog_control_2 = 1 - ((float)decayValueRaw / 1023.0);
+    analog_control_3 = 1 - ((float)sustainValueRaw /  1023.0);
+    analog_control_4 = 1 - ((float)releaseValueRaw /  1023.0);
 
-//    waveform1Envelope.attack(adsrScalarMs * (1 - knob_A));
-//    waveform1Envelope.decay(adsrScalarMs * (1 - knob_D));
-//    waveform1Envelope.sustain(1 - knob_S);
-//    waveform1Envelope.release(adsrScalarMs * (1 - knob_R));
-    dc1.amplitude(knob_A);
-    dc2.amplitude(knob_D);
-    dc3.amplitude(knob_S);
-    dc4.amplitude(knob_R);
-//
+    pwmSynth.controlChange(0, analog_control_1);
+    pwmSynth.controlChange(1, analog_control_2);
+    pwmSynth.controlChange(2, analog_control_3);
+    pwmSynth.controlChange(3, analog_control_4);
+
     sgtl5000_1.volume(knobVolumeScaled);
 
     // This clears the interrupt in case it gets stuck on. There is probably a more logical way to do this.
@@ -178,7 +174,7 @@ void loop() {
         pollsterLower8.poll();
         lower8NumInterrupts = 0;
     }
-    if(upper8NumInterrupts || digitalRead(MCP_UPPER_INTERRUPT_PIN) == LOW) {
+    if(upper8NumInterrupts) {
         Serial.println("Upper 8 INTERRUPT");
         Serial.println(upper8NumInterrupts);
         pollsterUpper8.poll();
@@ -211,8 +207,8 @@ void loop() {
 
         Serial.printf("Midi note on counter: %d\n", noteOnCounter);
 
-        Serial.printf(" A  | D  | S  | R\n");
-        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", knob_A, knob_D, knob_S, knob_R);
+        Serial.printf(" 1  | 2  | 3  | 4\n");
+        Serial.printf("%4.2f %4.2f %4.2f %4.2f\n", analog_control_1, analog_control_2, analog_control_3, analog_control_4);
         lastState = 0;
         logPrintoutMillisSince = 0;
     }

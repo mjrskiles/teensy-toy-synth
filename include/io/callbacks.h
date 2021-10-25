@@ -62,6 +62,14 @@ void cb_upper8Pollster() {
 void cb_peripheralPollster() {
     uint8_t gpio = mcp_periph1.readRegister(mcp_kbUpper8.getGpio());
     Serial.printf("Periph IO word: %x\n", gpio);
+
+    uint8_t newBank = (gpio & 7);
+    if (newBank != bankSelectByte) {
+        bankSelectByte = newBank;
+        pwmSynth.update();
+        Serial.printf("Selected control bank %d\n", newBank);
+    }
+
 }
 
 void cb_mcpInit(MCP23008 mcp) {
