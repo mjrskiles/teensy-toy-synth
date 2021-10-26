@@ -52,8 +52,6 @@ void PwmSynth::update() {
             noteOff(note);
         }
     }
-
-    _updateControlBanks();
 }
 
 uint16_t PwmSynth::getNextUpOscillator() {

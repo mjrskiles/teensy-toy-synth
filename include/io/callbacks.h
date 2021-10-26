@@ -68,7 +68,6 @@ void cb_peripheralPollster() {
     if (newBank != bankSelectByte) {
         bankSelectByte = newBank;
         pwmSynth.setControlChangeActive(false);
-        pwmSynth.update();
         Serial.printf("Selected control bank %d\n", newBank);
     }
 
