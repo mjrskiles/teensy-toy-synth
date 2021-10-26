@@ -7,7 +7,6 @@
 
 #include <io/display/Layout.h>
 #include <io/display/LayoutManager.h>
-#include "io/InputSnapshot.h"
 #include "io/InputPollster.h"
 #include "io/callbacks.h"
 

@@ -5,7 +5,7 @@
 #ifndef SYNTH_BUFFERS_H
 #define SYNTH_BUFFERS_H
 
-#include <inttypes.h>
+#include <cstdint>
 #include <synthesizer/pwm_synth.h>
 #include "toy_defines.h"
 #include "luts.h"

@@ -1,21 +1,18 @@
 #include <Audio.h>
 #include <Wire.h>
 #include <Bounce.h>
-#include <synthesizer/synthesizer.h>
 
-#include "buffers/teensy41pinout.h"
+#include "model/teensy41pinout.h"
 #include "io/display/lcd16x2.h"
 #include "synthesizer/components.h"
 #include "Logr.h"
 #include <synthesizer/pwm_synth.h>
-#include "synthesizer/midi_callbacks.h"
 #include <MIDI.h>
 
 #define DISPLAY_I2C Wire
 
 const char *hello_buf = "Kim is so cute";
 
-ToySynth toySynth = ToySynth();
 PwmSynth pwmSynth = PwmSynth();
 SerialLCDWriter displayWriter = SerialLCDWriter();
 lcd16x2 lcd(displayWriter);

@@ -2,7 +2,7 @@
 // Created by Michael Skiles on 9/21/21.
 //
 
-#include "buffers/buffers.h"
+#include "model/buffers.h"
 
 uint16_t keyboard_io_word = 0;
 uint16_t keyboard_io_word_previous = 0;

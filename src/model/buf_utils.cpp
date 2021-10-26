@@ -2,7 +2,7 @@
 // Created by Michael Skiles on 10/1/21.
 //
 
-#include "buffers/buf_utils.h"
+#include "model//buf_utils.h"
 
 const uint16_t logical_loc_to_mask[] = {
         0b0000000000000001,

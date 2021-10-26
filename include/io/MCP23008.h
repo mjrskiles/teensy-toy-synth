@@ -6,7 +6,7 @@
 #define SYNTH_MCP23008_H
 
 #include <Wire.h>
-#include <inttypes.h>
+#include <cstdint>
 
 #define BUFFER_SIZE 32
 

@@ -2,8 +2,8 @@
 // Created by Michael Skiles on 10/22/21.
 //
 
-#include <buffers/buffers.h>
-#include <buffers/buf_utils.h>
+#include <model/buffers.h>
+#include <model/buf_utils.h>
 #include "synthesizer/pwm_synth.h"
 
 void PwmSynth::noteOn(MidiNote note, uint8_t vel) {

@@ -5,10 +5,10 @@
 #ifndef TEENSY_SYNTH_LAYOUT_H
 #define TEENSY_SYNTH_LAYOUT_H
 
-#include <toy_defines.h>
-#include <inttypes.h>
+#include <cstdint>
 #include <stddef.h>
 #include <toy_types.h>
+#include "model/toy_defines.h"
 
 struct LayoutItem {
     LayoutItem(uint8_t screenPosition, lcd_char *buffer, size_t size, void (*updateCb)(lcd_char *));

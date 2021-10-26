@@ -5,15 +5,11 @@
 #ifndef SYNTH_CALLBACKS_H
 #define SYNTH_CALLBACKS_H
 
-#include "Controller.h"
 #include <HardwareSerial.h>
 #include "MCP23008.h"
-#include "buffers/buffers.h"
-#include "io/InputSnapshot.h"
-#include "VirtualInput.h"
-#include "buffers/luts.h"
-#include "synthesizer/synthesizer.h"
-#include "buffers/buf_utils.h"
+#include "model/buffers.h"
+#include "model/luts.h"
+#include "model/buf_utils.h"
 
 MCP23008 mcp_periph1 = MCP23008(0x20);
 MCP23008 mcp_kbUpper8 = MCP23008(0x21);

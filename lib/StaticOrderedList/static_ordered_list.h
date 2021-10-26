@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <iostream>
 
-const uint16_t BUFFER_SIZE {4};
+const uint16_t SOL_BUFFER_SIZE {4};
 
 template <class T>
         class StaticOrderedList {
@@ -22,16 +22,16 @@ template <class T>
             uint16_t head();
             uint16_t tail();
             bool isEmpty() { return _size == 0; }
-            bool isFull() {return _size == BUFFER_SIZE; }
+            bool isFull() {return _size == SOL_BUFFER_SIZE; }
             bool contains(T item);
             uint16_t indexOf(T val);
             uint16_t size();
-            uint16_t maxSize() { return BUFFER_SIZE; }
+            uint16_t maxSize() { return SOL_BUFFER_SIZE; }
 
             // for testing
-            bool compareTList(T list[BUFFER_SIZE], int size);
+            bool compareTList(T list[SOL_BUFFER_SIZE], int size);
         protected:
-            T* _list[BUFFER_SIZE];
+            T* _list[SOL_BUFFER_SIZE];
             uint16_t _size;
             uint16_t _head;
             uint16_t _tail;
@@ -40,7 +40,7 @@ template <class T>
 template<class T>
         void StaticOrderedList<T>::print() {
             std::cout << "List | Head: " << _head << " Tail: " << _tail << std::endl;
-            for (int i = 0; i < BUFFER_SIZE; i++) {
+            for (int i = 0; i < SOL_BUFFER_SIZE; i++) {
                 std::cout << _list[i] << std::endl;
             }
 
@@ -61,12 +61,12 @@ void StaticOrderedList<T>::push(T &item) {
     if (_size == 0) {
         _list[_head] = &item;
     } else {
-        _head = (_head + 1) % BUFFER_SIZE;
+        _head = (_head + 1) % SOL_BUFFER_SIZE;
         _list[_head] = &item;
     }
 
-    if (_size == BUFFER_SIZE) {
-        _tail = (_tail + 1) % BUFFER_SIZE;
+    if (_size == SOL_BUFFER_SIZE) {
+        _tail = (_tail + 1) % SOL_BUFFER_SIZE;
     } else {
         _size += 1;
     }
@@ -78,16 +78,16 @@ void StaticOrderedList<T>::insertAtIndex(T &item, uint16_t index) {
         push(item);
     } else {
         T *swap = _list[_tail + index];
-        _list[(_tail + index) % BUFFER_SIZE] = &item;
-        if (_size < BUFFER_SIZE) {
+        _list[(_tail + index) % SOL_BUFFER_SIZE] = &item;
+        if (_size < SOL_BUFFER_SIZE) {
             _size += 1;
         } else {
-            _tail = (_tail + 1) % BUFFER_SIZE;
+            _tail = (_tail + 1) % SOL_BUFFER_SIZE;
         }
-        _head = (_head + 1) % BUFFER_SIZE;
+        _head = (_head + 1) % SOL_BUFFER_SIZE;
         for (uint32_t i = _tail + index + 1; i < _tail + _size; i++) {
-            T *swap2 = _list[i % BUFFER_SIZE];
-            _list[i % BUFFER_SIZE] = swap;
+            T *swap2 = _list[i % SOL_BUFFER_SIZE];
+            _list[i % SOL_BUFFER_SIZE] = swap;
             swap = swap2;
         }
     }
@@ -102,7 +102,7 @@ T *StaticOrderedList<T>::pop() {
         T *popped;
         popped = _list[_head];
         _list[_head] = nullptr;
-        _head = (_head - 1) % BUFFER_SIZE;
+        _head = (_head - 1) % SOL_BUFFER_SIZE;
         _size = _size - 1;
         return popped;
     }
@@ -111,13 +111,13 @@ T *StaticOrderedList<T>::pop() {
 template<class T>
 T *StaticOrderedList<T>::removeAtIndex(uint16_t index) {
     if (index > _size) return nullptr;
-    T *removed = _list[(_tail + index) % BUFFER_SIZE];
-    _list[(_tail + index) % BUFFER_SIZE] = nullptr;
+    T *removed = _list[(_tail + index) % SOL_BUFFER_SIZE];
+    _list[(_tail + index) % SOL_BUFFER_SIZE] = nullptr;
     for (uint32_t i = _tail + index; i < _tail + _size; i++) {
-        _list[i % BUFFER_SIZE] = _list[(i + 1) % BUFFER_SIZE];
+        _list[i % SOL_BUFFER_SIZE] = _list[(i + 1) % SOL_BUFFER_SIZE];
     }
     _size -= 1;
-    _head = (_head - 1) % BUFFER_SIZE;
+    _head = (_head - 1) % SOL_BUFFER_SIZE;
     return removed;
 }
 
@@ -147,7 +147,7 @@ bool StaticOrderedList<T>::compareTList(T *list, int size) {
 template<class T>
 bool StaticOrderedList<T>::contains(T item) {
     bool found = false;
-    for (int i = 0; i < BUFFER_SIZE; i++) {
+    for (int i = 0; i < SOL_BUFFER_SIZE; i++) {
         T *curr = _list[i];
         if (curr != nullptr) {
             if (*curr == item) found = true;
@@ -158,7 +158,7 @@ bool StaticOrderedList<T>::contains(T item) {
 
 template<class T>
 uint16_t StaticOrderedList<T>::indexOf(T val) {
-    for (uint16_t i = 0; i < BUFFER_SIZE; i++) {
+    for (uint16_t i = 0; i < SOL_BUFFER_SIZE; i++) {
         if (*(_list[i]) == val) {
             return i;
         }

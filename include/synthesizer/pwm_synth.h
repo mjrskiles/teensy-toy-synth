@@ -6,7 +6,7 @@
 #define TEENSY_SYNTH_PWM_SYNTH_H
 
 #include "synth_signal_chain.h"
-#include "buffers/luts.h"
+#include "model/luts.h"
 #include "static_ordered_list.h"
 
 #define NUM_OSCILLATORS 4

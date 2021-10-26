@@ -5,7 +5,7 @@
 #ifndef SYNTH_LCD16X2_H
 #define SYNTH_LCD16X2_H
 #include "SerialLCDWriter.h"
-#include "toy_defines.h"
+#include "model/toy_defines.h"
 
 const uint8_t DISPLAY_COMMAND_CHAR = 0xFE;
 const uint8_t DISPLAY_CONFIG_CHAR = 0x7C;
