@@ -59,9 +59,15 @@ void cb_peripheralPollster() {
     uint8_t gpio = mcp_periph1.readRegister(mcp_kbUpper8.getGpio());
     Serial.printf("Periph IO word: %x\n", gpio);
 
+    if (gpio & 0x10) {
+        pwmSynth.setControlChangeActive(true);
+        Serial.printf("Triggered control change\n");
+    }
+
     uint8_t newBank = (gpio & 7);
     if (newBank != bankSelectByte) {
         bankSelectByte = newBank;
+        pwmSynth.setControlChangeActive(false);
         pwmSynth.update();
         Serial.printf("Selected control bank %d\n", newBank);
     }

@@ -4,8 +4,8 @@
 
 #include "model/teensy41pinout.h"
 #include "io/display/lcd16x2.h"
-#include "synthesizer/components.h"
-#include "Logr.h"
+#include "model/components.h"
+#include "logr.h"
 #include <synthesizer/pwm_synth.h>
 #include <MIDI.h>
 
@@ -31,7 +31,7 @@ void handleNoteOff(byte channel, byte pitch, byte velocity) {
 }
 
 // Debugging / Logging
-Logr logr = Logr();
+Logr& logr = Logr::getInstance();
 int firstPass = 1;
 elapsedMillis logPrintoutMillisSince;
 elapsedMicros scanTime;
@@ -144,10 +144,12 @@ void loop() {
     analog_control_3 = 1 - ((float)sustainValueRaw /  1023.0);
     analog_control_4 = 1 - ((float)releaseValueRaw /  1023.0);
 
-    pwmSynth.controlChange(0, analog_control_1);
-    pwmSynth.controlChange(1, analog_control_2);
-    pwmSynth.controlChange(2, analog_control_3);
-    pwmSynth.controlChange(3, analog_control_4);
+    if (pwmSynth.isControlChangeActive()) {
+        pwmSynth.controlChange(0, analog_control_1);
+        pwmSynth.controlChange(1, analog_control_2);
+        pwmSynth.controlChange(2, analog_control_3);
+        pwmSynth.controlChange(3, analog_control_4);
+    }
 
     sgtl5000_1.volume(knobVolumeScaled);
 

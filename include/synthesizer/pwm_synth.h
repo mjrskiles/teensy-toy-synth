@@ -35,8 +35,8 @@ struct ControlShaper {
 
 enum SimpleControlBank : int {
     PWM_DUTY,
-    INDIVIDUAL_MIXER,
-    COMBINED_AMP_ENVELOPE,
+    INDIVIDUAL_LPF,
+    COMBINED_MIXER,
     ETC1,
     OSC1_ENV,
     OSC2_ENV,
@@ -62,23 +62,30 @@ protected:
     bool _monoMode = false;
     VoiceState *voices;
     uint8_t _selectedBank = 0;
+    bool _controlChangeActive = false;
+public:
+    bool isControlChangeActive() const;
+
+    void setControlChangeActive(bool controlChangeActive);
+
+protected:
 
     // pwm duty control
     float _pwmBank[4] {0.5f, 0.5f, 0.5f, 0.5f};
-    float _individualMixerBank[4] {1.0f, 1.0f, 1.0f, 1.0f};
 
-    // amp envelope
-    float _combinedAmpEnvBank[4] {0.0f, 0.0f, 1.0f, 0.0f};
+    float _indivualLpfBank[4] {0.5f, 0.5f, 0.5f, 0.5f};
+
+    float _postEnvelopeMixer[4] {1.0f, 1.0f, 1.0f, 1.0f};
 
     // amp mixer
-    float _combinedAmpMixer[4] {1.0f, 1.0f, 1.0f, 1.0f};
+    float _etcBank1[4] {0.5f, 1.0f, 1.0f, 1.0f};
 
     float _osc1EnvBank[4] {0.0f, 0.0f, 1.0f, 0.0f};
     float _osc2EnvBank[4] {0.0f, 0.0f, 1.0f, 0.0f};
     float _osc3EnvBank[4] {0.0f, 0.0f, 1.0f, 0.0f};
     float _osc4EnvBank[4] {0.0f, 0.0f, 1.0f, 0.0f};
 
-    float* _simpleControlsBanks[8] {_pwmBank, _individualMixerBank, _combinedAmpEnvBank, _combinedAmpMixer,
+    float* _simpleControlsBanks[8] {_pwmBank, _indivualLpfBank, _postEnvelopeMixer, _etcBank1,
                                     _osc1EnvBank, _osc2EnvBank, _osc3EnvBank, _osc4EnvBank};
     ControlShaper _simpleControlsBankShapers[4] {
         ControlShaper(2.0, -1.0),
@@ -87,6 +94,8 @@ protected:
         ControlShaper(20000.0, 0.0)
     };
 
+    ControlShaper _mixerShaper = ControlShaper(1.0, 0.0);
+    ControlShaper _lpfCtrlShaper = ControlShaper(1.0, 0.0);
     ControlShaper _envelopeADRShaper = ControlShaper(750.0, 0.0);
     ControlShaper _envelopeSShaper = ControlShaper(1.0, 0.0);
     void _updateControlBanks();

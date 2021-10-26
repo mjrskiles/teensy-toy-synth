@@ -7,7 +7,7 @@
 
 #include <io/display/Layout.h>
 #include <io/display/LayoutManager.h>
-#include "io/InputPollster.h"
+#include "io/input_pollster.h"
 #include "io/callbacks.h"
 
 // Pollsters
