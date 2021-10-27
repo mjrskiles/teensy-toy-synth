@@ -5,7 +5,7 @@
 #include "model/teensy41pinout.h"
 #include "io/display/lcd16x2.h"
 #include "model/components.h"
-#include "logr.h"
+#include "../lib/Logr/logr.h"
 #include <synthesizer/pwm_synth.h>
 #include <MIDI.h>
 
@@ -117,8 +117,7 @@ void setup() {
             break;
         }
     }
-    logr.info("B~ logr v0.1 B~");
-    logr.info("Setup done");
+    Logr::info("Setup done");
 }
 
 void loop() {
