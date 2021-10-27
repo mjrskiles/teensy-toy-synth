@@ -110,10 +110,10 @@ void setup() {
 
     // Don't start the main loop until the play button is pressed
     // This is a good time to attach the serial monitor
-    Serial.println("Press the play/step button to start the program");
+    Logr::info("Press the play/step button to start the program");
     while(1) {
         if (digitalRead(PLAY_STEP_BUTTON_PIN) == LOW) { // LOW is pressed
-            logr.info("Loop Triggered by Play/step button");
+            Logr::info("Loop Triggered by Play/step button");
             break;
         }
     }
@@ -125,7 +125,7 @@ void loop() {
 
     if (firstPass) {
         firstPass = 0;
-        Serial.println("First Pass");
+        Logr::info("First Pass");
         layoutManager.startCyclicUpdate();
         layoutManager.runLayout();
     }
@@ -167,20 +167,20 @@ void loop() {
 
     // Poll the inputs because there was an interrupt
     if(lower8NumInterrupts) {
-        Serial.println("Lower 8 INTERRUPT");
-        Serial.println(lower8NumInterrupts);
+        Logr::info("Lower 8 INTERRUPT");
+        Logr::info("%d", lower8NumInterrupts);
         pollsterLower8.poll();
         lower8NumInterrupts = 0;
     }
     if(upper8NumInterrupts) {
-        Serial.println("Upper 8 INTERRUPT");
-        Serial.println(upper8NumInterrupts);
+        Logr::info("Upper 8 INTERRUPT");
+        Logr::info("%d", upper8NumInterrupts);
         pollsterUpper8.poll();
         upper8NumInterrupts = 0;
     }
     if(periphNumInterrupts) {
-        Serial.println("Peripheral I/O INTERRUPT");
-        Serial.println(periphNumInterrupts);
+        Logr::info("Peripheral I/O INTERRUPT");
+        Logr::info("%d", periphNumInterrupts);
         pollsterPeriph.poll();
         periphNumInterrupts = 0;
     }
@@ -195,8 +195,9 @@ void loop() {
 
     // Logging
     if (digitalRead(RECORD_BUTTON_PIN) == LOW && logPrintoutMillisSince > 100) {
-        logr.info("Program scan us:");
-        Serial.println(scanTime);
+        Logr::info("Program scan us:");
+        unsigned long scanTimeUl = scanTime;
+        Logr::info("%d", scanTimeUl);
         uint8_t lower_state = mcp_kbLower8.readRegister(mcp_kbLower8.getGpio());
         uint8_t upper_state = mcp_kbUpper8.readRegister(mcp_kbUpper8.getGpio());
         Serial.printf("Keyboard IO word: 0x%x\n", keyboard_io_word);
