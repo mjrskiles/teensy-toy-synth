@@ -47,8 +47,8 @@ lcd_char LCD_LAYOUT_DECAY[7];
 lcd_char LCD_LAYOUT_SUSTAIN[7];
 lcd_char LCD_LAYOUT_RELEASE[7];
 
-VoiceState vs0(&pwm1, &pwm_env1, 0, NOTE_A4, false);
-VoiceState vs1(&pwm2, &pwm_env2, 0, NOTE_CS5, false);
-VoiceState vs2(&pwm3, &pwm_env3, 0, NOTE_E5, false);
-VoiceState vs3(&pwm4, &pwm_env4, 0, NOTE_GS5, false);
+VoiceState vs0(&wave1a, &pwm_env1, 0, NOTE_A4, false);
+VoiceState vs1(&wave2a, &pwm_env2, 0, NOTE_CS5, false);
+VoiceState vs2(&wave3a, &pwm_env3, 0, NOTE_E5, false);
+VoiceState vs3(&wave4a, &pwm_env4, 0, NOTE_GS5, false);
 VoiceState vsa[] {vs0, vs1, vs2, vs3};

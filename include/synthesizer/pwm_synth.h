@@ -12,9 +12,9 @@
 #define NUM_OSCILLATORS 4
 
 struct VoiceState {
-    VoiceState(AudioSynthWaveformPWM *oscillator, AudioEffectEnvelope* envelope, uint8_t voiceIndex, MidiNote note, bool active);
+    VoiceState(AudioSynthWaveformModulated *oscillator, AudioEffectEnvelope* envelope, uint8_t voiceIndex, MidiNote note, bool active);
 
-    AudioSynthWaveformPWM* oscillator;
+    AudioSynthWaveformModulated* oscillator;
     AudioEffectEnvelope* envelope;
     uint8_t voiceIndex;
     MidiNote note;
@@ -34,7 +34,7 @@ struct ControlShaper {
 };
 
 enum SimpleControlBank : int {
-    PWM_DUTY,
+    LPF_RES,
     INDIVIDUAL_LPF,
     COMBINED_MIXER,
     ETC1,
@@ -95,6 +95,8 @@ protected:
     };
 
     ControlShaper _mixerShaper = ControlShaper(1.0, 0.0);
+    ControlShaper _lpfFreqShaper = ControlShaper(16000.0, 0.0);
+    ControlShaper _lpfResShaper = ControlShaper(5.0, 0.7);
     ControlShaper _lpfCtrlShaper = ControlShaper(1.0, 0.0);
     ControlShaper _envelopeADRShaper = ControlShaper(750.0, 0.0);
     ControlShaper _envelopeSShaper = ControlShaper(1.0, 0.0);

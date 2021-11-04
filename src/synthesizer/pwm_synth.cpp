@@ -63,7 +63,7 @@ uint16_t PwmSynth::getNextUpOscillator() {
     return 0;
 }
 
-VoiceState::VoiceState(AudioSynthWaveformPWM *oscillator, AudioEffectEnvelope *envelope, uint8_t voiceIndex, MidiNote note, bool active) : oscillator(
+VoiceState::VoiceState(AudioSynthWaveformModulated *oscillator, AudioEffectEnvelope *envelope, uint8_t voiceIndex, MidiNote note, bool active) : oscillator(
         oscillator), envelope(envelope), voiceIndex(voiceIndex), note(note), active(active) {}
 
 PwmSynth::PwmSynth()  {
@@ -72,21 +72,18 @@ PwmSynth::PwmSynth()  {
 
 void PwmSynth::init() {
     sgtl5000_1.enable();
-    sgtl5000_1.volume(1.0);
+    sgtl5000_1.dacVolumeRamp();
+    sgtl5000_1.volume(0.5f);
 
-    lpf1.frequency(10000.0);
-//    lpf2.frequency(20000.0);
-//    lpf3.frequency(20000.0);
-//    lpf4.frequency(20000.0);
-//
-//    lpf_intermediate_mixer1.gain(0, 0.0);
-//    lpf_intermediate_mixer1.gain(1, 1.0);
-//
-    main_lpf.frequency(10000.0);
+    lpf1.resonance(1.95f);
+    lpf2.resonance(1.95f);
+    lpf3.resonance(1.95f);
+    lpf4.resonance(1.95f);
 
-    for (int i = 0; i < NUM_OSCILLATORS; i++) {
-        voices[i].envelope->release(0.0);
-    }
+    lpf1.frequency(15000);
+    lpf2.frequency(15000);
+    lpf3.frequency(15000);
+    lpf4.frequency(15000);
 }
 
 void PwmSynth::controlChange(SimpleControlBank bank, uint8_t pos, float val) {
@@ -111,28 +108,25 @@ void PwmSynth::_updateControlBanks() {
     _simpleControlsBanks[_selectedBank][2] = analog_control_3;
     _simpleControlsBanks[_selectedBank][3] = analog_control_4;
 
-    dc1.amplitude(_simpleControlsBankShapers[PWM_DUTY].apply(_simpleControlsBanks[PWM_DUTY][0]));
-    dc2.amplitude(_simpleControlsBankShapers[PWM_DUTY].apply(_simpleControlsBanks[PWM_DUTY][1]));
-    dc3.amplitude(_simpleControlsBankShapers[PWM_DUTY].apply(_simpleControlsBanks[PWM_DUTY][2]));
-    dc4.amplitude(_simpleControlsBankShapers[PWM_DUTY].apply(_simpleControlsBanks[PWM_DUTY][3]));
-
+    lpf1.resonance(_lpfResShaper.apply(_simpleControlsBanks[LPF_RES][0]));
+    lpf2.resonance(_lpfResShaper.apply(_simpleControlsBanks[LPF_RES][1]));
+    lpf3.resonance(_lpfResShaper.apply(_simpleControlsBanks[LPF_RES][2]));
+    lpf4.resonance(_lpfResShaper.apply(_simpleControlsBanks[LPF_RES][3]));
 
     dc_lpf1.amplitude(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][0]));
     dc_lpf2.amplitude(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][1]));
     dc_lpf3.amplitude(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][2]));
     dc_lpf4.amplitude(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][3]));
 
-//    lpf1.frequency(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][0]));
-//    lpf2.frequency(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][1]));
-//    lpf3.frequency(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][2]));
-//    lpf4.frequency(_lpfCtrlShaper.apply(_simpleControlsBanks[INDIVIDUAL_LPF][3]));
+
 
     lpf_post_mixer.gain(0, _mixerShaper.apply(_simpleControlsBanks[COMBINED_MIXER][0]));
     lpf_post_mixer.gain(1, _mixerShaper.apply(_simpleControlsBanks[COMBINED_MIXER][1]));
     lpf_post_mixer.gain(2, _mixerShaper.apply(_simpleControlsBanks[COMBINED_MIXER][2]));
     lpf_post_mixer.gain(3, _mixerShaper.apply(_simpleControlsBanks[COMBINED_MIXER][3]));
 
-    dc_main_lpf.amplitude(_lpfCtrlShaper.apply(_simpleControlsBanks[ETC1][0]));
+    lpf_master.frequency(_lpfFreqShaper.apply(_simpleControlsBanks[ETC1][0]));
+    lpf_master.resonance(_lpfResShaper.apply(_simpleControlsBanks[ETC1][1]));
 
     pwm_env1.attack(_envelopeADRShaper.apply(_simpleControlsBanks[OSC1_ENV][0]));
     pwm_env1.decay(_envelopeADRShaper.apply(_simpleControlsBanks[OSC1_ENV][1]));
