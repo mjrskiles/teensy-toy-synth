@@ -75,6 +75,11 @@ void PwmSynth::init() {
     sgtl5000_1.dacVolumeRamp();
     sgtl5000_1.volume(0.5f);
 
+    wave1a.begin(WAVEFORM_SQUARE);
+    wave2a.begin(WAVEFORM_SQUARE);
+    wave3a.begin(WAVEFORM_SQUARE);
+    wave4a.begin(WAVEFORM_SQUARE);
+
     lpf1.resonance(1.95f);
     lpf2.resonance(1.95f);
     lpf3.resonance(1.95f);
