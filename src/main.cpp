@@ -138,10 +138,10 @@ void loop() {
     releaseValueRaw = analogRead(KNOB_R_PIN);
 
     knobVolumeScaled = (float)analogRead(KNOB_VOLUME_PIN) / 1023.0f; //volume knob on audio board
-    analog_control_1 = 1 - ((float)attackValueRaw / 1023.0f);
-    analog_control_2 = 1 - ((float)decayValueRaw / 1023.0);
-    analog_control_3 = 1 - ((float)sustainValueRaw /  1023.0);
-    analog_control_4 = 1 - ((float)releaseValueRaw /  1023.0);
+    analog_control_1 = ((float)attackValueRaw / 1023.0f);
+    analog_control_2 = ((float)decayValueRaw / 1023.0f);
+    analog_control_3 = ((float)sustainValueRaw /  1023.0f);
+    analog_control_4 = ((float)releaseValueRaw /  1023.0f);
 
     if (pwmSynth.isControlChangeActive()) {
         pwmSynth.controlChange(0, analog_control_1);

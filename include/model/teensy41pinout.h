@@ -8,10 +8,10 @@
 #define BUTTON_SELECT_PIN 24
 
 #define KNOB_VOLUME_PIN 15
-#define KNOB_A_PIN 38
-#define KNOB_D_PIN 39
-#define KNOB_S_PIN 40
-#define KNOB_R_PIN 41
+#define KNOB_A_PIN 41
+#define KNOB_D_PIN 40
+#define KNOB_S_PIN 39
+#define KNOB_R_PIN 38
 
 #define MCP_RESET_PIN 28
 

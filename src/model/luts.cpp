@@ -14,10 +14,10 @@
  * 0, 1, 2, 3
  */
 const uint8_t physical_to_logical_button_loc[16] {
-    7, 6, 5, 4,
-    3, 2, 1, 0,
-    15, 14, 13, 12,
-    11, 10, 9, 8
+    4, 0, 5, 1,
+    6, 2, 7, 3,
+    12, 8, 9, 13,
+    10, 11, 15, 14
 };
 
 
@@ -132,7 +132,7 @@ const uint8_t mcp_to_physical_button_map[] = {
         7, 6, 5, 4,
         3, 2, 1, 0,
         15, 14, 13, 12,
-        11, 10, 9, 8
+        8, 12, 9, 13
 };
 
 // TODO lookup the current note from the current scale
